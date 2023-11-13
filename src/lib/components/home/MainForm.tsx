@@ -9,15 +9,18 @@ import {
   Textarea,
   RadioGroup,
   Radio,
+  useToast,
 } from '@chakra-ui/react';
 import { useState } from 'react';
+
+import { formatDateAndTime } from '~/utils/dateTimeUtils';
 
 interface FormData {
   title: string;
   startTime: string;
   endTime: string;
-  focus: number; // Changed to number
-  point: number; // Changed to number
+  focus: number;
+  point: number;
   note: string;
 }
 
@@ -30,6 +33,7 @@ export default function MainForm() {
     point: 0,
     note: '',
   });
+  const toast = useToast();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -48,11 +52,52 @@ export default function MainForm() {
     }
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // console.log(JSON.stringify(formData)); // Replace this with your actual submission logic
-  };
 
+    const payload = {
+      start_time: formatDateAndTime(formData.startTime),
+      end_time: formatDateAndTime(formData.endTime),
+      title: formData.title,
+      note: formData.note,
+      focus: formData.focus,
+      point: formData.point,
+    };
+
+    try {
+      const response = await fetch(
+        'https://heavyweight-fastapi-production-1c7c.up.railway.app/records',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (response.status === 201) {
+        // const responseData = await response.json();
+        toast({
+          title: 'Success',
+          description: 'Record created successfully.',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+      } else {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'An error occurred while submitting the form.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
   return (
     <Container maxW="container.md">
       <Heading as="h1" mb={4}>

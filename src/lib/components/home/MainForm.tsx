@@ -10,10 +10,12 @@ import {
   RadioGroup,
   Radio,
   useToast,
+  Flex,
+  Spacer,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
-import { formatDateAndTime } from '~/utils/dateTimeUtils';
+import { formatDateAndTime, getCurrentTime } from '~/utils/timeUtils';
 
 interface FormData {
   title: string;
@@ -116,22 +118,47 @@ export default function MainForm() {
           </FormControl>
           <FormControl isRequired>
             <FormLabel htmlFor="start-time">Start Time</FormLabel>
-            <Input
-              id="start-time"
-              name="startTime"
-              type="time"
-              onChange={handleChange}
-            />
+            <Flex>
+              <Input
+                id="start-time"
+                name="startTime"
+                type="time"
+                onChange={handleChange}
+                value={formData.startTime}
+              />
+              <Spacer />
+              <Button
+                onClick={() =>
+                  setFormData({ ...formData, startTime: getCurrentTime() })
+                }
+                ml={2} // Margin left for spacing
+              >
+                Now
+              </Button>
+            </Flex>
           </FormControl>
           <FormControl isRequired>
             <FormLabel htmlFor="end-time">End Time</FormLabel>
-            <Input
-              id="end-time"
-              name="endTime"
-              type="time"
-              onChange={handleChange}
-            />
+            <Flex>
+              <Input
+                id="end-time"
+                name="endTime"
+                type="time"
+                onChange={handleChange}
+                value={formData.endTime}
+              />
+              <Spacer />
+              <Button
+                onClick={() =>
+                  setFormData({ ...formData, endTime: getCurrentTime() })
+                }
+                ml={2} // Margin left for spacing
+              >
+                Now
+              </Button>
+            </Flex>
           </FormControl>
+
           <FormControl>
             <FormLabel>Focus</FormLabel>
             <RadioGroup

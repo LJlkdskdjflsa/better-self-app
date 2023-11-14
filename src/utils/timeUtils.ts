@@ -10,3 +10,11 @@ export const formatDateAndTime = (time: string): string => {
 
   return currentDate.toISOString();
 };
+
+/**
+ * Gets the current time in HH:mm format.
+ * @returns Current time as a string in HH:mm format
+ */
+export const getCurrentTime = () => {
+  return new Date().toISOString().substring(11, 16); // Extracts the HH:mm part
+};

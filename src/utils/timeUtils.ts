@@ -12,9 +12,14 @@ export const formatDateAndTime = (time: string): string => {
 };
 
 /**
- * Gets the current time in HH:mm format.
- * @returns Current time as a string in HH:mm format
+ * Gets the current local time in HH:mm format.
+ * @returns Current local time as a string in HH:mm format
  */
 export const getCurrentTime = () => {
-  return new Date().toISOString().substring(11, 16); // Extracts the HH:mm part
+  const date = new Date();
+  return date.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  });
 };

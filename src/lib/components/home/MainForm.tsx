@@ -45,10 +45,23 @@ export default function MainForm() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
+
     if (name === 'focus' || name === 'point') {
       setFormData((prevFormData) => ({
         ...prevFormData,
         [name]: parseInt(value, 10),
+      }));
+    } else if (name === 'startTime' || name === 'endTime') {
+      let validTime = value;
+
+      // Check if the hour part is 24 and adjust to 00
+      if (value.startsWith('24:')) {
+        validTime = `00:${value.substring(3)}`;
+      }
+
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: validTime,
       }));
     } else {
       setFormData((prevFormData) => ({

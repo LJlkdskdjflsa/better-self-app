@@ -23,3 +23,30 @@ export const getCurrentTime = () => {
     hour12: false,
   });
 };
+
+export const fetchLastEndTime = async (): Promise<string> => {
+  try {
+    const response = await fetch(
+      'https://heavyweight-fastapi-production-1c7c.up.railway.app/records?page=1&size=1',
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    if (data && data.data && data.data.length > 0) {
+      const lastRecord = data.data[0];
+      return lastRecord.end_time.substring(11, 16); // Extracts the HH:mm part and returns it
+    }
+    return ''; // Return empty string or a default value if no record is found
+  } catch (error) {
+    return ''; // Return empty string or a default value in case of an error
+  }
+};

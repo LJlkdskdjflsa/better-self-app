@@ -15,7 +15,11 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
-import { formatDateAndTime, getCurrentTime } from '~/utils/timeUtils';
+import {
+  fetchLastEndTime,
+  formatDateAndTime,
+  getCurrentTime,
+} from '~/utils/timeUtils';
 
 interface FormData {
   title: string;
@@ -100,10 +104,26 @@ export default function MainForm() {
       });
     }
   };
+
+  const setLastEndTime = async () => {
+    const lastEndTime = await fetchLastEndTime();
+    if (lastEndTime) {
+      setFormData({ ...formData, startTime: lastEndTime });
+    } else {
+      // Handle the case when no last end time is returned
+      toast({
+        title: 'Error',
+        description: 'No last end time found.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
   return (
     <Container maxW="container.md">
       <Heading as="h1" mb={4}>
-        BetterSelf
+        Better Self
       </Heading>
       <form onSubmit={handleSubmit}>
         <Stack spacing={4}>
@@ -134,6 +154,9 @@ export default function MainForm() {
                 ml={2} // Margin left for spacing
               >
                 Now
+              </Button>
+              <Button onClick={setLastEndTime} ml={2}>
+                Last End
               </Button>
             </Flex>
           </FormControl>

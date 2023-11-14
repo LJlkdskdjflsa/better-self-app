@@ -83,7 +83,16 @@ export default function MainForm() {
       );
 
       if (response.status === 201) {
-        // const responseData = await response.json();
+        // Reset form data to initial values after successful submission
+        setFormData({
+          title: '',
+          startTime: '',
+          endTime: '',
+          focus: 0,
+          point: 0,
+          note: '',
+        });
+
         toast({
           title: 'Success',
           description: 'Record created successfully.',

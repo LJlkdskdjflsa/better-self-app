@@ -43,7 +43,12 @@ export const fetchLastEndTime = async (): Promise<string> => {
     const data = await response.json();
     if (data && data.data && data.data.length > 0) {
       const lastRecord = data.data[0];
-      return lastRecord.end_time.substring(11, 16); // Extracts the HH:mm part and returns it
+      const date = new Date(lastRecord.end_time);
+      return date.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      });
     }
     return ''; // Return empty string or a default value if no record is found
   } catch (error) {

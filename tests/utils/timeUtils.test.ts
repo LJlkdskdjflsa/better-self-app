@@ -32,5 +32,13 @@ describe('transferUtcTimestampToLocalTime', () => {
 
         expect(result).toEqual("23:15");
     });
+
+    it('when input hour=24, return must be hour=00', () => {
+
+        const timestamp = '2023-11-15T16:15:00.614000Z';
+        const result = transferUtcTimestampToLocalTime(timestamp);
+
+        expect(result).toEqual("00:15");
+    });
 });
 

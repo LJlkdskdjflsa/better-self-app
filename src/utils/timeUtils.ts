@@ -13,18 +13,25 @@ export const transferLocalTimeToUtcTimestamp = (time: string): string => {
 
 /**
  * Converts a UTC timestamp into local time in HH:mm format.
+ * If the hour is 24, it is set to 00.
  * @param timestamp - UTC timestamp
  * @returns Local time as a string in HH:mm format
  */
 export const transferUtcTimestampToLocalTime = (timestamp: string): string => {
-  // console.log(timestamp);
   const date = new Date(timestamp);
-  // console.log(time);
-  return date.toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-  });
+  let hours = date.getHours();
+  const minutes = date.getMinutes();
+
+  // If the hour is 24, set it to 00
+  if (hours === 24) {
+    hours = 0;
+  }
+
+  // Pad the hours and minutes with leading zeros if necessary
+  const hoursString = hours.toString().padStart(2, '0');
+  const minutesString = minutes.toString().padStart(2, '0');
+
+  return `${hoursString}:${minutesString}`;
 };
 
 /**

@@ -17,8 +17,8 @@ import { useState } from 'react';
 
 import {
   fetchLastEndTime,
-  formatDateAndTime,
-  getCurrentTime,
+  transferLocalTimeToUtcTimestamp,
+  getCurrentLocalTime,
 } from '~/utils/timeUtils';
 
 interface FormData {
@@ -75,8 +75,8 @@ export default function MainForm() {
     event.preventDefault();
 
     const payload = {
-      start_time: formatDateAndTime(formData.startTime),
-      end_time: formatDateAndTime(formData.endTime),
+      start_time: transferLocalTimeToUtcTimestamp(formData.startTime),
+      end_time: transferLocalTimeToUtcTimestamp(formData.endTime),
       title: formData.title,
       note: formData.note,
       focus: formData.focus,
@@ -171,7 +171,7 @@ export default function MainForm() {
               <Spacer />
               <Button
                 onClick={() =>
-                  setFormData({ ...formData, startTime: getCurrentTime() })
+                  setFormData({ ...formData, startTime: getCurrentLocalTime() })
                 }
                 ml={2} // Margin left for spacing
               >
@@ -195,7 +195,7 @@ export default function MainForm() {
               <Spacer />
               <Button
                 onClick={() =>
-                  setFormData({ ...formData, endTime: getCurrentTime() })
+                  setFormData({ ...formData, endTime: getCurrentLocalTime() })
                 }
                 ml={2} // Margin left for spacing
               >

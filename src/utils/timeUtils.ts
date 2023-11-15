@@ -3,7 +3,7 @@
  * @param time - Time string in HH:mm format
  * @returns ISO 8601 date-time string
  */
-export const formatDateAndTime = (time: string): string => {
+export const transferLocalTimeToUtcTimestamp = (time: string): string => {
   const currentDate = new Date();
   const [hours, minutes] = time.split(':');
   currentDate.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0);
@@ -12,10 +12,24 @@ export const formatDateAndTime = (time: string): string => {
 };
 
 /**
+ * Converts a UTC timestamp into local time in HH:mm format.
+ * @param timestamp - UTC timestamp
+ * @returns Local time as a string in HH:mm format
+ */
+export const transferUtcTimestampToLocalTime = (timestamp: string): string => {
+  const date = new Date(timestamp);
+  return date.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  });
+};
+
+/**
  * Gets the current local time in HH:mm format.
  * @returns Current local time as a string in HH:mm format
  */
-export const getCurrentTime = () => {
+export const getCurrentLocalTime = () => {
   const date = new Date();
   return date.toLocaleTimeString('en-US', {
     hour: '2-digit',
@@ -43,12 +57,7 @@ export const fetchLastEndTime = async (): Promise<string> => {
     const data = await response.json();
     if (data && data.data && data.data.length > 0) {
       const lastRecord = data.data[0];
-      const date = new Date(lastRecord.end_time);
-      return date.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-      });
+      return transferUtcTimestampToLocalTime(lastRecord.endTime);
     }
     return ''; // Return empty string or a default value if no record is found
   } catch (error) {

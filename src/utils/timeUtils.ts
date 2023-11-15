@@ -17,7 +17,9 @@ export const transferLocalTimeToUtcTimestamp = (time: string): string => {
  * @returns Local time as a string in HH:mm format
  */
 export const transferUtcTimestampToLocalTime = (timestamp: string): string => {
+  // console.log(timestamp);
   const date = new Date(timestamp);
+  // console.log(time);
   return date.toLocaleTimeString('en-US', {
     hour: '2-digit',
     minute: '2-digit',
@@ -57,7 +59,8 @@ export const fetchLastEndTime = async (): Promise<string> => {
     const data = await response.json();
     if (data && data.data && data.data.length > 0) {
       const lastRecord = data.data[0];
-      return transferUtcTimestampToLocalTime(lastRecord.endTime);
+      // console.log(lastRecord);
+      return transferUtcTimestampToLocalTime(lastRecord.end_time);
     }
     return ''; // Return empty string or a default value if no record is found
   } catch (error) {

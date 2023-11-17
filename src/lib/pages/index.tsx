@@ -1,7 +1,6 @@
 'use client';
 
 import { Flex } from '@chakra-ui/react';
-import Link from 'next/link';
 
 import MainForm from '~/lib/components/home/MainForm';
 
@@ -17,7 +16,6 @@ const Home = () => {
       w="full"
     >
       <MainForm />
-      <Link href="/login">About Us</Link>
     </Flex>
   );
 };

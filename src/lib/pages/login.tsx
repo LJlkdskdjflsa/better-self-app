@@ -4,7 +4,7 @@ import { Flex } from '@chakra-ui/react';
 
 import MainForm from '~/lib/components/home/MainForm';
 
-const Home = () => {
+const Login = () => {
   return (
     <Flex
       direction="column"
@@ -20,4 +20,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Login;

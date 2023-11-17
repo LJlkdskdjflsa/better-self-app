@@ -5,18 +5,36 @@ import {
   Input,
   Container,
   useToast,
+  Checkbox,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
+
   const toast = useToast();
   const router = useRouter();
 
+  useEffect(() => {
+    // get the email from local storage if it exists
+    const storedEmail = localStorage.getItem('email');
+    if (storedEmail) {
+      setEmail(storedEmail);
+    }
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (rememberMe) {
+      localStorage.setItem('email', email);
+    } else {
+      // Store the token in session storage for the current session only
+      sessionStorage.removeItem('email');
+    }
 
     try {
       const response = await fetch(
@@ -91,6 +109,16 @@ export default function LoginForm() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+          />
+        </FormControl>
+        <FormControl display="flex" alignItems="center">
+          <FormLabel htmlFor="remember-me" mb="0">
+            Remember me
+          </FormLabel>
+          <Checkbox
+            id="remember-me"
+            isChecked={rememberMe}
+            onChange={(e) => setRememberMe(e.target.checked)}
           />
         </FormControl>
         <Button mt={4} colorScheme="teal" type="submit">

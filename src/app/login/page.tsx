@@ -3,8 +3,10 @@
 import { Flex } from '@chakra-ui/react';
 
 import LoginForm from '~/lib/components/home/LoginForm';
+import { useAuth } from '~/lib/components/hooks/useAuth';
 
 const Login = () => {
+  useAuth('/');
   return (
     <Flex
       direction="column"

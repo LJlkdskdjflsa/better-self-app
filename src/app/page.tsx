@@ -2,9 +2,11 @@
 
 import { Flex } from '@chakra-ui/react';
 
-import LoginForm from '../components/home/LoginForm';
+import MainForm from '~/lib/components/home/MainForm';
+import { useAuth } from '~/lib/components/hooks/useAuth';
 
-const Login = () => {
+const Home = () => {
+  useAuth('/');
   return (
     <Flex
       direction="column"
@@ -15,9 +17,9 @@ const Login = () => {
       mb={8}
       w="full"
     >
-      <LoginForm />
+      <MainForm />
     </Flex>
   );
 };
 
-export default Login;
+export default Home;

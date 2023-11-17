@@ -13,6 +13,7 @@ import {
   Flex,
   Spacer,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import {
@@ -40,6 +41,7 @@ export default function MainForm() {
     note: '',
   });
   const toast = useToast();
+  const router = useRouter();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -255,11 +257,8 @@ export default function MainForm() {
         colorScheme="red"
         mt={4} // Margin top for spacing
         onClick={() => {
-          // Clear token from local storage
           localStorage.removeItem('token');
-
-          // Optional: Add any additional logout logic here
-          // For example, redirecting to login page
+          router.push('/login');
         }}
       >
         Logout

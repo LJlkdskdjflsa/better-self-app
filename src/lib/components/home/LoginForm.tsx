@@ -30,17 +30,6 @@ export default function LoginForm() {
         }
       );
 
-      toast({
-        title: 'Login Successful',
-        description: "You've logged in successfully.",
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-      });
-
-      // Redirect to the home page
-      router.push('/');
-
       if (!response.ok) {
         throw new Error('Login failed');
       }
@@ -61,6 +50,8 @@ export default function LoginForm() {
           duration: 5000,
           isClosable: true,
         });
+        // Redirect to the home page
+        router.push('/');
 
         // Redirect or other post-login logic
       } else {

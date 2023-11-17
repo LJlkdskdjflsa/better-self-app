@@ -85,7 +85,7 @@ export default function MainForm() {
 
     try {
       const response = await fetch(
-        'https://heavyweight-fastapi-production-1c7c.up.railway.app/records',
+        `${process.env.NEXT_PUBLIC_API_URL}/records`,
         {
           method: 'POST',
           headers: {
@@ -249,6 +249,21 @@ export default function MainForm() {
           </Button>
         </Stack>
       </form>
+
+      {/* Logout Button */}
+      <Button
+        colorScheme="red"
+        mt={4} // Margin top for spacing
+        onClick={() => {
+          // Clear token from local storage
+          localStorage.removeItem('token');
+
+          // Optional: Add any additional logout logic here
+          // For example, redirecting to login page
+        }}
+      >
+        Logout
+      </Button>
     </Container>
   );
 }

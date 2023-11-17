@@ -59,7 +59,7 @@ export const getCurrentLocalTime = () => {
 export const fetchLastEndTime = async (): Promise<string> => {
   try {
     const response = await fetch(
-      'https://heavyweight-fastapi-production-1c7c.up.railway.app/records?page=1&size=1',
+      `${process.env.NEXT_PUBLIC_API_URL}/records?page=1&size=1`,
       {
         method: 'GET',
         headers: {

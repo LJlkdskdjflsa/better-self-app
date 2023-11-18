@@ -19,7 +19,7 @@ export default function RegisterForm() {
   const toast = useToast();
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {

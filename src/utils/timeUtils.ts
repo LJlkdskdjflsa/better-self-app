@@ -56,7 +56,7 @@ export const getCurrentLocalTime = () => {
   return `${hoursString}:${minutesString}`;
 };
 
-export const fetchLastEndTime = async (): Promise<string> => {
+export const fetchLastEndTime = async (token: string): Promise<string> => {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/records?page=1&size=1`,
@@ -64,6 +64,7 @@ export const fetchLastEndTime = async (): Promise<string> => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -75,7 +76,6 @@ export const fetchLastEndTime = async (): Promise<string> => {
     const data = await response.json();
     if (data && data.data && data.data.length > 0) {
       const lastRecord = data.data[0];
-      // console.log(lastRecord);
       return transferUtcTimestampToLocalTime(lastRecord.end_time);
     }
     return ''; // Return empty string or a default value if no record is found

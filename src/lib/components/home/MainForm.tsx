@@ -16,6 +16,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import { useToken } from '../hooks/useToken';
 import {
   fetchLastEndTime,
   transferLocalTimeToUtcTimestamp,
@@ -40,6 +41,7 @@ export default function MainForm() {
     point: 0,
     note: '',
   });
+  const [token, removeToken] = useToken();
   const toast = useToast();
   const router = useRouter();
 
@@ -76,6 +78,17 @@ export default function MainForm() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    if (!token) {
+      toast({
+        title: 'Authentication Error',
+        description: 'No token found. Please log in.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      return; // Stop the function if there's no token
+    }
+
     const payload = {
       start_time: transferLocalTimeToUtcTimestamp(formData.startTime),
       end_time: transferLocalTimeToUtcTimestamp(formData.endTime),
@@ -92,6 +105,7 @@ export default function MainForm() {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(payload),
         }
@@ -130,14 +144,37 @@ export default function MainForm() {
   };
 
   const setLastEndTime = async () => {
-    const lastEndTime = await fetchLastEndTime();
-    if (lastEndTime) {
-      setFormData({ ...formData, startTime: lastEndTime });
-    } else {
-      // Handle the case when no last end time is returned
+    if (!token) {
+      // Handle the case when token is null
       toast({
         title: 'Error',
-        description: 'No last end time found.',
+        description: 'No token found. Please log in.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    if (typeof token === 'string') {
+      const lastEndTime = await fetchLastEndTime(token);
+      if (lastEndTime) {
+        setFormData({ ...formData, startTime: lastEndTime });
+      } else {
+        // Handle the case when no last end time is returned
+        toast({
+          title: 'Error',
+          description: 'No last end time found.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    } else {
+      // Handle the case when token is a function
+      toast({
+        title: 'Error',
+        description: 'Invalid token.',
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -257,7 +294,9 @@ export default function MainForm() {
         colorScheme="red"
         mt={4} // Margin top for spacing
         onClick={() => {
-          localStorage.removeItem('token');
+          if (typeof removeToken === 'function') {
+            removeToken();
+          }
           router.push('/login');
         }}
       >

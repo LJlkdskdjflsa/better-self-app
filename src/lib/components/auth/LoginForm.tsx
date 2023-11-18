@@ -7,6 +7,7 @@ import {
   useToast,
   Checkbox,
 } from '@chakra-ui/react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -125,6 +126,10 @@ export default function LoginForm() {
           Login
         </Button>
       </form>
+
+      <Link href="/register" style={{ marginTop: '20px' }}>
+        Do not have an account? Register here
+      </Link>
     </Container>
   );
 }

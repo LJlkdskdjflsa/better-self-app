@@ -55,6 +55,14 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `src/lib/pages/index.tsx`. The page auto-updates as you edit the file.
 
+## File Structure
+
+check file structure
+
+```bash
+tree -I 'node_modules|public'
+```
+
 ## How to Run e2e Test (in local machine)
 
 1. Build production with `pnpm build`, then run the production build using `pnpm start`.
@@ -64,3 +72,4 @@ References:
 
 - https://nextjs.org/docs/testing#playwright
   - https://nextjs.org/docs/testing#running-your-playwright-tests
+

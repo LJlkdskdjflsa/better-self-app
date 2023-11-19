@@ -7,11 +7,14 @@ type RootLayoutProps = {
   children: React.ReactNode;
 };
 
-const APP_NAME = 'nextarter-chakra';
+const APP_NAME = 'Better Self';
 
 export const metadata: Metadata = {
-  title: { default: APP_NAME, template: '%s | nextarter-chakra' },
-  description: 'Next.js + chakra-ui + TypeScript template',
+  title: {
+    default: APP_NAME,
+    template: '%s | be better by recording your daily life',
+  },
+  description: 'Better Self is a web app to record your daily life.',
   applicationName: APP_NAME,
   appleWebApp: {
     capable: true,

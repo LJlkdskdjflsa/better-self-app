@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     default: APP_NAME,
     template: '%s | be better by recording your daily life',
   },
-  description: 'Better Self is a web app to record your daily life.',
+  description: 'Better Self is a app to record your daily life.',
   applicationName: APP_NAME,
   appleWebApp: {
     capable: true,

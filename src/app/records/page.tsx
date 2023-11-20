@@ -1,13 +1,13 @@
 'use client';
 
-import { Flex } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 import RecordList from '~/lib/components/records/RecordList';
 
 const Register = () => {
   return (
-    <Flex
-      direction="column"
+    <Box
+      // direction="column"
       alignItems="center"
       justifyContent="center"
       minHeight="70vh"
@@ -16,7 +16,7 @@ const Register = () => {
       w="full"
     >
       <RecordList />
-    </Flex>
+    </Box>
   );
 };
 

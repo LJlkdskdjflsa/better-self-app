@@ -90,11 +90,29 @@ export const fetchLastEndTime = async (token: string): Promise<string> => {
  * Formats the time range between the start time and end time.
  * @param startTime - The start time of the range in ISO 8601 format.
  * @param endTime - The end time of the range in ISO 8601 format.
- * @returns The duration between start time and end time as a string.
+ * @returns The duration between start time and end time as a string in the format "X h Y m".
  */
 export const formatTimeRange = (startTime: string, endTime: string) => {
   const start = parseISO(startTime);
   const end = parseISO(endTime);
   const duration = intervalToDuration({ start, end });
-  return formatDuration(duration);
+
+  return formatDuration(duration, {
+    format: ['hours', 'minutes'],
+    delimiter: ' ',
+    zero: false,
+    locale: {
+      // Custom locale to override the format of duration parts
+      formatDistance: (token, count) => {
+        switch (token) {
+          case 'xHours':
+            return `${count} h`;
+          case 'xMinutes':
+            return `${count} m`;
+          default:
+            return `${count} ${token}`;
+        }
+      },
+    },
+  });
 };

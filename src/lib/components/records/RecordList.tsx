@@ -3,7 +3,10 @@ import { useState, useEffect } from 'react';
 
 import { fetchRecords } from '~/lib/services/api';
 import type { Record } from '~/lib/types/recordTypes';
-import { formatTimeRange } from '~/utils/timeUtils';
+import {
+  formatTimeRange,
+  transferUtcTimestampToLocalTime,
+} from '~/utils/timeUtils';
 
 export default function RecordList() {
   const [records, setRecords] = useState<Record[]>([]);
@@ -31,9 +34,23 @@ export default function RecordList() {
   return (
     <Flex direction="column" alignItems="center">
       {records.map((record) => (
-        <Box key={record.id} p={4} shadow="md" borderWidth="1px">
+        <Box
+          key={record.id}
+          p={4}
+          shadow="md"
+          borderWidth="1px"
+          width="90%" // Set the width to 90% of the screen
+          my={2} // Add margin for vertical spacing between cards
+        >
           <Flex justifyContent="space-between" alignItems="center">
-            <Text fontWeight="bold">{record.title}</Text>
+            <Flex direction="column">
+              <Text fontWeight="bold" isTruncated>
+                {record.title}
+              </Text>
+              <Text fontSize="sm">
+                Ended at: {transferUtcTimestampToLocalTime(record.end_time)}
+              </Text>
+            </Flex>
             <Text>{formatTimeRange(record.start_time, record.end_time)}</Text>
           </Flex>
         </Box>

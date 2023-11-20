@@ -1,3 +1,5 @@
+import { formatDuration, intervalToDuration, parseISO } from 'date-fns';
+
 /**
  * Formats a time string into an ISO 8601 date-time string with the current date.
  * @param time - Time string in HH:mm format
@@ -82,4 +84,17 @@ export const fetchLastEndTime = async (token: string): Promise<string> => {
   } catch (error) {
     return ''; // Return empty string or a default value in case of an error
   }
+};
+
+/**
+ * Formats the time range between the start time and end time.
+ * @param startTime - The start time of the range in ISO 8601 format.
+ * @param endTime - The end time of the range in ISO 8601 format.
+ * @returns The duration between start time and end time as a string.
+ */
+export const formatTimeRange = (startTime: string, endTime: string) => {
+  const start = parseISO(startTime);
+  const end = parseISO(endTime);
+  const duration = intervalToDuration({ start, end });
+  return formatDuration(duration);
 };

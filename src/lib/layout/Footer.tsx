@@ -1,14 +1,15 @@
-import { Flex, Text } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
+
+import BottomNavBar from '../components/common/BottomNavBar';
 
 const Footer = () => {
   return (
     <Flex as="footer" width="full" justifyContent="center">
-      <Text fontSize="sm">
+      {/* <Text fontSize="sm">
         {new Date().getFullYear()} -{' '}
-        {/* <Link href="https://sznm.dev" isExternal rel="noopener noreferrer"> */}
         Better Self
-        {/* </Link> */}
-      </Text>
+      </Text> */}
+      <BottomNavBar />
     </Flex>
   );
 };

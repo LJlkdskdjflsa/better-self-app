@@ -6,7 +6,7 @@ export async function fetchRecords(
   try {
     const token = localStorage.getItem('token');
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/records?page=${page}&size=10`,
+      `${process.env.NEXT_PUBLIC_API_URL}/records?page=${page}&size=6`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

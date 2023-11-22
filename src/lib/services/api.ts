@@ -1,12 +1,13 @@
 import type { FetchRecordsResponse } from '../types/recordTypes';
 
 export async function fetchRecords(
-  page: number
+  page: number,
+  size: number
 ): Promise<FetchRecordsResponse> {
   try {
     const token = localStorage.getItem('token');
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/records?page=${page}&size=6`,
+      `${process.env.NEXT_PUBLIC_API_URL}/records?page=${page}&size=${size}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

@@ -1,3 +1,29 @@
+'use client';
+
+import { Box } from '@chakra-ui/react';
+
+import RecordList from '~/lib/components/records/RecordList';
+
+const Register = () => {
+  return (
+    <Box
+      // direction="column"
+      alignItems="center"
+      justifyContent="center"
+      minHeight="70vh"
+      gap={4}
+      mb={8}
+      w="full"
+    >
+      <RecordList />
+    </Box>
+  );
+};
+
+export default Register;
+
+---
+
 import { Box, Text, Flex, Button } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 
@@ -15,7 +41,7 @@ export default function RecordList() {
 
   useEffect(() => {
     const loadRecords = async () => {
-      const response = await fetchRecords(page, 6);
+      const response = await fetchRecords(page);
       if (response) {
         setRecords(response.data);
         // Assuming the API returns total records and size per page, calculate total pages
@@ -74,3 +100,62 @@ export default function RecordList() {
     </Flex>
   );
 }
+
+---
+
+import type { FetchRecordsResponse } from '../types/recordTypes';
+
+export async function fetchRecords(
+  page: number
+): Promise<FetchRecordsResponse> {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/records?page=${page}&size=6`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    return (await response.json()) as FetchRecordsResponse;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+}
+
+---
+
+export interface Record {
+  start_time: string;
+  end_time: string;
+  title: string;
+  note: string;
+  focus: number;
+  point: number;
+  id: string;
+  created_at: string;
+}
+
+export interface FetchRecordsResponse {
+  total: number;
+  page: number;
+  size: number;
+  data: Record[];
+}
+
+---
+
+use above as template, create a statistics page
+need to have
+
+- pie chart of total time spent on each title
+- line chart of focus and point (two lines)
+
+over 10 records

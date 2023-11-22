@@ -1,6 +1,6 @@
 import { Flex, IconButton, useColorMode } from '@chakra-ui/react';
 import Link from 'next/link';
-import { FiHome, FiFileText } from 'react-icons/fi';
+import { FiHome, FiFileText, FiBarChart } from 'react-icons/fi'; // Import FiBarChart
 
 const BottomNavBar = () => {
   const { colorMode } = useColorMode();
@@ -22,11 +22,14 @@ const BottomNavBar = () => {
       borderTopWidth="1px"
       boxShadow="sm"
     >
-      <Link href="/" passHref>
-        <IconButton aria-label="Home" icon={<FiHome />} />
+      <Link href="/statistics" passHref>
+        <IconButton aria-label="Statistics" icon={<FiBarChart />} />
       </Link>
       <Link href="/records" passHref>
         <IconButton aria-label="Records" icon={<FiFileText />} />
+      </Link>
+      <Link href="/" passHref>
+        <IconButton aria-label="Home" icon={<FiHome />} />
       </Link>
     </Flex>
   );

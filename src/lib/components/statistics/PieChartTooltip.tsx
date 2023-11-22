@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import type { TooltipProps } from 'recharts';
 
 const formatDuration = (duration: number) => {
@@ -35,15 +34,4 @@ export const PieChartTooltip: React.FC<
   }
 
   return null;
-};
-
-PieChartTooltip.propTypes = {
-  active: PropTypes.bool,
-  payload: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string,
-      value: PropTypes.number,
-    })
-  ),
-  colorMode: PropTypes.string,
 };

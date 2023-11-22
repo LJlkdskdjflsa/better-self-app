@@ -3,5 +3,19 @@
     "sznm/react",
     "plugin:react/jsx-runtime",
     "plugin:@next/next/recommended"
+  ],
+  "rules": {
+    "react/prop-types": "off"
+  },
+  "overrides": [
+    {
+      "files": [
+        "*.ts",
+        "*.tsx"
+      ],
+      "rules": {
+        "react/prop-types": "off"
+      }
+    }
   ]
 }

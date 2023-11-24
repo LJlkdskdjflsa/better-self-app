@@ -1,4 +1,4 @@
-import { transferUtcTimestampToLocalTime } from "~/utils/timeUtils";
+import { getTodayDateRange, transferUtcTimestampToLocalTime } from "~/utils/timeUtils";
 import timezoneMock from 'timezone-mock';
 
 describe('transferUtcTimestampToLocalTime', () => {
@@ -42,3 +42,20 @@ describe('transferUtcTimestampToLocalTime', () => {
     });
 });
 
+const mockDate = new Date('2023-11-22T12:00:00Z');
+jest.spyOn(global, 'Date').mockImplementation(() => mockDate);
+
+describe('getTodayDateRange', () => {
+  it('should return start and end times for the current day', () => {
+    const { startTime, endTime } = getTodayDateRange();
+
+    // Expected start and end times for the mocked date
+    const expectedStartTime = new Date(mockDate);
+    expectedStartTime.setHours(0, 0, 0, 0);
+    const expectedEndTime = new Date(mockDate);
+    expectedEndTime.setHours(23, 59, 59, 999);
+
+    expect(startTime).toEqual(expectedStartTime.toISOString());
+    expect(endTime).toEqual(expectedEndTime.toISOString());
+  });
+});

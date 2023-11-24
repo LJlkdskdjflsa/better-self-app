@@ -116,3 +116,31 @@ export const formatTimeRange = (startTime: string, endTime: string) => {
     },
   });
 };
+
+/**
+ * Gets the start and end times for the current day in ISO 8601 format.
+ * The start time is set to 00:00:00.000 and the end time is set to 23:59:59.999.
+ * @returns An object with the start time and end time for the current day.
+ */
+export const getTodayDateRange = () => {
+  const start = new Date();
+  start.setHours(0, 0, 0, 0); // Set to start of the day
+
+  const end = new Date();
+  end.setHours(23, 59, 59, 999); // Set to end of the day
+
+  // Format to an ISO string
+  return {
+    startTime: start.toISOString(),
+    endTime: end.toISOString(),
+  };
+};
+
+export const formatDurationToString = (duration: number) => {
+  let seconds = Math.floor(duration / 1000);
+  let minutes = Math.floor(seconds / 60);
+  seconds %= 60;
+  const hours = Math.floor(minutes / 60);
+  minutes %= 60;
+  return `${hours}h ${minutes}m ${seconds}s`;
+};

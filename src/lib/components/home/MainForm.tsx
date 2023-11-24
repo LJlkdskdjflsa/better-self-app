@@ -12,6 +12,8 @@ import {
   useToast,
   Flex,
   Spacer,
+  Link,
+  Box,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -186,6 +188,19 @@ export default function MainForm() {
       <Heading as="h1" mb={4}>
         Better Self
       </Heading>
+      <Flex as="footer" p={4} justifyContent="center" alignItems="center">
+        <Box>
+          Want to be better toghether.? Join our
+          <Link
+            href="https://line.me/ti/g/uSNjiBPvW_"
+            isExternal
+            color="teal.500"
+            ml={1}
+          >
+            Better Group (Line)
+          </Link>
+        </Box>
+      </Flex>
       <form onSubmit={handleSubmit}>
         <Stack spacing={4}>
           <FormControl isRequired>

@@ -15,7 +15,7 @@ import {
 
 import { fetchRecords } from '~/lib/services/api';
 import type { Record } from '~/lib/types/recordTypes';
-import { getTodayDateRange } from '~/utils/timeUtils';
+import { getDayDateRange } from '~/utils/timeUtils';
 
 import { LineChartTooltip } from './LineChartTooltip';
 import { PieChartTooltip } from './PieChartTooltip';
@@ -23,18 +23,22 @@ import { PieChartTooltip } from './PieChartTooltip';
 export default function Statistics() {
   const [records, setRecords] = useState<Record[]>([]);
   const { colorMode } = useColorMode();
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().toISOString().split('T')[0]
+  );
 
   useEffect(() => {
     const loadRecords = async () => {
-      const { startTime, endTime } = getTodayDateRange();
-      const response = await fetchRecords(1, 16, startTime, endTime); // Modify fetchRecords to accept startTime and endTime
+      const date = new Date(selectedDate);
+      const { startTime, endTime } = getDayDateRange(date);
+      const response = await fetchRecords(1, 100, startTime, endTime); // Modify fetchRecords to accept startTime and endTime
       if (response && response.data) {
         setRecords(response.data);
       }
     };
 
     loadRecords();
-  }, []);
+  }, [selectedDate]);
 
   const pieChartDataArray = [
     ...records.map((record) => ({
@@ -57,6 +61,11 @@ export default function Statistics() {
   return (
     <div>
       <h2>Statistics</h2>
+      <input
+        type="date"
+        value={selectedDate}
+        onChange={(e) => setSelectedDate(e.target.value)}
+      />
       <PieChart width={400} height={400}>
         <Pie
           data={pieChartDataArray}

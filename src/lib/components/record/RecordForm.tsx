@@ -10,8 +10,6 @@ import {
   RadioGroup,
   Radio,
   useToast,
-  Flex,
-  Spacer,
   Text,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
@@ -19,11 +17,7 @@ import { useEffect, useState } from 'react';
 
 import { useToken } from '../hooks/useToken';
 import { fetchRecordById } from '~/lib/services/api';
-import {
-  transferLocalTimeToUtcTimestamp,
-  getCurrentLocalTime,
-  transferUtcTimestampToLocalTime,
-} from '~/utils/timeUtils';
+import { formatDateTimeLocal } from '~/utils/timeUtils';
 
 interface FormData {
   title: string;
@@ -53,8 +47,8 @@ export default function RecordForm({ recordId }: { recordId: string }) {
       const data = await fetchRecordById(recordId);
       setFormData({
         title: data.title,
-        startTime: transferUtcTimestampToLocalTime(data.start_time),
-        endTime: transferUtcTimestampToLocalTime(data.end_time),
+        startTime: formatDateTimeLocal(data.start_time),
+        endTime: formatDateTimeLocal(data.end_time),
         focus: data.focus,
         point: data.point,
         note: data.note,
@@ -69,30 +63,10 @@ export default function RecordForm({ recordId }: { recordId: string }) {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-
-    if (name === 'focus' || name === 'point') {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: parseInt(value, 10),
-      }));
-    } else if (name === 'startTime' || name === 'endTime') {
-      let validTime = value;
-
-      // Check if the hour part is 24 and adjust to 00
-      if (value.startsWith('24:')) {
-        validTime = `00:${value.substring(3)}`;
-      }
-
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: validTime,
-      }));
-    } else {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: value,
-      }));
-    }
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -110,8 +84,8 @@ export default function RecordForm({ recordId }: { recordId: string }) {
     }
 
     const payload = {
-      start_time: transferLocalTimeToUtcTimestamp(formData.startTime),
-      end_time: transferLocalTimeToUtcTimestamp(formData.endTime),
+      start_time: new Date(formData.startTime).toISOString(),
+      end_time: new Date(formData.endTime).toISOString(),
       title: formData.title,
       note: formData.note,
       focus: formData.focus,
@@ -187,48 +161,23 @@ export default function RecordForm({ recordId }: { recordId: string }) {
             </FormControl>
             <FormControl isRequired>
               <FormLabel htmlFor="start-time">Start Time</FormLabel>
-              <Flex>
-                <Input
-                  id="start-time"
-                  name="startTime"
-                  type="time"
-                  onChange={handleChange}
-                  value={formData.startTime}
-                />
-                <Spacer />
-                <Button
-                  onClick={() =>
-                    setFormData({
-                      ...formData,
-                      startTime: getCurrentLocalTime(),
-                    })
-                  }
-                  ml={2} // Margin left for spacing
-                >
-                  Now
-                </Button>
-              </Flex>
+              <Input
+                id="start-time"
+                name="startTime"
+                type="datetime-local"
+                onChange={handleChange}
+                value={formData.startTime}
+              />
             </FormControl>
             <FormControl isRequired>
               <FormLabel htmlFor="end-time">End Time</FormLabel>
-              <Flex>
-                <Input
-                  id="end-time"
-                  name="endTime"
-                  type="time"
-                  onChange={handleChange}
-                  value={formData.endTime}
-                />
-                <Spacer />
-                <Button
-                  onClick={() =>
-                    setFormData({ ...formData, endTime: getCurrentLocalTime() })
-                  }
-                  ml={2} // Margin left for spacing
-                >
-                  Now
-                </Button>
-              </Flex>
+              <Input
+                id="end-time"
+                name="endTime"
+                type="datetime-local"
+                onChange={handleChange}
+                value={formData.endTime}
+              />
             </FormControl>
 
             <FormControl>

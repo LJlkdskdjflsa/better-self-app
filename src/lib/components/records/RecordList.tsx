@@ -33,9 +33,9 @@ export default function RecordList() {
 
   return (
     <Flex direction="column" alignItems="center">
-      {records.map((record) => (
+      {records.map((currentRecord) => (
         <Box
-          key={record.id}
+          key={currentRecord.id}
           p={4}
           shadow="md"
           borderWidth="1px"
@@ -45,13 +45,30 @@ export default function RecordList() {
           <Flex justifyContent="space-between" alignItems="center">
             <Flex direction="column">
               <Text fontWeight="bold" isTruncated>
-                {record.title}
+                {currentRecord.title}
               </Text>
               <Text fontSize="sm">
-                Ended at: {transferUtcTimestampToLocalTime(record.end_time)}
+                Ended at:{' '}
+                {transferUtcTimestampToLocalTime(currentRecord.end_time)}
               </Text>
             </Flex>
-            <Text>{formatTimeRange(record.start_time, record.end_time)}</Text>
+            <Text>
+              {formatTimeRange(
+                currentRecord.start_time,
+                currentRecord.end_time
+              )}
+            </Text>
+            <Button
+              colorScheme="red"
+              onClick={() => {
+                deleteRecord(currentRecord.id);
+                setRecords(
+                  records.filter((record) => record.id !== currentRecord.id)
+                );
+              }}
+            >
+              Delete
+            </Button>
           </Flex>
         </Box>
       ))}

@@ -36,3 +36,25 @@ export async function fetchRecords(
     return Promise.reject(error);
   }
 }
+
+export const deleteRecord = async (recordId: string) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/records/${recordId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Error deleting the record');
+    }
+    return { success: true };
+  } catch (error) {
+    return { success: false, error };
+  }
+};

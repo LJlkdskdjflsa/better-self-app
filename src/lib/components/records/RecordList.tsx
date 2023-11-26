@@ -1,7 +1,7 @@
 import { Box, Text, Flex, Button } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 
-import { fetchRecords } from '~/lib/services/api';
+import { deleteRecord, fetchRecords } from '~/lib/services/api';
 import type { Record } from '~/lib/types/recordTypes';
 import {
   formatTimeRange,

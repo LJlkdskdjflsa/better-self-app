@@ -1,4 +1,5 @@
-import { Box, Text, Flex, Button } from '@chakra-ui/react';
+import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
+import { Box, Text, Flex, Button, Link, Spacer } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 
 import { deleteRecord, fetchRecords } from '~/lib/services/api';
@@ -52,13 +53,26 @@ export default function RecordList() {
                 {transferUtcTimestampToLocalTime(currentRecord.end_time)}
               </Text>
             </Flex>
+            <Spacer />
             <Text>
               {formatTimeRange(
                 currentRecord.start_time,
                 currentRecord.end_time
               )}
             </Text>
+            <Link href={`/record/${currentRecord.id}`}>
+              <Button
+                as="a"
+                variant="ghost"
+                colorScheme="blue"
+                mr={2}
+                aria-label="Update record"
+              >
+                <EditIcon />
+              </Button>
+            </Link>
             <Button
+              variant="ghost"
               colorScheme="red"
               onClick={() => {
                 deleteRecord(currentRecord.id);
@@ -66,8 +80,9 @@ export default function RecordList() {
                   records.filter((record) => record.id !== currentRecord.id)
                 );
               }}
+              aria-label="Delete record"
             >
-              Delete
+              <DeleteIcon />
             </Button>
           </Flex>
         </Box>

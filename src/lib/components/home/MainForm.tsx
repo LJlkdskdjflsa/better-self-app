@@ -135,7 +135,7 @@ export default function MainForm() {
         });
 
         setFormData({
-          title: 'asdf',
+          title: '',
           startTime: '',
           endTime: '',
           focus: 0,

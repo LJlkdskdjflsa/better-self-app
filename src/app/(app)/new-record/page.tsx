@@ -2,8 +2,8 @@
 
 import { Flex } from '@chakra-ui/react';
 
+import MainForm from '~/lib/components/home/MainForm';
 import { useAuth } from '~/lib/components/hooks/useAuth';
-import LandingPage from '~/lib/components/landing/LandingPage';
 
 const Home = () => {
   useAuth('/');
@@ -17,7 +17,7 @@ const Home = () => {
       mb={8}
       w="full"
     >
-      <LandingPage />
+      <MainForm />
     </Flex>
   );
 };

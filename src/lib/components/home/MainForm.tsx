@@ -1,3 +1,4 @@
+import { CloseIcon } from '@chakra-ui/icons';
 import {
   Button,
   Container,
@@ -46,6 +47,16 @@ export default function MainForm() {
   const [token, removeToken] = useToken();
   const toast = useToast();
   const router = useRouter();
+
+  // Function to clear title
+  const clearTitle = () => {
+    setFormData({ ...formData, title: '' });
+  };
+
+  // Function to clear note
+  const clearNote = () => {
+    setFormData({ ...formData, note: '' });
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -115,21 +126,21 @@ export default function MainForm() {
 
       if (response.status === 201) {
         // Reset form data to initial values after successful submission
-        setFormData({
-          title: '',
-          startTime: '',
-          endTime: '',
-          focus: 0,
-          point: 0,
-          note: '',
-        });
-
         toast({
           title: 'Success',
           description: 'Record created successfully.',
           status: 'success',
           duration: 5000,
           isClosable: true,
+        });
+
+        setFormData({
+          title: 'asdf',
+          startTime: '',
+          endTime: '',
+          focus: 0,
+          point: 0,
+          note: '',
         });
       } else {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -205,13 +216,20 @@ export default function MainForm() {
         <Stack spacing={4}>
           <FormControl isRequired>
             <FormLabel htmlFor="title">Title</FormLabel>
-            <Input
-              id="title"
-              name="title"
-              type="text"
-              onChange={handleChange}
-            />
+            <Flex>
+              <Input
+                id="title"
+                name="title"
+                type="text"
+                onChange={handleChange}
+                value={formData.title}
+              />
+              <Button onClick={clearTitle} ml={2}>
+                <CloseIcon />
+              </Button>
+            </Flex>
           </FormControl>
+
           <FormControl isRequired>
             <FormLabel htmlFor="start-time">Start Time</FormLabel>
             <Flex>
@@ -295,8 +313,21 @@ export default function MainForm() {
             </RadioGroup>
           </FormControl>
           <FormControl>
-            <FormLabel htmlFor="note">Note</FormLabel>
-            <Textarea id="note" name="note" onChange={handleChange} />
+            <Flex>
+              <FormLabel htmlFor="note">Note</FormLabel>
+              <Spacer />
+              <Button onClick={clearNote} ml={2} p={3}>
+                <CloseIcon />
+              </Button>
+            </Flex>
+            <Flex>
+              <Textarea
+                id="note"
+                name="note"
+                onChange={handleChange}
+                value={formData.note}
+              />
+            </Flex>
           </FormControl>
           <Button colorScheme="blue" type="submit">
             Submit

@@ -1,6 +1,5 @@
 'use client';
 
-import { Box } from '@chakra-ui/react';
 import type { ReactNode } from 'react';
 
 import AppFooter from './AppFooter';
@@ -12,13 +11,11 @@ type LayoutProps = {
 
 const AppLayout = ({ children }: LayoutProps) => {
   return (
-    <Box margin="8">
+    <>
       <AppHeader />
-      <Box as="main" marginY={22}>
-        {children}
-      </Box>
+      {children}
       <AppFooter />
-    </Box>
+    </>
   );
 };
 

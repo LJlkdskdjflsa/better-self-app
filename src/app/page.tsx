@@ -2,11 +2,9 @@
 
 import { Flex } from '@chakra-ui/react';
 
-import { useAuth } from '~/lib/components/hooks/useAuth';
 import LandingPage from '~/lib/components/landing/LandingPage';
 
 const Home = () => {
-  useAuth('/');
   return (
     <Flex
       direction="column"

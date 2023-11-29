@@ -17,7 +17,7 @@ import {
   Box,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useToken } from '../hooks/useToken';
 import type { RecordTemplate } from '~/lib/types/recordTemplate';
@@ -40,20 +40,36 @@ export default function NewRecordForm() {
   const [token, removeToken] = useToken();
   const toast = useToast();
   const router = useRouter();
-  // get template data from local storage
-  const templateData: RecordTemplate = JSON.parse(
-    localStorage.getItem('template') || '{}'
-  );
 
   // Set initial form data
   const [formData, setFormData] = useState<FormData>({
-    title: templateData?.title || '',
+    title: '',
     startTime: '',
     endTime: '',
-    focus: templateData?.focus || 0,
-    point: templateData?.point || 0,
-    note: templateData?.note || '',
+    focus: 0,
+    point: 0,
+    note: '',
   });
+
+  useEffect(() => {
+    // Check if window is defined (i.e., running on client side)
+    if (typeof window !== 'undefined') {
+      const templateData: RecordTemplate = JSON.parse(
+        localStorage.getItem('template') || '{}'
+      );
+      // Update form data with template if available
+      if (templateData?.title) {
+        setFormData({
+          title: templateData.title,
+          startTime: '',
+          endTime: '',
+          focus: templateData.focus || 0,
+          point: templateData.point || 0,
+          note: templateData.note || '',
+        });
+      }
+    }
+  }, []);
 
   // Function to clear title
   const clearTitle = () => {

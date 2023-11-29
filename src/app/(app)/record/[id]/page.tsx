@@ -3,7 +3,7 @@
 import { Flex } from '@chakra-ui/react';
 
 import { useAuth } from '~/lib/components/hooks/useAuth';
-import RecordForm from '~/lib/components/record/RecordForm';
+import UpdateRecordForm from '~/lib/components/updateRecord/updateRecordForm';
 
 const RecordDetail = ({ params }: { params: { id: string } }) => {
   useAuth('/');
@@ -17,7 +17,7 @@ const RecordDetail = ({ params }: { params: { id: string } }) => {
       mb={8}
       w="full"
     >
-      <RecordForm recordId={params.id} />
+      <UpdateRecordForm recordId={params.id} />
     </Flex>
   );
 };

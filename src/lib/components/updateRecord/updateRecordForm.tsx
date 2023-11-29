@@ -28,7 +28,7 @@ interface FormData {
   note: string;
 }
 
-export default function RecordForm({ recordId }: { recordId: string }) {
+export default function UpdateRecordForm({ recordId }: { recordId: string }) {
   const [formData, setFormData] = useState<FormData>({
     title: '',
     startTime: '',

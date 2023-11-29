@@ -35,7 +35,7 @@ interface FormData {
   note: string;
 }
 
-export default function MainForm() {
+export default function NewRecordForm() {
   const [formData, setFormData] = useState<FormData>({
     title: '',
     startTime: '',

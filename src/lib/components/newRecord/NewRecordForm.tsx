@@ -20,6 +20,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { useToken } from '../hooks/useToken';
+import type { RecordTemplate } from '~/lib/types/recordTemplate';
 import {
   fetchLastEndTime,
   transferLocalTimeToUtcTimestamp,
@@ -36,17 +37,23 @@ interface FormData {
 }
 
 export default function NewRecordForm() {
-  const [formData, setFormData] = useState<FormData>({
-    title: '',
-    startTime: '',
-    endTime: '',
-    focus: 0,
-    point: 0,
-    note: '',
-  });
   const [token, removeToken] = useToken();
   const toast = useToast();
   const router = useRouter();
+  // get template data from local storage
+  const templateData: RecordTemplate = JSON.parse(
+    localStorage.getItem('template') || '{}'
+  );
+
+  // Set initial form data
+  const [formData, setFormData] = useState<FormData>({
+    title: templateData?.title || '',
+    startTime: '',
+    endTime: '',
+    focus: templateData?.focus || 0,
+    point: templateData?.point || 0,
+    note: templateData?.note || '',
+  });
 
   // Function to clear title
   const clearTitle = () => {
@@ -201,7 +208,7 @@ export default function NewRecordForm() {
       </Heading>
       <Flex as="footer" p={4} justifyContent="center" alignItems="center">
         <Box>
-          Want to be better toghether.? Join our
+          Want to be better together.? Join our
           <Link
             href="https://line.me/ti/g/uSNjiBPvW_"
             isExternal

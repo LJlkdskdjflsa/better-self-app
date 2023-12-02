@@ -70,7 +70,7 @@ export default function LoginForm() {
           isClosable: true,
         });
         // Redirect to the home page
-        router.push('/');
+        router.push('/new-record');
 
         // Redirect or other post-login logic
       } else {

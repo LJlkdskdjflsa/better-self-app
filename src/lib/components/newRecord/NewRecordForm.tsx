@@ -16,7 +16,6 @@ import {
   Link,
   Box,
 } from '@chakra-ui/react';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { useToken } from '../hooks/useToken';
@@ -37,9 +36,8 @@ interface FormData {
 }
 
 export default function NewRecordForm() {
-  const [token, removeToken] = useToken();
   const toast = useToast();
-  const router = useRouter();
+  const [token] = useToken();
 
   // Set initial form data
   const [formData, setFormData] = useState<FormData>({
@@ -357,20 +355,6 @@ export default function NewRecordForm() {
           </Button>
         </Stack>
       </form>
-
-      {/* Logout Button */}
-      <Button
-        colorScheme="red"
-        mt={4} // Margin top for spacing
-        onClick={() => {
-          if (typeof removeToken === 'function') {
-            removeToken();
-          }
-          router.push('/login');
-        }}
-      >
-        Logout
-      </Button>
     </Container>
   );
 }

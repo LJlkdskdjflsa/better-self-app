@@ -1,4 +1,4 @@
-import type { FetchRecordsResponse, Record } from '../types/recordTypes';
+import type { FetchRecordsResponse, Record } from '../../types/recordTypes';
 
 export async function fetchRecords(
   page: number,

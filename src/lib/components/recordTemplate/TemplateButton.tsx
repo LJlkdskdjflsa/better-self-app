@@ -11,12 +11,7 @@ const TemplateButton: React.FC<TemplateProps> = ({ template }) => {
   const router = useRouter();
 
   const handleClick = () => {
-    // Navigate to the New Record form with template data
-
-    // 1. Save the template data to local storage
     localStorage.setItem('template', JSON.stringify(template));
-
-    // 2. Navigate to the New Record form
     router.push('/new-record');
   };
 
@@ -24,7 +19,7 @@ const TemplateButton: React.FC<TemplateProps> = ({ template }) => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault(); // Prevent the context menu from opening
-    // alert(`Template: ${template.title}`); // Replace with a more sophisticated tooltip if needed
+    // Implement your long press logic here
   };
 
   return (
@@ -33,11 +28,12 @@ const TemplateButton: React.FC<TemplateProps> = ({ template }) => {
       onClick={handleClick}
       onContextMenu={handleLongPress}
       title={template.title}
-      borderRadius="full" // This makes the button round
-      p={6} // Adjust padding as needed
-      // Styling the text
-      fontSize="sm"
+      borderRadius="sm" // Or "0" for sharp corners
+      width="full" // Makes the button full width
+      fontSize="md"
+      height={20} // Adjust height as needed
       fontWeight="bold"
+      p={6} // Adjust padding as needed
     >
       {template.title}
     </Button>

@@ -16,7 +16,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { useToken } from '../hooks/useToken';
-import { fetchRecordById } from '~/lib/services/api';
+import { fetchRecordById } from '~/lib/services/api/record';
 import { formatDateTimeLocal } from '~/utils/timeUtils';
 
 interface FormData {

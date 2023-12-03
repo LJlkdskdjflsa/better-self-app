@@ -20,7 +20,7 @@ import {
   Legend,
 } from 'recharts';
 
-import { fetchRecords } from '~/lib/services/api';
+import { fetchRecords } from '~/lib/services/api/record';
 import type { Record } from '~/lib/types/recordTypes';
 import { getDayDateRange } from '~/utils/timeUtils';
 

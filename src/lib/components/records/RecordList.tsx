@@ -2,7 +2,7 @@ import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import { Box, Text, Flex, Button, Link, Spacer } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 
-import { deleteRecord, fetchRecords } from '~/lib/services/api';
+import { deleteRecord, fetchRecords } from '~/lib/services/api/record';
 import type { Record } from '~/lib/types/recordTypes';
 import {
   formatTimeRange,

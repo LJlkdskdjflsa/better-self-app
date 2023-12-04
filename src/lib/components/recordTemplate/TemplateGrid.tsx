@@ -64,7 +64,7 @@ export const TemplateGrid = () => {
   useEffect(() => {
     const loadTemplates = async () => {
       try {
-        const response = await fetchPersonalTemplates(1, 10); // Example: page 1, size 10
+        const response = await fetchPersonalTemplates(1, 20); // Example: page 1, size 10
         setPersonalTemplates(
           response.data.map((template) => ({
             title: template.default_title,

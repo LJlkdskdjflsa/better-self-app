@@ -24,32 +24,42 @@ import {
   createPersonalTemplate,
   fetchPersonalTemplates,
 } from '~/lib/services/api/recordTemplate';
-import type { RecordTemplate } from '~/lib/types/recordTemplate';
+import type { CreateRecordTemplateRequest } from '~/lib/types/recordTemplate';
 
 import TemplateButton from './TemplateButton';
+import { UpdateTemplateModal } from './UpdateTemplateModal';
 
-const publicTemplates: RecordTemplate[] = [
-  { title: 'Sleep', focus: 2, point: 3, note: null },
-  { title: 'Work', focus: 4, point: 4, note: null },
-  { title: 'Rest', focus: 2, point: 3, note: null },
-  { title: 'Social', focus: 3, point: 2, note: null },
-  { title: 'Traffic', focus: 2, point: 2, note: null },
-  { title: 'Entertainment', focus: 3, point: 2, note: null },
-  { title: 'Exercise', focus: 4, point: 4, note: null },
+const publicTemplates: CreateRecordTemplateRequest[] = [
+  { id: null, title: 'Sleep', focus: 2, point: 3, note: null },
+  { id: null, title: 'Work', focus: 4, point: 4, note: null },
+  { id: null, title: 'Rest', focus: 2, point: 3, note: null },
+  { id: null, title: 'Social', focus: 3, point: 2, note: null },
+  { id: null, title: 'Traffic', focus: 2, point: 2, note: null },
+  { id: null, title: 'Entertainment', focus: 3, point: 2, note: null },
+  { id: null, title: 'Exercise', focus: 4, point: 4, note: null },
 ];
 
 export const TemplateGrid = () => {
-  const [personalTemplates, setPersonalTemplates] = useState<RecordTemplate[]>(
-    []
-  );
+  const [personalTemplates, setPersonalTemplates] = useState<
+    CreateRecordTemplateRequest[]
+  >([]);
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isUpdateOpen, setIsUpdateOpen] = useState(false);
   const [newTemplateData, setNewTemplateData] = useState({
     title: '',
     focus: 0,
     point: 0,
     note: '',
   });
+  const [updatingTemplate, setUpdatingTemplate] =
+    useState<CreateRecordTemplateRequest | null>({
+      id: null,
+      title: '',
+      focus: 0,
+      point: 0,
+      note: '',
+    });
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -61,12 +71,18 @@ export const TemplateGrid = () => {
     });
   };
 
+  const handleUpdateClick = (template: CreateRecordTemplateRequest) => {
+    setUpdatingTemplate(template);
+    setIsUpdateOpen(true);
+  };
+
   useEffect(() => {
     const loadTemplates = async () => {
       try {
-        const response = await fetchPersonalTemplates(1, 20); // Example: page 1, size 10
+        const response = await fetchPersonalTemplates(1, 20); // Example: page 1, size 20
         setPersonalTemplates(
           response.data.map((template) => ({
+            id: template.id,
             title: template.default_title,
             focus: template.default_focus,
             point: template.default_point,
@@ -79,7 +95,7 @@ export const TemplateGrid = () => {
     };
 
     loadTemplates();
-  }, []);
+  }, [updatingTemplate]);
 
   const handleAddTemplate = async () => {
     try {
@@ -112,7 +128,10 @@ export const TemplateGrid = () => {
     <>
       <FoldableSection title="Personal">
         {personalTemplates.map((template) => (
-          <TemplateButton key={template.title} template={template} />
+          <Flex key={template.id}>
+            <TemplateButton template={template} />
+            <Button onClick={() => handleUpdateClick(template)}>Update</Button>
+          </Flex>
         ))}
         <Flex justifyContent="center" mt={4}>
           <Button colorScheme="blue" onClick={onOpen}>
@@ -179,6 +198,11 @@ export const TemplateGrid = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
+      <UpdateTemplateModal
+        isOpen={isUpdateOpen}
+        onClose={() => setIsUpdateOpen(false)}
+        template={updatingTemplate as CreateRecordTemplateRequest}
+      />
     </>
   );
 };

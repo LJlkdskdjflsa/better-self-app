@@ -17,7 +17,7 @@ import {
 import { useEffect, useState } from 'react';
 
 import { useToken } from '../hooks/useToken';
-import type { RecordTemplate } from '~/lib/types/recordTemplate';
+import type { CreateRecordTemplateRequest } from '~/lib/types/recordTemplate';
 import {
   fetchLastEndTime,
   transferLocalTimeToUtcTimestamp,
@@ -50,7 +50,7 @@ export default function NewRecordForm() {
   useEffect(() => {
     // Check if window is defined (i.e., running on client side)
     if (typeof window !== 'undefined') {
-      const templateData: RecordTemplate = JSON.parse(
+      const templateData: CreateRecordTemplateRequest = JSON.parse(
         localStorage.getItem('template') || '{}'
       );
       // Update form data with template if available

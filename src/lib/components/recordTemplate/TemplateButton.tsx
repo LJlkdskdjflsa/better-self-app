@@ -1,10 +1,10 @@
 import { Button } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 
-import type { RecordTemplate } from '~/lib/types/recordTemplate';
+import type { CreateRecordTemplateRequest } from '~/lib/types/recordTemplate';
 
 interface TemplateProps {
-  template: RecordTemplate;
+  template: CreateRecordTemplateRequest;
 }
 
 const TemplateButton: React.FC<TemplateProps> = ({ template }) => {

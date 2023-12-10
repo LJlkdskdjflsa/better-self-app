@@ -1,4 +1,6 @@
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import {
+  Box,
   Button,
   Flex,
   FormControl,
@@ -13,6 +15,7 @@ import {
   ModalOverlay,
   NumberInput,
   NumberInputField,
+  Spacer,
   Textarea,
   useDisclosure,
   useToast,
@@ -150,31 +153,45 @@ export const TemplateGrid = () => {
   return (
     <>
       <FoldableSection title="Personal">
-        {personalTemplates.map((template) => {
-          if (template.id === null) {
-            throw new Error('Template ID cannot be null');
-          }
-          return (
-            <Flex key={template.id}>
+        {personalTemplates.map((template) => (
+          <Box
+            key={template.id}
+            p={4}
+            shadow="md"
+            borderWidth="1px"
+            width="90%"
+            my={2}
+          >
+            <Flex justifyContent="space-between" alignItems="center">
               <TemplateButton template={template} />
-              <Button onClick={() => handleUpdateClick(template)}>
-                Update
+              <Spacer />
+              <Button
+                variant="ghost"
+                colorScheme="blue"
+                mr={2}
+                onClick={() => handleUpdateClick(template)}
+                aria-label="Update template"
+              >
+                <EditIcon />
               </Button>
               <Button
+                variant="ghost"
                 colorScheme="red"
-                onClick={() => template.id && handleDeleteTemplate(template.id)}
+                onClick={() => handleDeleteTemplate(template?.id ?? '')}
+                aria-label="Delete template"
               >
-                Delete Template
+                <DeleteIcon />
               </Button>
             </Flex>
-          );
-        })}
+          </Box>
+        ))}
         <Flex justifyContent="center" mt={4}>
           <Button colorScheme="blue" onClick={onOpen}>
             Add Personal Template
           </Button>
         </Flex>
       </FoldableSection>
+
       <FoldableSection title="Public">
         {publicTemplates.map((template) => (
           <TemplateButton key={template.title} template={template} />

@@ -22,6 +22,7 @@ import { useEffect, useState } from 'react';
 import FoldableSection from '../newRecord/FoldableSection';
 import {
   createPersonalTemplate,
+  deletePersonalTemplate,
   fetchPersonalTemplates,
 } from '~/lib/services/api/recordTemplate';
 import type { CreateRecordTemplateRequest } from '~/lib/types/recordTemplate';
@@ -95,13 +96,12 @@ export const TemplateGrid = () => {
     };
 
     loadTemplates();
-  }, [updatingTemplate]);
+  }, [updatingTemplate, personalTemplates]);
 
   const handleAddTemplate = async () => {
     try {
       const newTemplate = await createPersonalTemplate(newTemplateData);
       setPersonalTemplates([...personalTemplates, newTemplate]);
-
       toast({
         title: 'Template Added',
         description: 'The new personal template has been added successfully.',
@@ -123,16 +123,52 @@ export const TemplateGrid = () => {
       });
     }
   };
+  const handleDeleteTemplate = async (templateId: string) => {
+    try {
+      const result = await deletePersonalTemplate(templateId);
+      setPersonalTemplates(
+        personalTemplates.filter((template) => template.id !== templateId)
+      );
+      toast({
+        title: 'Delete Successful',
+        description: result.message,
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: 'Delete Failed',
+        description: (error as Error).message,
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <>
       <FoldableSection title="Personal">
-        {personalTemplates.map((template) => (
-          <Flex key={template.id}>
-            <TemplateButton template={template} />
-            <Button onClick={() => handleUpdateClick(template)}>Update</Button>
-          </Flex>
-        ))}
+        {personalTemplates.map((template) => {
+          if (template.id === null) {
+            throw new Error('Template ID cannot be null');
+          }
+          return (
+            <Flex key={template.id}>
+              <TemplateButton template={template} />
+              <Button onClick={() => handleUpdateClick(template)}>
+                Update
+              </Button>
+              <Button
+                colorScheme="red"
+                onClick={() => template.id && handleDeleteTemplate(template.id)}
+              >
+                Delete Template
+              </Button>
+            </Flex>
+          );
+        })}
         <Flex justifyContent="center" mt={4}>
           <Button colorScheme="blue" onClick={onOpen}>
             Add Personal Template

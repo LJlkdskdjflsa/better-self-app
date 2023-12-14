@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Widget Example</title>
+    <style>
+        langflow-chat {
+            position: fixed !important;
+            /* Override any existing positioning */
+            bottom: 0 !important;
+            /* Position at the bottom of the page */
+            right: 0 !important;
+            /* Position to the right of the page */
+            z-index: 1000;
+            /* Ensure the chat is above other elements */
+        }
+    </style>
+    <script
+        src="https://cdn.jsdelivr.net/gh/logspace-ai/langflow-embedded-chat@main/dist/build/static/js/bundle.min.js"></script>
+</head>
+
+<body>
+    <langflow-chat window_title="Lang flow test" flow_id="flow_id" chat_inputs='{"input":"asdfasdf"}'
+        chat_input_field="input" host_url="host" api_key="api_key">
+    </langflow-chat>
+</body>
+
+</html>

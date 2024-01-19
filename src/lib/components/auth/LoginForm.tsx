@@ -1,13 +1,12 @@
 import {
   Button,
+  Checkbox,
+  Container,
   FormControl,
   FormLabel,
   Input,
-  Container,
   useToast,
-  Checkbox,
 } from '@chakra-ui/react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -70,7 +69,7 @@ export default function LoginForm() {
           isClosable: true,
         });
         // Redirect to the home page
-        router.push('/new-record');
+        router.push('/dashboard');
 
         // Redirect or other post-login logic
       } else {
@@ -94,7 +93,13 @@ export default function LoginForm() {
   };
 
   return (
-    <Container centerContent>
+    <Container
+      centerContent
+      border="2px"
+      borderColor="gray.200"
+      p={4}
+      boxShadow="md"
+    >
       <form onSubmit={handleSubmit}>
         <FormControl isRequired>
           <FormLabel>Email</FormLabel>
@@ -127,9 +132,9 @@ export default function LoginForm() {
         </Button>
       </form>
 
-      <Link href="/register" style={{ marginTop: '20px' }}>
+      {/* <Link href="/register" style={{ marginTop: '20px' }}>
         Do not have an account? Register here
-      </Link>
+      </Link> */}
     </Container>
   );
 }

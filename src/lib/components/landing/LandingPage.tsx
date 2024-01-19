@@ -37,7 +37,7 @@ export default function BetterSelfLandingPage() {
             bg="blue.400"
             _hover={{ bg: 'blue.500' }}
           >
-            <Link href="/new-record" passHref>
+            <Link href="/dashboard" passHref>
               開始使用
             </Link>
           </Button>

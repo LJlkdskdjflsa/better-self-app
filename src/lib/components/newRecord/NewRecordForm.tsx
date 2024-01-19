@@ -2,17 +2,17 @@ import { CloseIcon } from '@chakra-ui/icons';
 import {
   Button,
   Container,
+  Flex,
   FormControl,
   FormLabel,
   Heading,
   Input,
+  Radio,
+  RadioGroup,
+  Spacer,
   Stack,
   Textarea,
-  RadioGroup,
-  Radio,
   useToast,
-  Flex,
-  Spacer,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
@@ -20,8 +20,8 @@ import { useToken } from '../hooks/useToken';
 import type { CreateRecordTemplateRequest } from '~/lib/types/recordTemplate';
 import {
   fetchLastEndTime,
-  transferLocalTimeToUtcTimestamp,
   getCurrentLocalTime,
+  transferLocalTimeToUtcTimestamp,
 } from '~/utils/timeUtils';
 
 interface FormData {
@@ -216,7 +216,7 @@ export default function NewRecordForm() {
   return (
     <Container maxW="container.md">
       <Heading as="h1" mb={4}>
-        Better Self
+        HR AI
       </Heading>
 
       <form onSubmit={handleSubmit}>

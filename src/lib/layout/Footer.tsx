@@ -5,7 +5,7 @@ const Footer = () => {
     <Flex as="footer" width="full" justifyContent="center">
       {/* <Text fontSize="sm">
         {new Date().getFullYear()} -{' '}
-        Better Self
+        HR AI
       </Text> */}
     </Flex>
   );

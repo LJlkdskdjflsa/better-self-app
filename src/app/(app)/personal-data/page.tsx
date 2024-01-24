@@ -4,13 +4,10 @@ import { Box, Button, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 
 import { useAuth } from '~/lib/components/hooks/useAuth';
-import { useToken } from '~/lib/components/hooks/useToken';
 
 const PersonalDataPage = () => {
   useAuth('/');
   const router = useRouter();
-
-  const [removeToken] = useToken();
 
   return (
     <Box
@@ -27,9 +24,7 @@ const PersonalDataPage = () => {
         colorScheme="red"
         mt={4} // Margin top for spacing
         onClick={() => {
-          if (typeof removeToken === 'function') {
-            removeToken();
-          }
+          localStorage.removeItem('accessToken');
           router.push('/signin');
         }}
       >

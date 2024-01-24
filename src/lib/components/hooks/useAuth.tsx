@@ -5,7 +5,7 @@ export function useAuth(redirectUrl = '/') {
   const router = useRouter();
   const pathname = usePathname();
   const token =
-    typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
 
   useEffect(() => {
     if (!token) {

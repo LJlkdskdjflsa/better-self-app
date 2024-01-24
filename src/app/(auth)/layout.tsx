@@ -1,6 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react';
 
-import AuthNav from '~/lib/layout/AuthNav';
+import AuthNav from '~/lib/layout/auth/AuthNav';
 
 type RootLayoutProps = {
   children: React.ReactNode;

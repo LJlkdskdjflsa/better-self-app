@@ -1,3 +1,5 @@
+'use client';
+
 import { HamburgerIcon, SettingsIcon } from '@chakra-ui/icons';
 import {
   Avatar,
@@ -10,7 +12,9 @@ import {
   MenuItem,
   MenuList,
   Spacer,
+  Text,
 } from '@chakra-ui/react';
+import Link from 'next/link';
 import { CiViewTable } from 'react-icons/ci';
 import { IoMdClipboard, IoMdLogOut } from 'react-icons/io';
 
@@ -19,16 +23,16 @@ const menuItems = [
     label: 'Menu',
     icon: <HamburgerIcon />,
     items: [
-      { label: '招聘版面', icon: <IoMdClipboard /> },
-      { label: '職位管理', icon: <CiViewTable /> },
+      { label: '招聘版面', icon: <IoMdClipboard />, href: '/recruitment' },
+      { label: '職位管理', icon: <CiViewTable />, href: '/job-management' },
     ],
   },
   {
     label: 'Profile',
     icon: <Avatar src="avatar.png" size="sm" />,
     items: [
-      { label: '公司設定', icon: <SettingsIcon /> },
-      { label: '登出', icon: <IoMdLogOut /> },
+      { label: '公司設定', icon: <SettingsIcon />, href: '/company-settings' },
+      { label: '登出', icon: <IoMdLogOut />, href: '/' },
     ],
   },
 ];
@@ -49,9 +53,13 @@ export default function AppNav() {
             />
             <MenuList>
               {menuItem.items.map((item) => (
-                <MenuItem key={item.label} icon={item.icon}>
-                  {item.label}
-                </MenuItem>
+                <Link href={item.href} passHref key={item.label}>
+                  <Flex>
+                    <MenuItem icon={item.icon}>
+                      <Text>{item.label}</Text>
+                    </MenuItem>
+                  </Flex>
+                </Link>
               ))}
             </MenuList>
           </Menu>

@@ -99,6 +99,7 @@ export default function LoginForm() {
       borderColor="gray.200"
       p={4}
       boxShadow="md"
+      mt={300}
     >
       <form onSubmit={handleSubmit}>
         <FormControl isRequired>

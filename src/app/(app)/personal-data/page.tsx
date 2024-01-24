@@ -3,9 +3,11 @@
 import { Box, Button, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 
+import { useAuth } from '~/lib/components/hooks/useAuth';
 import { useToken } from '~/lib/components/hooks/useToken';
 
 const PersonalDataPage = () => {
+  useAuth('/');
   const router = useRouter();
 
   const [removeToken] = useToken();

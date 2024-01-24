@@ -1,9 +1,9 @@
 import {
   Button,
+  Container,
   FormControl,
   FormLabel,
   Input,
-  Container,
   useToast,
 } from '@chakra-ui/react';
 import Link from 'next/link';
@@ -59,7 +59,7 @@ export default function RegisterForm() {
         isClosable: true,
       });
 
-      router.push('/login');
+      router.push('/signin');
     } catch (error) {
       toast({
         title: 'Registration Failed',
@@ -110,8 +110,8 @@ export default function RegisterForm() {
           Register
         </Button>
       </form>
-      <Link href="/login" style={{ marginTop: '20px' }}>
-        Already have an account? Log in here
+      <Link href="/signin" style={{ marginTop: '20px' }}>
+        Already have an account? Sign in here
       </Link>
     </Container>
   );

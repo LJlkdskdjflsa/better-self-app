@@ -10,7 +10,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-export default function LoginForm() {
+export default function SigninForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -49,7 +49,7 @@ export default function LoginForm() {
       );
 
       if (!response.ok) {
-        throw new Error('Login failed');
+        throw new Error('登入失敗');
       }
 
       const data = await response.json();
@@ -62,7 +62,7 @@ export default function LoginForm() {
 
         // Display success toast
         toast({
-          title: 'Login Successful',
+          title: '登入成功',
           description: "You've logged in successfully.",
           status: 'success',
           duration: 5000,
@@ -74,7 +74,7 @@ export default function LoginForm() {
         // Redirect or other post-login logic
       } else {
         toast({
-          title: 'Login Failed',
+          title: '登入失敗',
           status: 'error',
           duration: 9000,
           isClosable: true,
@@ -83,7 +83,7 @@ export default function LoginForm() {
       }
     } catch (error) {
       toast({
-        title: 'Login Failed',
+        title: '登入失敗',
         description: (error as Error).message,
         status: 'error',
         duration: 9000,
@@ -129,7 +129,7 @@ export default function LoginForm() {
           />
         </FormControl>
         <Button mt={4} colorScheme="teal" type="submit">
-          Login
+          登入
         </Button>
       </form>
 

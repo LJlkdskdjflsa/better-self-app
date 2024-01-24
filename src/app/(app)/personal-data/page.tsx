@@ -30,7 +30,7 @@ const PersonalDataPage = () => {
           if (typeof removeToken === 'function') {
             removeToken();
           }
-          router.push('/login');
+          router.push('/signin');
         }}
       >
         Logout

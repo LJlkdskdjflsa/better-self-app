@@ -23,8 +23,8 @@ const menuItems = [
     label: 'Menu',
     icon: <HamburgerIcon />,
     items: [
-      { label: '招聘版面', icon: <IoMdClipboard />, href: '/recruitment' },
-      { label: '職位管理', icon: <CiViewTable />, href: '/job-management' },
+      { label: '招聘版面', icon: <IoMdClipboard />, href: '/dashboard' },
+      { label: '職位管理', icon: <CiViewTable />, href: '/positions' },
     ],
   },
   {

@@ -23,6 +23,14 @@ import { useQuery } from 'react-query';
 
 import { useAuth } from '~/lib/components/hooks/useAuth';
 
+interface Position {
+  id: number;
+  department: string;
+  job_type: string;
+  created_date: string;
+  job: string;
+}
+
 const fetchPositions = async () => {
   // const { token } = useAuth();
   const { data } = await axios.get(
@@ -38,7 +46,10 @@ const fetchPositions = async () => {
 
 const PositionsPage: NextPage = () => {
   useAuth('/');
-  const { data: positions, isLoading } = useQuery('positions', fetchPositions);
+  const { data: positions, isLoading } = useQuery<Position[]>(
+    'positions',
+    fetchPositions
+  );
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -76,12 +87,27 @@ const PositionsPage: NextPage = () => {
         </Flex>
 
         {/* Positions List */}
-        <Box p={5} shadow="md" borderWidth="1px" bg="white" borderRadius="md">
-          {positions.length > 0 ? (
-            positions.map((position) => (
-              <Box key={position.id}>
-                <Text>{position.job}</Text>
-                <Text>{position.responsibilities}</Text>
+        <Box>
+          {/* @ts-expect-error: positions might be undefined */}
+          {positions?.length > 0 ? (
+            positions?.map((position) => (
+              <Box
+                key={position.id}
+                p={4}
+                shadow="md"
+                borderWidth="1px"
+                borderRadius="md"
+                mb={4}
+              >
+                <Text fontSize="xl" fontWeight="bold">
+                  {position.job}
+                </Text>
+                <Text>部門：{position.department}</Text>
+                <Text>形式：{position.job_type}</Text>
+                <Text>
+                  創建日期：
+                  {new Date(position.created_date).toLocaleDateString()}
+                </Text>
               </Box>
             ))
           ) : (

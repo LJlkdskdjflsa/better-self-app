@@ -1,27 +1,27 @@
 'use client';
 
-import {
-  AddIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  SearchIcon,
-} from '@chakra-ui/icons';
+import { AddIcon, ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
   Flex,
   Heading,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Select,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import type { NextPage } from 'next';
 import { useQuery } from 'react-query';
 
 import { useAuth } from '~/lib/components/hooks/useAuth';
+import HookForm from '~/lib/components/positions/AddPositionForm';
 
 interface Position {
   id: number;
@@ -50,6 +50,7 @@ const PositionsPage: NextPage = () => {
     'positions',
     fetchPositions
   );
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -63,13 +64,18 @@ const PositionsPage: NextPage = () => {
           <Heading as="h1" size="xl">
             職位列表
           </Heading>
-          <Button colorScheme="teal" size="md" leftIcon={<AddIcon />}>
+          <Button
+            colorScheme="teal"
+            size="md"
+            onClick={onOpen}
+            leftIcon={<AddIcon />}
+          >
             新增職位
           </Button>
         </Flex>
 
         {/* Search and Filters */}
-        <Flex justifyContent="space-between" mb={6}>
+        {/* <Flex justifyContent="space-between" mb={6}>
           <InputGroup w="300px">
             <InputLeftElement pointerEvents="none">
               <SearchIcon color="gray.300" />
@@ -78,13 +84,11 @@ const PositionsPage: NextPage = () => {
           </InputGroup>
           <Flex>
             <Select placeholder="Department" w="200px" mr={4}>
-              {/* Options here */}
             </Select>
             <Select placeholder="Type" w="200px">
-              {/* Options here */}
             </Select>
           </Flex>
-        </Flex>
+        </Flex> */}
 
         {/* Positions List */}
         <Box>
@@ -128,6 +132,21 @@ const PositionsPage: NextPage = () => {
         </Flex>
 
         {/* Modal - Implement this based on your modal handling logic */}
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>新增職缺</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <HookForm />
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} onClick={onClose}>
+                Close
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
         {/* Modal would typically be another component */}
       </Box>
     </Flex>

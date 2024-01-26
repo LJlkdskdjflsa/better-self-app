@@ -18,6 +18,10 @@ import Link from 'next/link';
 import { CiViewTable } from 'react-icons/ci';
 import { IoMdClipboard, IoMdLogOut } from 'react-icons/io';
 
+const logout = () => {
+  localStorage.removeItem('accessToken');
+};
+
 const menuItems = [
   {
     label: 'Menu',
@@ -32,7 +36,7 @@ const menuItems = [
     icon: <Avatar src="avatar.png" size="sm" />,
     items: [
       { label: '公司設定', icon: <SettingsIcon />, href: '/company-settings' },
-      { label: '登出', icon: <IoMdLogOut />, href: '/' },
+      { label: '登出', icon: <IoMdLogOut />, href: '/', onClick: logout },
     ],
   },
 ];
@@ -55,7 +59,7 @@ export default function AppNav() {
               {menuItem.items.map((item) => (
                 <Link href={item.href} passHref key={item.label}>
                   <Flex>
-                    <MenuItem icon={item.icon}>
+                    <MenuItem icon={item.icon} onClick={item.onClick}>
                       <Text>{item.label}</Text>
                     </MenuItem>
                   </Flex>

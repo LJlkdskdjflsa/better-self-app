@@ -21,15 +21,28 @@ import type { NextPage } from 'next';
 import { useQuery } from 'react-query';
 
 import { useAuth } from '~/lib/components/hooks/useAuth';
-import AddPositionForm from '~/lib/components/positions/AddPositionForm';
+import AddPositionForm from '~/lib/components/positions/CreatePositionForm';
 import PositionCard from '~/lib/components/positions/PositionCard';
 
 interface Position {
   id: number;
-  department: string;
-  job_type: string;
-  created_date: string;
   job: string;
+  job_type: string;
+  department: string;
+  created_date: string;
+  company: {
+    id: number;
+    company: string;
+  };
+  state: {
+    id: number;
+  };
+  country: {
+    id: number;
+  };
+  city: string;
+  responsibilities: string;
+  requirements: string;
 }
 
 const fetchPositions = async () => {
@@ -119,7 +132,7 @@ const PositionsPage: NextPage = () => {
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>新增職缺</ModalHeader>
+            <ModalHeader>新增職位</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <AddPositionForm onClose={onClose} />

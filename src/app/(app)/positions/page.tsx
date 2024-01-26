@@ -21,7 +21,8 @@ import type { NextPage } from 'next';
 import { useQuery } from 'react-query';
 
 import { useAuth } from '~/lib/components/hooks/useAuth';
-import HookForm from '~/lib/components/positions/AddPositionForm';
+import AddPositionForm from '~/lib/components/positions/AddPositionForm';
+import PositionCard from '~/lib/components/positions/PositionCard';
 
 interface Position {
   id: number;
@@ -65,7 +66,7 @@ const PositionsPage: NextPage = () => {
             職位列表
           </Heading>
           <Button
-            colorScheme="teal"
+            colorScheme="blue"
             size="md"
             onClick={onOpen}
             leftIcon={<AddIcon />}
@@ -95,24 +96,7 @@ const PositionsPage: NextPage = () => {
           {/* @ts-expect-error: positions might be undefined */}
           {positions?.length > 0 ? (
             positions?.map((position) => (
-              <Box
-                key={position.id}
-                p={4}
-                shadow="md"
-                borderWidth="1px"
-                borderRadius="md"
-                mb={4}
-              >
-                <Text fontSize="xl" fontWeight="bold">
-                  {position.job}
-                </Text>
-                <Text>部門：{position.department}</Text>
-                <Text>形式：{position.job_type}</Text>
-                <Text>
-                  創建日期：
-                  {new Date(position.created_date).toLocaleDateString()}
-                </Text>
-              </Box>
+              <PositionCard position={position} key={position.id} />
             ))
           ) : (
             <Text>No positions found based on your criteria!</Text>
@@ -138,13 +122,9 @@ const PositionsPage: NextPage = () => {
             <ModalHeader>新增職缺</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <HookForm />
+              <AddPositionForm onClose={onClose} />
             </ModalBody>
-            <ModalFooter>
-              <Button colorScheme="blue" mr={3} onClick={onClose}>
-                Close
-              </Button>
-            </ModalFooter>
+            <ModalFooter />
           </ModalContent>
         </Modal>
         {/* Modal would typically be another component */}

@@ -42,11 +42,20 @@ const mockApplicants: ApplicantModel[] = [
 ];
 
 function Column({ column }: { column: ColumnType }) {
-  const ColumnApplicants = mockApplicants.map((applicant, index) => {
-    return (
-      <ApplicantCard key={applicant.id} index={index} applicant={applicant} />
-    );
-  });
+  const ColumnApplicants = mockApplicants.map(
+    (
+      applicant
+      // index
+    ) => {
+      return (
+        <ApplicantCard
+          key={applicant.id}
+          // index={index}
+          applicant={applicant}
+        />
+      );
+    }
+  );
 
   return (
     <Box>

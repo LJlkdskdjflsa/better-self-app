@@ -1,26 +1,41 @@
 'use client';
 
-import { Box, Container, Heading, SimpleGrid } from '@chakra-ui/react';
+import {} from '@chakra-ui/icons';
+import { Container, Heading, SimpleGrid } from '@chakra-ui/react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import Column from '~/lib/components/dashboard/Column';
-import { useAuth } from '~/lib/components/hooks/useAuth';
-import { ColumnType } from '~/utils/enumUtils';
+import Column from '~/lib/components/dashboard/copied/ColumnNew';
+import { ColumnType } from '~/lib/components/dashboard/copied/enums';
 
-export default function Kanban() {
-  useAuth('/');
-
+function App() {
   return (
-    <Box>
-      <Heading>Dashboard</Heading>
-      <Container maxWidth="container.lg" px={4} py={10}>
-        <SimpleGrid columns={{ base: 1, md: 5 }} spacing={{ base: 16, md: 4 }}>
-          <Column column={ColumnType.RESUME_COLLECTION} />
-          <Column column={ColumnType.RESUME_VERIFIED} />
-          <Column column={ColumnType.PHONE_INTERVIEW} />
-          <Column column={ColumnType.ON_SITE_INTERVIEW} />
-          <Column column={ColumnType.OFFER} />
-        </SimpleGrid>
-      </Container>
-    </Box>
+    <main>
+      <Heading
+        fontSize={{ base: '4xl', sm: '5xl', md: '6xl' }}
+        fontWeight="bold"
+        textAlign="center"
+        bgGradient="linear(to-l, #7928CA, #FF0080)"
+        bgClip="text"
+        mt={4}
+      >
+        Welcome to DnD Kanban
+      </Heading>
+      <DndProvider backend={HTML5Backend}>
+        <Container maxWidth="container.lg" px={4} py={10}>
+          <SimpleGrid
+            columns={{ base: 1, md: 4 }}
+            spacing={{ base: 16, md: 4 }}
+          >
+            <Column column={ColumnType.TO_DO} />
+            <Column column={ColumnType.IN_PROGRESS} />
+            <Column column={ColumnType.BLOCKED} />
+            <Column column={ColumnType.COMPLETED} />
+          </SimpleGrid>
+        </Container>
+      </DndProvider>
+    </main>
   );
 }
+
+export default App;

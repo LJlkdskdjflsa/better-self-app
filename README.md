@@ -1,8 +1,8 @@
-# Better Self
+# HR AI
 
 ## About
 
-Better Self is a web app that helps you to be a better person. It's a simple app that helps you to track your daily habits and goals. You can also track your mood and journal your thoughts.
+HR AI is a web app that helps you to be a better person. It's a simple app that helps you to track your daily habits and goals. You can also track your mood and journal your thoughts.
 Now we first want to use PWA to support mobile because we want to make it easy for you to track your daily habits and goals, mob
 
 ## Pre-requisites

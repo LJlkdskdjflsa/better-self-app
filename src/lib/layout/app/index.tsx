@@ -1,9 +1,9 @@
 'use client';
 
+import { Box, Flex } from '@chakra-ui/react';
 import type { ReactNode } from 'react';
 
-import AppFooter from './AppFooter';
-import AppHeader from './AppHeader';
+import AppNav from './AppNav';
 
 type LayoutProps = {
   children: ReactNode;
@@ -11,11 +11,12 @@ type LayoutProps = {
 
 const AppLayout = ({ children }: LayoutProps) => {
   return (
-    <>
-      <AppHeader />
-      {children}
-      <AppFooter />
-    </>
+    <Flex direction="column" minH="100vh">
+      <AppNav />
+      <Box flex="1" w="100%" bg="gray.100">
+        {children}
+      </Box>
+    </Flex>
   );
 };
 

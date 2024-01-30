@@ -1,10 +1,10 @@
 import {
-  Flex,
+  Button,
   Container,
+  Flex,
   Heading,
   Stack,
   Text,
-  Button,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 
@@ -24,16 +24,10 @@ export default function BetterSelfLandingPage() {
           fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
           lineHeight="110%"
         >
-          Unlock Your Productivity{' '}
-          <Text as="span" color="blue.400">
-            with AI
-          </Text>
+          用 AI 解鎖人才探索的潛能
         </Heading>
         <Text color="gray.500" maxW="3xl">
-          Better Self transforms how you track your time and analyze your
-          productivity. Customizable data collection – mood, focus, posture,
-          location – all in your pocket. Discover patterns and insights with AI
-          to truly understand yourself.
+          開始使用 HR AI，讓你的人才探索更有效率
         </Text>
         <Stack spacing={6} direction="row">
           <Button
@@ -43,8 +37,8 @@ export default function BetterSelfLandingPage() {
             bg="blue.400"
             _hover={{ bg: 'blue.500' }}
           >
-            <Link href="/new-record" passHref>
-              Get started
+            <Link href="/dashboard" passHref>
+              開始使用
             </Link>
           </Button>
           {/* <Button rounded="full" px={6}>

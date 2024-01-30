@@ -32,6 +32,9 @@ dependencies:
   '@syncfusion/ej2-react-kanban':
     specifier: ^24.1.46
     version: 24.1.46(typescript@5.2.2)
+  '@types/lodash':
+    specifier: ^4.14.202
+    version: 4.14.202
   '@vercel/analytics':
     specifier: ^1.1.1
     version: 1.1.1
@@ -47,6 +50,9 @@ dependencies:
   loadash:
     specifier: ^1.0.0
     version: 1.0.0
+  lodash:
+    specifier: ^4.17.21
+    version: 4.17.21
   next:
     specifier: ^14.0.1
     version: 14.0.1(@babel/core@7.23.2)(react-dom@18.2.0)(react@18.2.0)
@@ -130,6 +136,9 @@ devDependencies:
   '@types/react':
     specifier: ^18.2.37
     version: 18.2.37
+  '@types/uuid':
+    specifier: ^9.0.8
+    version: 9.0.8
   commitizen:
     specifier: ^4.3.0
     version: 4.3.0(typescript@5.2.2)
@@ -3898,11 +3907,11 @@ packages:
   /@types/lodash.mergewith@4.6.7:
     resolution: {integrity: sha512-3m+lkO5CLRRYU0fhGRp7zbsGi6+BZj0uTVSwvcKU+nSlhjA9/QRNfuSGnD2mX6hQA7ZbmcCkzk5h4ZYGOtk14A==}
     dependencies:
-      '@types/lodash': 4.14.199
+      '@types/lodash': 4.14.202
     dev: false
 
-  /@types/lodash@4.14.199:
-    resolution: {integrity: sha512-Vrjz5N5Ia4SEzWWgIVwnHNEnb1UE1XMkvY5DGXrAeOGE9imk0hgTHh5GyDjLDJi9OTCn9oo9dXH1uToK1VRfrg==}
+  /@types/lodash@4.14.202:
+    resolution: {integrity: sha512-OvlIYQK9tNneDlS0VN54LLd5uiPCBOp7gS5Z0f1mjoJYBrtStzgmJBxONW3U6OZqdtNzZPmn9BS/7WI7BFFcFQ==}
     dev: false
 
   /@types/minimatch@5.1.2:
@@ -3977,6 +3986,10 @@ packages:
   /@types/use-sync-external-store@0.0.3:
     resolution: {integrity: sha512-EwmlvuaxPNej9+T4v5AuBPJa2x2UOJVdjCtDHgcDqitUeOtjnJKJ+apYjVcAoBEMjKW1VVFGZLUb5+qqa09XFA==}
     dev: false
+
+  /@types/uuid@9.0.8:
+    resolution: {integrity: sha512-jg+97EGIcY9AGHJJRaaPVgetKDsrTgbRjQ5Msgjh/DQKEFl0DtyRr/VCOyD1T2R1MNeWPK/u7JoGhlDZnKBAfA==}
+    dev: true
 
   /@types/yargs-parser@21.0.3:
     resolution: {integrity: sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ==}

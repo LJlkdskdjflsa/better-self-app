@@ -5,8 +5,8 @@ import { Container, Heading, SimpleGrid } from '@chakra-ui/react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import Column from '~/lib/components/dashboard/copied/ColumnNew';
-import { ColumnType } from '~/lib/components/dashboard/copied/enums';
+import Column from '~/lib/components/dashboard/ColumnNew';
+import { ColumnType } from '~/lib/components/dashboard/enums';
 
 function App() {
   return (

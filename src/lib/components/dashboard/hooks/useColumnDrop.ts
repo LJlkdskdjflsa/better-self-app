@@ -8,9 +8,12 @@ function useColumnDrop(
   column: string,
   handleDrop: (fromColumn: string, taskId: ApplicantModelNew['id']) => void
 ) {
+  // console.log(column);
   const [{ isOver }, dropRef] = useDrop<DragItem, void, { isOver: boolean }>({
     accept: ItemType.APPLICANT,
     drop: (dragItem) => {
+      // console.log('dragItem');
+      // console.log(dragItem);
       if (!dragItem || dragItem.from === column) {
         return;
       }

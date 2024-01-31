@@ -1,11 +1,10 @@
 'use client';
 
 import { DeleteIcon } from '@chakra-ui/icons';
-import { Box, IconButton, ScaleFade } from '@chakra-ui/react';
+import { Box, IconButton, ScaleFade, Text } from '@chakra-ui/react';
 import _ from 'lodash';
 import { memo } from 'react';
 
-import { AutoResizeTextarea } from './AutoResizeTextarea';
 import { useTaskDragAndDrop } from './hooks/useTaskDragAndDrop';
 import type { ApplicantModelNew } from './model';
 
@@ -70,19 +69,22 @@ function ApplicantCard({
           }}
           onClick={handleDeleteClick}
         />
-        <AutoResizeTextarea
-          value={task.first_name}
+        <Text
           fontWeight="semibold"
           cursor="inherit"
           border="none"
           p={0}
           resize="none"
-          minH={70}
-          maxH={200}
-          focusBorderColor="none"
+          // minH={70}
+          // maxH={200}
           color="gray.700"
           // onChange={handleTitleChange}
-        />
+        >
+          {task.first_name}
+        </Text>
+        <Text color="gray.400" fontSize="sm">
+          {task.position.job}
+        </Text>
       </Box>
     </ScaleFade>
   );

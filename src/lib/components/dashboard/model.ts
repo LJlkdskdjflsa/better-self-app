@@ -66,7 +66,26 @@ interface ApiResponse {
   error_message: string;
   data: ApplicantModelNew[];
 }
+interface ApplicantStatus {
+  id: number;
+  value: string;
+  icon: null | string;
+  pos: number;
+  rejectable: boolean;
+  default: boolean;
+}
+
+interface ColumnType {
+  id: number;
+  value: string;
+}
 
 interface ApplicantBoardModel extends Record<string, ApplicantModelNew[]> {}
 // export all
-export type { ApiResponse, ApplicantBoardModel, ApplicantModelNew };
+export type {
+  ApiResponse,
+  ApplicantBoardModel,
+  ApplicantModelNew,
+  ApplicantStatus,
+  ColumnType,
+};

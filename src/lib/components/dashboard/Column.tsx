@@ -24,7 +24,7 @@ import type { ApplicantModelNew } from './model';
 //   Completed: 'green',
 // };
 
-function Column({ column }: { column: string }) {
+function Column({ column }: { column: ColumnType }) {
   const {
     tasks,
     addEmptyTask,
@@ -34,7 +34,7 @@ function Column({ column }: { column: string }) {
     // updateTask,
   } = useColumnApplicants(column);
 
-  const { dropRef, isOver } = useColumnDrop(column, dropTaskFrom);
+  const { dropRef, isOver } = useColumnDrop(column.value, dropTaskFrom);
 
   const safeTasks = tasks || [];
 
@@ -60,7 +60,7 @@ function Column({ column }: { column: string }) {
           rounded="lg"
           // colorScheme={ColumnColorScheme[column]}
         >
-          {column}
+          {column.value}
         </Badge>
       </Heading>
       <IconButton

@@ -5,6 +5,21 @@ import { useDrag, useDrop } from 'react-dnd';
 import { ItemType } from './enums';
 import type { DragItem, TaskModel } from './models';
 
+/**
+ * Custom React Hook for handling drag and drop of tasks.
+ *
+ * @template T - The type of HTML element to which this hook will be attached.
+ *
+ * @param {Object} params - The parameters for the hook.
+ * @param {TaskModel} params.task - The task that can be dragged and dropped.
+ * @param {number} params.index - The index of the task in its current column.
+ * @param {(i: number, j: number) => void} handleDropHover - The function to be called when a dragged task is hovering over a droppable area.
+ *
+ * @returns {Array} An array containing:
+ * - `isDragging`: A boolean indicating whether the task is currently being dragged.
+ * - `drag`: A connector function to be used with the `drag` source.
+ * - `drop`: A connector function to be used with the `drop` target.
+ */
 export function useTaskDragAndDrop<T extends HTMLElement>(
   { task, index }: { task: TaskModel; index: number },
   handleDropHover: (i: number, j: number) => void

@@ -1,61 +1,49 @@
+'use client';
+
 import { AddIcon } from '@chakra-ui/icons';
-import { Badge, Box, Heading, IconButton, Stack } from '@chakra-ui/react';
+import {
+  Badge,
+  Box,
+  Heading,
+  IconButton,
+  Stack,
+  useColorModeValue,
+} from '@chakra-ui/react';
 
-import { ColumnType } from '~/utils/enumUtils';
-import type { ApplicantModel } from '~/utils/models';
-
-import ApplicantCard from './ApplicantCard';
+import type { ColumnType } from './enums';
+import Task from './Task';
+import useColumnDrop from './useColumnDrop';
+import useColumnTApplicants from './useColumnTApplicants';
 
 const ColumnColorScheme: Record<ColumnType, string> = {
-  履歷收集: 'gray',
-  履歷審核: 'red',
-  電話面試: 'orange',
-  現場面試: 'yellow',
-  錄取通知: 'green',
+  Todo: 'gray',
+  'In Progress': 'blue',
+  Blocked: 'red',
+  Completed: 'green',
 };
 
-const mockApplicants: ApplicantModel[] = [
-  {
-    id: '1',
-    name: 'John Doe',
-    column: ColumnType.RESUME_COLLECTION,
-    color: 'red',
-  },
-  {
-    id: '2',
-    name: 'Jane ssDoe',
-    column: ColumnType.RESUME_COLLECTION,
-    color: 'gray',
-  },
-  {
-    id: '3',
-    name: 'John sss',
-    column: ColumnType.RESUME_COLLECTION,
-    color: 'gray',
-  },
-  {
-    id: '4',
-    name: 'Jane Smit1h',
-    column: ColumnType.RESUME_COLLECTION,
-    color: 'gray',
-  },
-];
-
 function Column({ column }: { column: ColumnType }) {
-  const ColumnApplicants = mockApplicants.map(
-    (
-      applicant
-      // index
-    ) => {
-      return (
-        <ApplicantCard
-          key={applicant.id}
-          // index={index}
-          applicant={applicant}
-        />
-      );
-    }
-  );
+  const {
+    tasks,
+    addEmptyTask,
+    deleteTask,
+    dropTaskFrom,
+    swapTasks,
+    updateTask,
+  } = useColumnTApplicants(column);
+
+  const { dropRef, isOver } = useColumnDrop(column, dropTaskFrom);
+
+  const ColumnTasks = tasks.map((task, index) => (
+    <Task
+      key={task.id}
+      task={task}
+      index={index}
+      onDropHover={swapTasks}
+      onUpdate={updateTask}
+      onDelete={deleteTask}
+    />
+  ));
 
   return (
     <Box>
@@ -72,24 +60,30 @@ function Column({ column }: { column: ColumnType }) {
       <IconButton
         size="xs"
         w="full"
-        color="gray.500"
-        bgColor="gray.100"
-        _hover={{ bgColor: 'gray.200' }}
-        aria-label="Add applicant"
+        color={useColorModeValue('gray.500', 'gray.400')}
+        bgColor={useColorModeValue('gray.100', 'gray.700')}
+        _hover={{ bgColor: useColorModeValue('gray.200', 'gray.600') }}
+        py={2}
+        variant="solid"
+        onClick={addEmptyTask}
+        colorScheme="black"
+        aria-label="add-task"
         icon={<AddIcon />}
       />
       <Stack
+        ref={dropRef}
         direction={{ base: 'row', md: 'column' }}
         h={{ base: 300, md: 600 }}
         p={4}
         mt={2}
         spacing={4}
-        bgColor="gray.50"
+        bgColor={useColorModeValue('gray.50', 'gray.900')}
         rounded="lg"
         boxShadow="md"
         overflow="auto"
+        opacity={isOver ? 0.85 : 1}
       >
-        {ColumnApplicants}
+        {ColumnTasks}
       </Stack>
     </Box>
   );

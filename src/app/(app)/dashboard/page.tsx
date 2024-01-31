@@ -1,7 +1,7 @@
 'use client';
 
 import {} from '@chakra-ui/icons';
-import { Container, Heading, SimpleGrid } from '@chakra-ui/react';
+import { Container, SimpleGrid } from '@chakra-ui/react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
@@ -11,16 +11,6 @@ import { ColumnType } from '~/lib/components/dashboard/utils/enums';
 function App() {
   return (
     <main>
-      <Heading
-        fontSize={{ base: '4xl', sm: '5xl', md: '6xl' }}
-        fontWeight="bold"
-        textAlign="center"
-        bgGradient="linear(to-l, #7928CA, #FF0080)"
-        bgClip="text"
-        mt={4}
-      >
-        Welcome to DnD Kanban
-      </Heading>
       <DndProvider backend={HTML5Backend}>
         <Container maxWidth="container.lg" px={4} py={10}>
           <SimpleGrid

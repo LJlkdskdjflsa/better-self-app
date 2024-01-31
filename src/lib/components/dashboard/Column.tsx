@@ -13,17 +13,16 @@ import {
 import ApplicantCard from './ApplicantCard';
 import useColumnApplicants from './hooks/useColumnApplicants';
 import useColumnDrop from './hooks/useColumnDrop';
-import type { ColumnType } from './utils/enums';
 import type { ApplicantModel } from './utils/models';
 
-const ColumnColorScheme: Record<ColumnType, string> = {
-  Todo: 'gray',
-  'In Progress': 'blue',
-  Blocked: 'red',
-  Completed: 'green',
-};
+// const ColumnColorScheme: Record<ColumnType, string> = {
+//   Todo: 'gray',
+//   'In Progress': 'blue',
+//   Blocked: 'red',
+//   Completed: 'green',
+// };
 
-function Column({ column }: { column: ColumnType }) {
+function Column({ column }: { column: string }) {
   const {
     tasks,
     addEmptyTask,
@@ -53,7 +52,7 @@ function Column({ column }: { column: ColumnType }) {
           px={2}
           py={1}
           rounded="lg"
-          colorScheme={ColumnColorScheme[column]}
+          // colorScheme={ColumnColorScheme[column]}
         >
           {column}
         </Badge>

@@ -6,9 +6,10 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import Column from '~/lib/components/dashboard/Column';
-import { ColumnType } from '~/lib/components/dashboard/utils/enums';
 
 function App() {
+  const columnType = ['Todo', 'In Progress', 'Blocked', 'Completed'];
+
   return (
     <main>
       <DndProvider backend={HTML5Backend}>
@@ -17,10 +18,9 @@ function App() {
             columns={{ base: 1, md: 4 }}
             spacing={{ base: 16, md: 4 }}
           >
-            <Column column={ColumnType.TO_DO} />
-            <Column column={ColumnType.IN_PROGRESS} />
-            <Column column={ColumnType.BLOCKED} />
-            <Column column={ColumnType.COMPLETED} />
+            {columnType.map((type) => (
+              <Column key={type} column={type} />
+            ))}
           </SimpleGrid>
         </Container>
       </DndProvider>

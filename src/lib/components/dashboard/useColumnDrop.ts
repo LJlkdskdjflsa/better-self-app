@@ -2,14 +2,14 @@ import { useDrop } from 'react-dnd';
 
 import type { ColumnType } from './enums';
 import { ItemType } from './enums';
-import type { DragItem, TaskModel } from './models';
+import type { ApplicantModel, DragItem } from './models';
 
 function useColumnDrop(
   column: ColumnType,
-  handleDrop: (fromColumn: ColumnType, taskId: TaskModel['id']) => void
+  handleDrop: (fromColumn: ColumnType, taskId: ApplicantModel['id']) => void
 ) {
   const [{ isOver }, dropRef] = useDrop<DragItem, void, { isOver: boolean }>({
-    accept: ItemType.TASK,
+    accept: ItemType.APPLICANT,
     drop: (dragItem) => {
       if (!dragItem || dragItem.from === column) {
         return;

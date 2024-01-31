@@ -2,11 +2,11 @@ import { useLocalStorage } from 'usehooks-ts';
 import { v4 as uuidv4 } from 'uuid';
 
 import { ColumnType } from './enums';
-import type { TaskModel } from './models';
+import type { ApplicantModel } from './models';
 
-function useTaskCollection() {
+function useApplicantCollection() {
   return useLocalStorage<{
-    [key in ColumnType]: TaskModel[];
+    [key in ColumnType]: ApplicantModel[];
   }>('tasks', {
     Todo: [
       {
@@ -43,4 +43,4 @@ function useTaskCollection() {
   });
 }
 
-export default useTaskCollection;
+export default useApplicantCollection;

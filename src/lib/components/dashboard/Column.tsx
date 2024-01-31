@@ -10,10 +10,10 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 
+import ApplicantCard from './ApplicantCard';
 import type { ColumnType } from './enums';
-import Task from './Task';
+import useColumnApplicants from './useColumnApplicants';
 import useColumnDrop from './useColumnDrop';
-import useColumnTApplicants from './useColumnTApplicants';
 
 const ColumnColorScheme: Record<ColumnType, string> = {
   Todo: 'gray',
@@ -30,12 +30,12 @@ function Column({ column }: { column: ColumnType }) {
     dropTaskFrom,
     swapTasks,
     updateTask,
-  } = useColumnTApplicants(column);
+  } = useColumnApplicants(column);
 
   const { dropRef, isOver } = useColumnDrop(column, dropTaskFrom);
 
   const ColumnTasks = tasks.map((task, index) => (
-    <Task
+    <ApplicantCard
       key={task.id}
       task={task}
       index={index}

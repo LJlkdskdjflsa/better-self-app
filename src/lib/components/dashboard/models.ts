@@ -1,6 +1,6 @@
 import type { ColumnType } from './enums';
 
-export interface TaskModel {
+export interface ApplicantModel {
   id: string;
   title: string;
   column: ColumnType;
@@ -9,6 +9,6 @@ export interface TaskModel {
 
 export interface DragItem {
   index: number;
-  id: TaskModel['id'];
+  id: ApplicantModel['id'];
   from: ColumnType;
 }

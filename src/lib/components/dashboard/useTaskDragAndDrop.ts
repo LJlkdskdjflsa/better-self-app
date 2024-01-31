@@ -3,7 +3,7 @@ import type { XYCoord } from 'react-dnd';
 import { useDrag, useDrop } from 'react-dnd';
 
 import { ItemType } from './enums';
-import type { DragItem, TaskModel } from './models';
+import type { ApplicantModel, DragItem } from './models';
 
 /**
  * Custom React Hook for handling drag and drop of tasks.
@@ -11,7 +11,7 @@ import type { DragItem, TaskModel } from './models';
  * @template T - The type of HTML element to which this hook will be attached.
  *
  * @param {Object} params - The parameters for the hook.
- * @param {TaskModel} params.task - The task that can be dragged and dropped.
+ * @param {ApplicantModel} params.task - The task that can be dragged and dropped.
  * @param {number} params.index - The index of the task in its current column.
  * @param {(i: number, j: number) => void} handleDropHover - The function to be called when a dragged task is hovering over a droppable area.
  *
@@ -21,7 +21,7 @@ import type { DragItem, TaskModel } from './models';
  * - `drop`: A connector function to be used with the `drop` target.
  */
 export function useTaskDragAndDrop<T extends HTMLElement>(
-  { task, index }: { task: TaskModel; index: number },
+  { task, index }: { task: ApplicantModel; index: number },
   handleDropHover: (i: number, j: number) => void
 ) {
   const ref = useRef<T>(null);
@@ -32,14 +32,14 @@ export function useTaskDragAndDrop<T extends HTMLElement>(
     { isDragging: boolean }
   >({
     item: { from: task.column, id: task.id, index },
-    type: ItemType.TASK,
+    type: ItemType.APPLICANT,
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
 
   const [, drop] = useDrop<DragItem, void, unknown>({
-    accept: ItemType.TASK,
+    accept: ItemType.APPLICANT,
     hover: (item, monitor) => {
       if (!ref.current) {
         return;

@@ -4,13 +4,13 @@ import { v4 as uuidv4 } from 'uuid';
 import type { ColumnType } from './enums';
 import { swap } from './helpers';
 import { debug } from './logging';
-import type { TaskModel } from './models';
-import useTaskCollection from './useTaskCollection';
+import type { ApplicantModel } from './models';
+import useApplicantCollection from './useApplicantCollection';
 
 const MAX_TASK_PER_COLUMN = 100;
 
-function useColumnTApplicants(column: ColumnType) {
-  const [tasks, setTasks] = useTaskCollection();
+function useColumnApplicants(column: ColumnType) {
+  const [tasks, setTasks] = useApplicantCollection();
 
   // const columnTasks = tasks[column];
 
@@ -24,7 +24,7 @@ function useColumnTApplicants(column: ColumnType) {
         return allTasks;
       }
 
-      const newColumnTask: TaskModel = {
+      const newColumnTask: ApplicantModel = {
         id: uuidv4(),
         title: `New ${column} task`,
         // color: pickChakraRandomColor('.300'),
@@ -40,7 +40,7 @@ function useColumnTApplicants(column: ColumnType) {
   }, [column, setTasks]);
 
   const deleteTask = useCallback(
-    (id: TaskModel['id']) => {
+    (id: ApplicantModel['id']) => {
       debug(`Removing task ${id}..`);
       setTasks((allTasks) => {
         const columnTasks = allTasks[column];
@@ -54,7 +54,10 @@ function useColumnTApplicants(column: ColumnType) {
   );
 
   const updateTask = useCallback(
-    (id: TaskModel['id'], updatedTask: Omit<Partial<TaskModel>, 'id'>) => {
+    (
+      id: ApplicantModel['id'],
+      updatedTask: Omit<Partial<ApplicantModel>, 'id'>
+    ) => {
       debug(`Updating task ${id} with ${JSON.stringify(updateTask)}`);
       setTasks((allTasks) => {
         const columnTasks = allTasks[column];
@@ -70,7 +73,7 @@ function useColumnTApplicants(column: ColumnType) {
   );
 
   const dropTaskFrom = useCallback(
-    (from: ColumnType, id: TaskModel['id']) => {
+    (from: ColumnType, id: ApplicantModel['id']) => {
       setTasks((allTasks) => {
         const fromColumnTasks = allTasks[from];
         const toColumnTasks = allTasks[column];
@@ -117,4 +120,4 @@ function useColumnTApplicants(column: ColumnType) {
   };
 }
 
-export default useColumnTApplicants;
+export default useColumnApplicants;

@@ -24,20 +24,14 @@ import {
   Stack,
   useColorModeValue,
   useDisclosure,
-  useToast,
 } from '@chakra-ui/react';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import ApplicantCard from './ApplicantCard';
 import useColumnApplicants from './hooks/useColumnApplicants';
 import useColumnDrop from './hooks/useColumnDrop';
+import usePositions from './hooks/usePosition';
 import type { ApplicantModelNew, ColumnType } from './model';
-
-interface Job {
-  id: number;
-  job: string;
-}
 
 function Column({ column }: { column: ColumnType }) {
   const {
@@ -52,35 +46,8 @@ function Column({ column }: { column: ColumnType }) {
   const { dropRef, isOver } = useColumnDrop(column.value, dropTaskFrom);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [applicant, setApplicant] = useState({ name: '', position: 1 });
-  const [positions, setPositions] = useState<Job[]>([]);
-  const toast = useToast();
-
-  useEffect(() => {
-    const fetchPositions = async () => {
-      try {
-        const response = await axios.get(
-          'http://127.0.0.1:8001/api/positions/company',
-          {
-            headers: {
-              Authorization: 'Bearer AFG9JxtaRz79cjLZnhuz406uypiae6',
-            },
-          }
-        );
-        setPositions(response.data.data);
-      } catch (error) {
-        toast({
-          title: '錯誤',
-          description: '無法獲取職位數據',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-          position: 'top',
-        });
-      }
-    };
-
-    fetchPositions();
-  }, [toast]);
+  // const [positions, setPositions] = useState<Job[]>([]);
+  const positions = usePositions();
 
   const safeTasks = tasks || [];
 

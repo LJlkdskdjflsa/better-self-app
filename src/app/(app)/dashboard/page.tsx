@@ -37,8 +37,8 @@ function App() {
       <DndProvider backend={HTML5Backend}>
         <Container maxWidth="container.lg" px={4} py={10}>
           <SimpleGrid
-            columns={{ base: 1, md: 4 }}
-            spacing={{ base: 16, md: 4 }}
+            columns={{ base: 1, md: 5 }}
+            spacing={{ base: 16, md: 5 }}
           >
             {columnType.map((type) => (
               <Column key={type} column={type} />

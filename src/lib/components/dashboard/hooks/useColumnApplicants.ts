@@ -1,3 +1,5 @@
+/* eslint-disable sonarjs/no-duplicate-string, react-hooks/exhaustive-deps */
+
 import { useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { useCallback } from 'react';
@@ -13,13 +15,11 @@ import { debug } from '../utils/logging';
 
 function useColumnApplicants(column: ColumnType) {
   const toast = useToast();
+  const POSITION_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/positionapps/`;
   const fetchTasks = async () => {
-    const response = await axios.get(
-      'http://127.0.0.1:8001/api/positionapps/',
-      {
-        headers: { Authorization: 'Bearer AFG9JxtaRz79cjLZnhuz406uypiae6' },
-      }
-    );
+    const response = await axios.get(POSITION_URL, {
+      headers: { Authorization: 'Bearer AFG9JxtaRz79cjLZnhuz406uypiae6' },
+    });
     if (response.data.success) {
       return formatData(response.data.data);
     }
@@ -42,42 +42,71 @@ function useColumnApplicants(column: ColumnType) {
     },
   });
 
-  const addEmptyTask = useCallback(() => {
-    debug(`Adding new empty task to ${column.value} column`);
-    // setTasks((allTasks) => {
-    //   // const columnTasks = allTasks[column];
-    //   const columnTasks = allTasks[column.value as keyof typeof allTasks];
+  const addNewTask = async (
+    applicant: {
+      name: string;
+      position: number;
+    },
+    afterCreate: () => void
+  ): Promise<void> => {
+    try {
+      await axios.post(
+        POSITION_URL,
+        {
+          position_id: applicant.position,
+          status_id: column.id,
+          first_name: applicant.name,
+          last_name: '',
+          company: 'Fuhai',
+          application_date: '2024-01-13',
+          source: 'N/A',
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer AFG9JxtaRz79cjLZnhuz406uypiae6',
+          },
+        }
+      );
+      refetch();
+      afterCreate();
+    } catch (error) {
+      toast({
+        title: '創建失敗',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      });
+    }
+  };
 
-    //   if (columnTasks.length > MAX_TASK_PER_COLUMN) {
-    //     debug('Too many task!');
-    //     return allTasks;
-    //   }
-
-    //   const newColumnTask: ApplicantModelNew = {
-    //     id: uuidv4(),
-    //     title: `New ${column.value} task`,
-    //     // color: pickChakraRandomColor('.300'),
-    //     color: 'gray.300',
-    //     column: column.value,
-    //   };
-
-    //   return {
-    //     ...allTasks,
-    //     [column.value]: [newColumnTask, ...columnTasks],
-    //   };
-    // });
-  }, [column]);
-
-  const deleteTask = useCallback((id: ApplicantModelNew['id']) => {
-    debug(`Removing task ${id}..`);
-    // setTasks((allTasks) => {
-    //   const columnTasks = allTasks[column.value as keyof typeof allTasks];
-    //   return {
-    //     ...allTasks,
-    //     [column.value]: columnTasks.filter((task) => task.id !== id),
-    //   };
-    // });
-  }, []);
+  const deleteTask = useCallback(
+    async (id: ApplicantModelNew['id']) => {
+      debug(`Removing task ${id}..`);
+      try {
+        await axios.delete(POSITION_URL, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer AFG9JxtaRz79cjLZnhuz406uypiae6',
+          },
+          data: {
+            jobapp_id: id,
+          },
+        });
+        refetch();
+      } catch (error) {
+        toast({
+          title: '刪除失敗',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+        });
+      }
+    },
+    [refetch, toast]
+  );
 
   const updateTask = useCallback(
     (
@@ -102,7 +131,7 @@ function useColumnApplicants(column: ColumnType) {
     async (fromColumn: string, id: ApplicantModelNew['id']) => {
       try {
         await axios.put(
-          'http://127.0.0.1:8001/api/positionapps/',
+          POSITION_URL,
           {
             jobapp_id: id,
             status_id: column.id,
@@ -145,7 +174,7 @@ function useColumnApplicants(column: ColumnType) {
 
   return {
     tasks: safeTasks,
-    addEmptyTask,
+    addNewTask,
     updateTask,
     dropTaskFrom,
     deleteTask,

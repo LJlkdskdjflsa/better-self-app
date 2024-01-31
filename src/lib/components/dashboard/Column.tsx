@@ -11,9 +11,9 @@ import {
 } from '@chakra-ui/react';
 
 import ApplicantCard from './ApplicantCard';
-import type { ColumnType } from './enums';
-import useColumnApplicants from './useColumnApplicants';
-import useColumnDrop from './useColumnDrop';
+import useColumnApplicants from './hooks/useColumnApplicants';
+import useColumnDrop from './hooks/useColumnDrop';
+import type { ColumnType } from './utils/enums';
 
 const ColumnColorScheme: Record<ColumnType, string> = {
   Todo: 'gray',

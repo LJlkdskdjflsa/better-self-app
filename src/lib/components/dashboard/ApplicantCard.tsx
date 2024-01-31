@@ -6,8 +6,8 @@ import _ from 'lodash';
 import { memo } from 'react';
 
 import { AutoResizeTextarea } from './AutoResizeTextarea';
-import type { ApplicantModel } from './models';
-import { useTaskDragAndDrop } from './useTaskDragAndDrop';
+import { useTaskDragAndDrop } from './hooks/useTaskDragAndDrop';
+import type { ApplicantModel } from './utils/models';
 
 type ApplicantCardProps = {
   index: number;

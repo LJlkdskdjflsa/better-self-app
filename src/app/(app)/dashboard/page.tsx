@@ -6,7 +6,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import Column from '~/lib/components/dashboard/Column';
-import { ColumnType } from '~/lib/components/dashboard/enums';
+import { ColumnType } from '~/lib/components/dashboard/utils/enums';
 
 function App() {
   return (

@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import type { ColumnType } from './enums';
-import { swap } from './helpers';
-import { debug } from './logging';
-import type { ApplicantModel } from './models';
+import type { ColumnType } from '../utils/enums';
+import { swap } from '../utils/helpers';
+import { debug } from '../utils/logging';
+import type { ApplicantModel } from '../utils/models';
+
 import useApplicantCollection from './useApplicantCollection';
 
 const MAX_TASK_PER_COLUMN = 100;

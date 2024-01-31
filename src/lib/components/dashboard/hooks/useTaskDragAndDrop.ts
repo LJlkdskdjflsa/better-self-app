@@ -2,8 +2,8 @@ import { useRef } from 'react';
 import type { XYCoord } from 'react-dnd';
 import { useDrag, useDrop } from 'react-dnd';
 
-import { ItemType } from './enums';
-import type { ApplicantModel, DragItem } from './models';
+import { ItemType } from '../utils/enums';
+import type { ApplicantModel, DragItem } from '../utils/models';
 
 /**
  * Custom React Hook for handling drag and drop of tasks.

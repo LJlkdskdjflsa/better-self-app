@@ -1,8 +1,8 @@
 import { useLocalStorage } from 'usehooks-ts';
 import { v4 as uuidv4 } from 'uuid';
 
-import { ColumnType } from './enums';
-import type { ApplicantModel } from './models';
+import { ColumnType } from '../utils/enums';
+import type { ApplicantModel } from '../utils/models';
 
 function useApplicantCollection() {
   return useLocalStorage<{

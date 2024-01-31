@@ -1,8 +1,8 @@
 import { useDrop } from 'react-dnd';
 
-import type { ColumnType } from './enums';
-import { ItemType } from './enums';
-import type { ApplicantModel, DragItem } from './models';
+import type { ColumnType } from '../utils/enums';
+import { ItemType } from '../utils/enums';
+import type { ApplicantModel, DragItem } from '../utils/models';
 
 function useColumnDrop(
   column: ColumnType,

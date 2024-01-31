@@ -15,14 +15,7 @@ import {
 import ApplicantCard from './ApplicantCard';
 import useColumnApplicants from './hooks/useColumnApplicants';
 import useColumnDrop from './hooks/useColumnDrop';
-import type { ApplicantModelNew } from './model';
-
-// const ColumnColorScheme: Record<ColumnType, string> = {
-//   Todo: 'gray',
-//   'In Progress': 'blue',
-//   Blocked: 'red',
-//   Completed: 'green',
-// };
+import type { ApplicantModelNew, ColumnType } from './model';
 
 function Column({ column }: { column: ColumnType }) {
   const {

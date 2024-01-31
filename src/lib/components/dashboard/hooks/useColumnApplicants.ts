@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import type { ColumnType } from '../utils/enums';
 import { swap } from '../utils/helpers';
 import { debug } from '../utils/logging';
 import type { ApplicantModel } from '../utils/models';
@@ -10,7 +9,7 @@ import useApplicantCollection from './useApplicantCollection';
 
 const MAX_TASK_PER_COLUMN = 100;
 
-function useColumnApplicants(column: ColumnType) {
+function useColumnApplicants(column: string) {
   const [tasks, setTasks] = useApplicantCollection();
 
   // const columnTasks = tasks[column];
@@ -18,7 +17,8 @@ function useColumnApplicants(column: ColumnType) {
   const addEmptyTask = useCallback(() => {
     debug(`Adding new empty task to ${column} column`);
     setTasks((allTasks) => {
-      const columnTasks = allTasks[column];
+      // const columnTasks = allTasks[column];
+      const columnTasks = allTasks[column as keyof typeof allTasks];
 
       if (columnTasks.length > MAX_TASK_PER_COLUMN) {
         debug('Too many task!');
@@ -44,7 +44,7 @@ function useColumnApplicants(column: ColumnType) {
     (id: ApplicantModel['id']) => {
       debug(`Removing task ${id}..`);
       setTasks((allTasks) => {
-        const columnTasks = allTasks[column];
+        const columnTasks = allTasks[column as keyof typeof allTasks];
         return {
           ...allTasks,
           [column]: columnTasks.filter((task) => task.id !== id),
@@ -61,7 +61,7 @@ function useColumnApplicants(column: ColumnType) {
     ) => {
       debug(`Updating task ${id} with ${JSON.stringify(updateTask)}`);
       setTasks((allTasks) => {
-        const columnTasks = allTasks[column];
+        const columnTasks = allTasks[column as keyof typeof allTasks];
         return {
           ...allTasks,
           [column]: columnTasks.map((task) =>
@@ -74,10 +74,10 @@ function useColumnApplicants(column: ColumnType) {
   );
 
   const dropTaskFrom = useCallback(
-    (from: ColumnType, id: ApplicantModel['id']) => {
+    (from: string, id: ApplicantModel['id']) => {
       setTasks((allTasks) => {
-        const fromColumnTasks = allTasks[from];
-        const toColumnTasks = allTasks[column];
+        const fromColumnTasks = allTasks[from as keyof typeof allTasks];
+        const toColumnTasks = allTasks[column as keyof typeof allTasks];
         const movingTask = fromColumnTasks.find((task) => task.id === id);
 
         // console.log(`Moving task ${movingTask?.id} from ${from} to ${column}`);
@@ -101,7 +101,8 @@ function useColumnApplicants(column: ColumnType) {
     (i: number, j: number) => {
       debug(`Swapping task ${i} with ${j} in ${column} column`);
       setTasks((allTasks) => {
-        const columnTasks = allTasks[column];
+        const columnTasks = allTasks[column as keyof typeof allTasks];
+
         return {
           ...allTasks,
           [column]: swap(columnTasks, i, j),
@@ -112,7 +113,7 @@ function useColumnApplicants(column: ColumnType) {
   );
 
   return {
-    tasks: tasks[column],
+    tasks: tasks[column as keyof typeof tasks],
     addEmptyTask,
     updateTask,
     dropTaskFrom,

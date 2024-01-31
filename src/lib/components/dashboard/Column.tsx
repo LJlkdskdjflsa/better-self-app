@@ -14,6 +14,7 @@ import ApplicantCard from './ApplicantCard';
 import useColumnApplicants from './hooks/useColumnApplicants';
 import useColumnDrop from './hooks/useColumnDrop';
 import type { ColumnType } from './utils/enums';
+import type { ApplicantModel } from './utils/models';
 
 const ColumnColorScheme: Record<ColumnType, string> = {
   Todo: 'gray',
@@ -34,7 +35,7 @@ function Column({ column }: { column: ColumnType }) {
 
   const { dropRef, isOver } = useColumnDrop(column, dropTaskFrom);
 
-  const ColumnTasks = tasks.map((task, index) => (
+  const ColumnTasks = tasks.map((task: ApplicantModel, index: number) => (
     <ApplicantCard
       key={task.id}
       task={task}

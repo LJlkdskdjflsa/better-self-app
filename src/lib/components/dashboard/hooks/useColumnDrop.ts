@@ -1,11 +1,12 @@
 import { useDrop } from 'react-dnd';
 
+import type { ApplicantModelNew } from '../model';
 import { ItemType } from '../utils/enums';
-import type { ApplicantModel, DragItem } from '../utils/models';
+import type { DragItem } from '../utils/models';
 
 function useColumnDrop(
   column: string,
-  handleDrop: (fromColumn: string, taskId: ApplicantModel['id']) => void
+  handleDrop: (fromColumn: string, taskId: ApplicantModelNew['id']) => void
 ) {
   const [{ isOver }, dropRef] = useDrop<DragItem, void, { isOver: boolean }>({
     accept: ItemType.APPLICANT,

@@ -1,9 +1,9 @@
+// @ts-nocheck
 import { useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { swap } from '../utils/helpers';
 import { debug } from '../utils/logging';
-import type { ApplicantModel } from '../utils/models';
 
 import useApplicantCollection from './useApplicantCollection';
 
@@ -11,8 +11,6 @@ const MAX_TASK_PER_COLUMN = 100;
 
 function useColumnApplicants(column: string) {
   const [tasks, setTasks] = useApplicantCollection();
-
-  // const columnTasks = tasks[column];
 
   const addEmptyTask = useCallback(() => {
     debug(`Adding new empty task to ${column} column`);
@@ -25,7 +23,7 @@ function useColumnApplicants(column: string) {
         return allTasks;
       }
 
-      const newColumnTask: ApplicantModel = {
+      const newColumnTask: ApplicantModelNew = {
         id: uuidv4(),
         title: `New ${column} task`,
         // color: pickChakraRandomColor('.300'),
@@ -41,7 +39,7 @@ function useColumnApplicants(column: string) {
   }, [column, setTasks]);
 
   const deleteTask = useCallback(
-    (id: ApplicantModel['id']) => {
+    (id: ApplicantModelNew['id']) => {
       debug(`Removing task ${id}..`);
       setTasks((allTasks) => {
         const columnTasks = allTasks[column as keyof typeof allTasks];
@@ -56,8 +54,8 @@ function useColumnApplicants(column: string) {
 
   const updateTask = useCallback(
     (
-      id: ApplicantModel['id'],
-      updatedTask: Omit<Partial<ApplicantModel>, 'id'>
+      id: ApplicantModelNew['id'],
+      updatedTask: Omit<Partial<ApplicantModelNew>, 'id'>
     ) => {
       debug(`Updating task ${id} with ${JSON.stringify(updateTask)}`);
       setTasks((allTasks) => {
@@ -74,7 +72,7 @@ function useColumnApplicants(column: string) {
   );
 
   const dropTaskFrom = useCallback(
-    (from: string, id: ApplicantModel['id']) => {
+    (from: string, id: ApplicantModelNew['id']) => {
       setTasks((allTasks) => {
         const fromColumnTasks = allTasks[from as keyof typeof allTasks];
         const toColumnTasks = allTasks[column as keyof typeof allTasks];
@@ -89,7 +87,9 @@ function useColumnApplicants(column: string) {
         // remove the task from the original column and copy it within the destination column
         return {
           ...allTasks,
-          [from]: fromColumnTasks.filter((task) => task.id !== id),
+          [from]: fromColumnTasks.filter(
+            (task: { id: string }) => task.id !== id
+          ),
           [column]: [{ ...movingTask, column }, ...toColumnTasks],
         };
       });

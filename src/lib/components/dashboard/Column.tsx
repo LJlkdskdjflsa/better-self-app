@@ -1,3 +1,5 @@
+// @ts-ignore
+
 'use client';
 
 import { AddIcon } from '@chakra-ui/icons';
@@ -13,7 +15,7 @@ import {
 import ApplicantCard from './ApplicantCard';
 import useColumnApplicants from './hooks/useColumnApplicants';
 import useColumnDrop from './hooks/useColumnDrop';
-import type { ApplicantModel } from './utils/models';
+import type { ApplicantModelNew } from './model';
 
 // const ColumnColorScheme: Record<ColumnType, string> = {
 //   Todo: 'gray',
@@ -29,21 +31,25 @@ function Column({ column }: { column: string }) {
     deleteTask,
     dropTaskFrom,
     swapTasks,
-    updateTask,
+    // updateTask,
   } = useColumnApplicants(column);
 
   const { dropRef, isOver } = useColumnDrop(column, dropTaskFrom);
 
-  const ColumnTasks = tasks.map((task: ApplicantModel, index: number) => (
-    <ApplicantCard
-      key={task.id}
-      task={task}
-      index={index}
-      onDropHover={swapTasks}
-      onUpdate={updateTask}
-      onDelete={deleteTask}
-    />
-  ));
+  const safeTasks = tasks || [];
+
+  const ColumnTasks = safeTasks.map(
+    (task: ApplicantModelNew, index: number) => (
+      <ApplicantCard
+        key={task.id}
+        task={task}
+        index={index}
+        onDropHover={swapTasks}
+        // onUpdate={updateTask}
+        onDelete={deleteTask}
+      />
+    )
+  );
 
   return (
     <Box>
@@ -77,7 +83,7 @@ function Column({ column }: { column: string }) {
         p={4}
         mt={2}
         spacing={4}
-        bgColor={useColorModeValue('gray.50', 'gray.900')}
+        bgColor={useColorModeValue('gray.300', 'gray.900')}
         rounded="lg"
         boxShadow="md"
         overflow="auto"

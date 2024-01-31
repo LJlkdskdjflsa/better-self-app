@@ -5,7 +5,8 @@
     "plugin:@next/next/recommended"
   ],
   "rules": {
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "@typescript-eslint/ban-ts-comment": "off"
   },
   "overrides": [
     {

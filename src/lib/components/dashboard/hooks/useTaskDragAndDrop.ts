@@ -2,8 +2,9 @@ import { useRef } from 'react';
 import type { XYCoord } from 'react-dnd';
 import { useDrag, useDrop } from 'react-dnd';
 
+import type { ApplicantModelNew } from '../model';
 import { ItemType } from '../utils/enums';
-import type { ApplicantModel, DragItem } from '../utils/models';
+import type { DragItem } from '../utils/models';
 
 /**
  * Custom React Hook for handling drag and drop of tasks.
@@ -21,7 +22,7 @@ import type { ApplicantModel, DragItem } from '../utils/models';
  * - `drop`: A connector function to be used with the `drop` target.
  */
 export function useTaskDragAndDrop<T extends HTMLElement>(
-  { task, index }: { task: ApplicantModel; index: number },
+  { task, index }: { task: ApplicantModelNew; index: number },
   handleDropHover: (i: number, j: number) => void
 ) {
   const ref = useRef<T>(null);

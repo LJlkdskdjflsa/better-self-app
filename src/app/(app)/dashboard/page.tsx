@@ -8,7 +8,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import Column from '~/lib/components/dashboard/Column';
 
 function App() {
-  const columnType = ['Todo', 'In Progress', 'Blocked', 'Completed'];
+  const columnType = ['APPLIED', 'PHONE SCREEN', 'ONSITE INTERVIEW', 'OFFERS'];
 
   return (
     <main>

@@ -7,20 +7,20 @@ import { memo } from 'react';
 
 import { AutoResizeTextarea } from './AutoResizeTextarea';
 import { useTaskDragAndDrop } from './hooks/useTaskDragAndDrop';
-import type { ApplicantModel } from './utils/models';
+import type { ApplicantModelNew } from './model';
 
 type ApplicantCardProps = {
   index: number;
-  task: ApplicantModel;
-  onUpdate: (id: ApplicantModel['id'], updatedTask: ApplicantModel) => void;
-  onDelete: (id: ApplicantModel['id']) => void;
+  task: ApplicantModelNew;
+  // onUpdate: (id: ApplicantModelNew['id'], updatedTask: ApplicantModelNew) => void;
+  onDelete: (id: ApplicantModelNew['id']) => void;
   onDropHover: (i: number, j: number) => void;
 };
 
 function ApplicantCard({
   index,
   task,
-  onUpdate: handleUpdate,
+  // onUpdate: handleUpdate,
   onDropHover: handleDropHover,
   onDelete: handleDelete,
 }: ApplicantCardProps) {
@@ -28,11 +28,6 @@ function ApplicantCard({
     { task, index },
     handleDropHover
   );
-
-  const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newTitle = e.target.value;
-    handleUpdate(task.id, { ...task, title: newTitle });
-  };
 
   const handleDeleteClick = () => {
     handleDelete(task.id);
@@ -55,7 +50,8 @@ function ApplicantCard({
         cursor="grab"
         fontWeight="bold"
         userSelect="none"
-        bgColor={task.color}
+        // bgColor={task.color}
+        bgColor="white"
         opacity={isDragging ? 0.5 : 1}
       >
         <IconButton
@@ -75,7 +71,7 @@ function ApplicantCard({
           onClick={handleDeleteClick}
         />
         <AutoResizeTextarea
-          value={task.title}
+          value={task.first_name}
           fontWeight="semibold"
           cursor="inherit"
           border="none"
@@ -85,7 +81,7 @@ function ApplicantCard({
           maxH={200}
           focusBorderColor="none"
           color="gray.700"
-          onChange={handleTitleChange}
+          // onChange={handleTitleChange}
         />
       </Box>
     </ScaleFade>
@@ -97,7 +93,7 @@ export default memo(ApplicantCard, (prev, next) => {
     _.isEqual(prev.task, next.task) &&
     _.isEqual(prev.index, next.index) &&
     prev.onDelete === next.onDelete &&
-    prev.onDropHover === next.onDropHover &&
-    prev.onUpdate === next.onUpdate
+    prev.onDropHover === next.onDropHover
+    // prev.onUpdate === next.onUpdate
   );
 });

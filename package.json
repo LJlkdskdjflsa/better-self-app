@@ -64,10 +64,10 @@
     "@commitlint/cz-commitlint": "^18.2.0",
     "@playwright/test": "^1.39.0",
     "@types/jest": "^29.5.8",
+    "@types/lodash": "^4.14.202",
     "@types/prop-types": "^15.7.11",
     "@types/react": "^18.2.37",
     "@types/uuid": "^9.0.8",
-    "@types/lodash": "^4.14.202",
     "commitizen": "^4.3.0",
     "cross-env": "^7.0.3",
     "eslint": "^8.53.0",
@@ -80,6 +80,7 @@
     "prettier": "^3.0.3",
     "standard-version": "^9.5.0",
     "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.2.2"
   },
   "engines": {

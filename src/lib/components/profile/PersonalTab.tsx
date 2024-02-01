@@ -1,12 +1,12 @@
 import { FormControl, FormLabel, TabPanel, Text } from '@chakra-ui/react';
 
-import type { ApplicantModelNew } from '../models/applicanModel';
+import type { ApplicantModelNew } from '../dashboard/models/applicanModel';
 
-interface PositionTabProps {
+interface PersonalTabProps {
   task: ApplicantModelNew;
 }
 
-const PositionTab: React.FC<PositionTabProps> = ({ task }) => {
+const PersonalTab: React.FC<PersonalTabProps> = ({ task }) => {
   return (
     <TabPanel>
       <FormControl>
@@ -25,4 +25,4 @@ const PositionTab: React.FC<PositionTabProps> = ({ task }) => {
   );
 };
 
-export default PositionTab;
+export default PersonalTab;

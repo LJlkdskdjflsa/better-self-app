@@ -1,5 +1,5 @@
 // Define interfaces
-interface ApplicationStatus {
+interface ApplicantStatus {
   id: number;
   value: string;
   icon: string | null;
@@ -49,7 +49,7 @@ interface ApplicantModelNew {
   id: number;
   first_name: string;
   last_name: string;
-  application_status: ApplicationStatus;
+  application_status: ApplicantStatus;
   position: Position;
   company_object: CompanyObject;
   apply_date: string;

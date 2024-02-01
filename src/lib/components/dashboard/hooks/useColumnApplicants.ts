@@ -9,7 +9,7 @@ import type {
   ApplicantBoardModel,
   ApplicantModelNew,
   ColumnType,
-} from '../model';
+} from '../models/applicanModel';
 import { formatData } from '../utils/formData';
 import { debug } from '../utils/logging';
 

@@ -31,7 +31,7 @@ import ApplicantCard from './ApplicantCard';
 import useColumnApplicants from './hooks/useColumnApplicants';
 import useColumnDrop from './hooks/useColumnDrop';
 import usePositions from './hooks/usePosition';
-import type { ApplicantModelNew, ColumnType } from './model';
+import type { ApplicantModelNew, ColumnType } from './models/applicanModel';
 
 function Column({ column }: { column: ColumnType }) {
   const {

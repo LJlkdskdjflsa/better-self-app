@@ -1,4 +1,4 @@
-import type { ApplicantModelNew } from '../model';
+import type { ApplicantModelNew } from '../models/applicanModel';
 
 // export interface ApplicantModel {
 //   id: string;

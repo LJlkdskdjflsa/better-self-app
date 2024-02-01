@@ -1,6 +1,6 @@
 import { useDrop } from 'react-dnd';
 
-import type { ApplicantModelNew } from '../model';
+import type { ApplicantModelNew } from '../models/applicanModel';
 import { ItemType } from '../utils/enums';
 import type { DragItem } from '../utils/models';
 

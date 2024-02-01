@@ -1,4 +1,7 @@
-import type { ApplicantBoardModel, ApplicantModelNew } from '../model';
+import type {
+  ApplicantBoardModel,
+  ApplicantModelNew,
+} from '../models/applicanModel';
 
 export function formatData(response: ApplicantModelNew[]): ApplicantBoardModel {
   return response.reduce(

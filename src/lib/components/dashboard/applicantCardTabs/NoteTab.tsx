@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 
 import { useNotes } from '../hooks/useNotes';
-import type { ApplicantModelNew } from '../model';
+import type { ApplicantModelNew } from '../models/applicanModel';
 
 interface NoteTabProps {
   task: ApplicantModelNew;

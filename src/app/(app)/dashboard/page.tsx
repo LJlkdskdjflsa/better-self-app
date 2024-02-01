@@ -8,7 +8,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import Column from '~/lib/components/dashboard/Column';
-import type { ApplicantStatus } from '~/lib/components/dashboard/model';
+import type { ApplicantStatus } from '~/lib/components/dashboard/models/applicanModel';
 
 function App() {
   const [columnType, setColumnType] = useState([]);

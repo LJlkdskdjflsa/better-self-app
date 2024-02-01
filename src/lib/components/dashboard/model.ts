@@ -80,6 +80,13 @@ interface ColumnType {
   value: string;
 }
 
+interface Note {
+  id: number;
+  description: string;
+  created_date: string;
+  updated_date: string;
+}
+
 interface ApplicantBoardModel extends Record<string, ApplicantModelNew[]> {}
 // export all
 export type {
@@ -88,4 +95,5 @@ export type {
   ApplicantModelNew,
   ApplicantStatus,
   ColumnType,
+  Note,
 };

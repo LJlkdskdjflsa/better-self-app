@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Flex,
   FormControl,
   FormLabel,
@@ -9,41 +10,43 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
+import { useNotes } from '../hooks/useNotes';
 import type { ApplicantModelNew } from '../model';
 
 interface NoteTabProps {
   task: ApplicantModelNew;
 }
 
-interface Note {
-  id: number;
-  description: string;
-  created_date: string;
-  updated_date: string;
-}
 const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
-  const [notes, setNotes] = useState<Note[]>([]);
+  const { notes, fetchNotes } = useNotes(task.id);
   const [newNote, setNewNote] = useState('');
 
-  useEffect(() => {
+  const addNote = () => {
     let isCancelled = false;
-
     fetch(`http://127.0.0.1:8001/api/positionapps/${task.id}/notes/`, {
+      method: 'POST',
       headers: {
+        'Content-Type': 'application/json',
         Authorization: 'Bearer AFG9JxtaRz79cjLZnhuz406uypiae6',
       },
+      body: JSON.stringify({ description: newNote }),
     })
       .then((response) => response.json())
-      .then((data) => {
+      .then(() => {
         if (!isCancelled) {
-          setNotes(data.data);
+          //   console.log(data);
+          fetchNotes();
+          setNewNote('');
         }
       });
-
     return () => {
       isCancelled = true;
     };
-  }, [task]);
+  };
+
+  useEffect(() => {
+    fetchNotes();
+  }, [task, fetchNotes]);
 
   return (
     <TabPanel>
@@ -52,7 +55,7 @@ const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
           <FormControl key={note.id}>
             <Flex>
               <Text>{note.description}</Text>
-              <Text>{note.created_date}</Text>
+              {/* <Text>{note.created_date}</Text> */}
             </Flex>
           </FormControl>
         </Box>
@@ -61,7 +64,7 @@ const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
       <FormControl>
         <FormLabel>新增備註</FormLabel>
         <Input value={newNote} onChange={(e) => setNewNote(e.target.value)} />
-        {/* <Button onClick={addNote}>新增</Button> */}
+        <Button onClick={addNote}>新增</Button>
       </FormControl>
     </TabPanel>
   );

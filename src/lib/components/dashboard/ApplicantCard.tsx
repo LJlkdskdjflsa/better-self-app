@@ -3,11 +3,7 @@
 import { DeleteIcon } from '@chakra-ui/icons';
 import {
   Box,
-  Button,
-  FormControl,
-  FormLabel,
   IconButton,
-  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -16,12 +12,18 @@ import {
   ModalHeader,
   ModalOverlay,
   ScaleFade,
+  Tab,
+  TabList,
+  TabPanels,
+  Tabs,
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
 import _ from 'lodash';
 import { memo } from 'react';
 
+import NoteTab from './applicantCardTabs/NoteTab';
+import PositionTab from './applicantCardTabs/PositionTab';
 import { useTaskDragAndDrop } from './hooks/useTaskDragAndDrop';
 import type { ApplicantModelNew } from './model';
 
@@ -42,8 +44,9 @@ function ApplicantModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
+  // const positions = usePositions();
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} size="6xl">
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
@@ -63,25 +66,24 @@ function ApplicantModal({
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          {/* <FormControl>
-            <FormLabel>公司</FormLabel>
-            <Input defaultValue={task.first_name} />
-          </FormControl> */}
+          <Tabs orientation="vertical">
+            <TabList>
+              <Tab>
+                <Text style={{ whiteSpace: 'nowrap' }}>職位</Text>
+              </Tab>
+              <Tab>備註</Tab>
+            </TabList>
 
-          <FormControl mt={4}>
-            <FormLabel>職位</FormLabel>
-            <Input defaultValue={task.position.job} />
-          </FormControl>
-
-          <FormControl mt={4}>
-            <FormLabel>應徵日期</FormLabel>
-            <Input defaultValue={task.apply_date} />
-          </FormControl>
+            <TabPanels>
+              <PositionTab task={task} />
+              <NoteTab task={task} />
+            </TabPanels>
+          </Tabs>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={onClose}>
+          {/* <Button colorScheme="blue" mr={3} onClick={onClose}>
             Close
-          </Button>
+          </Button> */}
         </ModalFooter>
       </ModalContent>
     </Modal>

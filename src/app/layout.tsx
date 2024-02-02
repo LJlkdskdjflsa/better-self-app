@@ -1,5 +1,7 @@
+import { useColorMode } from '@chakra-ui/react';
 import { Analytics } from '@vercel/analytics/react';
 import type { Metadata, Viewport } from 'next';
+import { useEffect } from 'react';
 
 import Providers from '~/app/providers';
 import Layout from '~/lib/layout';

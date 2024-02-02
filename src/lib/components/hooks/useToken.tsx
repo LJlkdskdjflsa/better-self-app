@@ -15,10 +15,5 @@ export const useToken = () => {
     setToken(null);
   };
 
-  // const saveToken = (newToken: string) => {
-  //   localStorage.setItem('token', newToken);
-  //   setToken(newToken);
-  // };
-
   return [token, removeToken];
 };

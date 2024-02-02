@@ -18,7 +18,9 @@ function useColumnApplicants(column: ColumnType) {
   const POSITION_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/positionapps/`;
   const fetchTasks = async () => {
     const response = await axios.get(POSITION_URL, {
-      headers: { Authorization: 'Bearer AFG9JxtaRz79cjLZnhuz406uypiae6' },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
     });
     if (response.data.success) {
       return formatData(response.data.data);
@@ -64,7 +66,7 @@ function useColumnApplicants(column: ColumnType) {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: 'Bearer AFG9JxtaRz79cjLZnhuz406uypiae6',
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           },
         }
       );
@@ -88,7 +90,7 @@ function useColumnApplicants(column: ColumnType) {
         await axios.delete(POSITION_URL, {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: 'Bearer AFG9JxtaRz79cjLZnhuz406uypiae6',
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           },
           data: {
             jobapp_id: id,
@@ -139,7 +141,7 @@ function useColumnApplicants(column: ColumnType) {
           {
             headers: {
               'Content-Type': 'application/json',
-              Authorization: 'Bearer AFG9JxtaRz79cjLZnhuz406uypiae6',
+              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
             },
           }
         );

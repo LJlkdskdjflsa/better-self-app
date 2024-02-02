@@ -55,15 +55,18 @@ export default function PositionCard({ position }: { position: Position }) {
 
   const deletePosition = async () => {
     try {
-      await axios.delete('http://127.0.0.1:8001/api/positions/company', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer AFG9JxtaRz79cjLZnhuz406uypiae6',
-        },
-        data: {
-          position_id: position.id,
-        },
-      });
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/positions/company`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+          data: {
+            position_id: position.id,
+          },
+        }
+      );
 
       toast({
         title: '職位已成功刪除',

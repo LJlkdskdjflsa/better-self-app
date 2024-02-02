@@ -9,17 +9,19 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import Column from '~/lib/components/dashboard/Column';
 import type { ApplicantStatus } from '~/lib/components/dashboard/models/applicanModel';
+import { useAuth } from '~/lib/components/hooks/useAuth';
 
 function App() {
+  useAuth('/');
   const [columnType, setColumnType] = useState([]);
 
   useEffect(() => {
     const fetchColumnType = async () => {
       const response = await axios.get(
-        'http://127.0.0.1:8001/api/positionapps/statuses/',
+        `${process.env.NEXT_PUBLIC_API_URL}/api/positionapps/statuses/`,
         {
           headers: {
-            Authorization: 'Bearer AFG9JxtaRz79cjLZnhuz406uypiae6',
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           },
         }
       );

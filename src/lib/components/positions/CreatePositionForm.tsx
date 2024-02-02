@@ -73,19 +73,19 @@ export default function CreateUpdatePositionForm({
           {
             headers: {
               'Content-Type': 'application/json',
-              Authorization: 'Bearer AFG9JxtaRz79cjLZnhuz406uypiae6',
+              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
             },
           }
         );
       } else {
         // 如果沒有傳遞 position 對象，則發送 POST 請求來創建新的職位
         await axios.post(
-          'http://127.0.0.1:8001/api/positions/company',
+          `${process.env.NEXT_PUBLIC_API_URL}/api/positions/company`,
           values,
           {
             headers: {
               'Content-Type': 'application/json',
-              Authorization: 'Bearer AFG9JxtaRz79cjLZnhuz406uypiae6',
+              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
             },
           }
         );

@@ -52,7 +52,7 @@ export default function SigninForm() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/users/login/`,
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/token/`,
         {
           method: 'POST',
           headers: {
@@ -61,6 +61,7 @@ export default function SigninForm() {
           body: JSON.stringify({
             username,
             password,
+            grant_type: 'password',
             client_id: process.env.NEXT_PUBLIC_CLIENT_ID,
             client_secret: process.env.NEXT_PUBLIC_CLIENT_SECRET,
           }),
@@ -79,8 +80,7 @@ export default function SigninForm() {
         // expires_in,
         // token_type,
         // user_type,
-        // signup_flow_completed,
-      } = data.data;
+      } = data;
 
       if (accessToken) {
         // Store the token in local storage

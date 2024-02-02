@@ -31,7 +31,7 @@ const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer AFG9JxtaRz79cjLZnhuz406uypiae6',
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
       body: JSON.stringify({ description: newNote }),
     })

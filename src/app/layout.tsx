@@ -47,6 +47,11 @@ export const viewport: Viewport = {
 };
 
 const RootLayout = ({ children }: RootLayoutProps) => {
+  const { setColorMode } = useColorMode();
+
+  useEffect(() => {
+    setColorMode('light');
+  }, [setColorMode]);
   return (
     <html lang="en">
       <body>

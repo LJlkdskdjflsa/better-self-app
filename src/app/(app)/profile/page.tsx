@@ -25,7 +25,7 @@ const PersonalDataPage = () => {
               <Tab>
                 <Text style={{ whiteSpace: 'nowrap' }}>公司簡介</Text>
               </Tab>
-              <Tab style={{ whiteSpace: 'nowrap' }}>設定</Tab>
+              {/* <Tab style={{ whiteSpace: 'nowrap' }}>設定</Tab> */}
             </TabList>
           </Box>
 

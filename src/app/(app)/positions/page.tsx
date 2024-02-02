@@ -112,7 +112,7 @@ const PositionsPage: NextPage = () => {
               <PositionCard position={position} key={position.id} />
             ))
           ) : (
-            <Text>No positions found based on your criteria!</Text>
+            <Text>目前沒有職缺</Text>
           )}
         </Box>
 

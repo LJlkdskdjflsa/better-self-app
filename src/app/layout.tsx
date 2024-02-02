@@ -1,4 +1,3 @@
-import { useColorMode } from '@chakra-ui/react';
 import { Analytics } from '@vercel/analytics/react';
 import type { Metadata, Viewport } from 'next';
 
@@ -48,9 +47,6 @@ export const viewport: Viewport = {
 };
 
 const RootLayout = ({ children }: RootLayoutProps) => {
-  const { setColorMode } = useColorMode();
-
-  setColorMode('light');
   return (
     <html lang="en">
       <body>

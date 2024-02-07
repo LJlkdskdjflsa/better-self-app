@@ -126,8 +126,7 @@ function ApplicantCard({
           fontWeight="bold"
           userSelect="none"
           // bgColor={task.color}
-          // bgColor="white"
-          bgColor="red"
+          bgColor="white"
           opacity={isDragging ? 0.5 : 1}
         >
           <Box bg="white" onClick={onOpen}>
@@ -157,7 +156,6 @@ function ApplicantCard({
             size="md"
             colorScheme="solid"
             color="gray.700"
-            bg="green"
             icon={<DeleteIcon />}
             opacity={0}
             _groupHover={{

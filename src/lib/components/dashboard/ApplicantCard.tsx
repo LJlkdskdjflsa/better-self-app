@@ -126,10 +126,28 @@ function ApplicantCard({
           fontWeight="bold"
           userSelect="none"
           // bgColor={task.color}
-          bgColor="white"
+          // bgColor="white"
+          bgColor="red"
           opacity={isDragging ? 0.5 : 1}
-          onClick={onOpen}
         >
+          <Box bg="white" onClick={onOpen}>
+            <Text
+              fontWeight="semibold"
+              cursor="inherit"
+              border="none"
+              p={0}
+              resize="none"
+              // minH={70}
+              // maxH={200}
+              color="gray.700"
+              // onChange={handleTitleChange}
+            >
+              {task.first_name}
+            </Text>
+            <Text color="gray.400" fontSize="sm">
+              {task.position.job}
+            </Text>
+          </Box>
           <IconButton
             position="absolute"
             top={0}
@@ -139,6 +157,7 @@ function ApplicantCard({
             size="md"
             colorScheme="solid"
             color="gray.700"
+            bg="green"
             icon={<DeleteIcon />}
             opacity={0}
             _groupHover={{
@@ -146,22 +165,6 @@ function ApplicantCard({
             }}
             onClick={handleDeleteClick}
           />
-          <Text
-            fontWeight="semibold"
-            cursor="inherit"
-            border="none"
-            p={0}
-            resize="none"
-            // minH={70}
-            // maxH={200}
-            color="gray.700"
-            // onChange={handleTitleChange}
-          >
-            {task.first_name}
-          </Text>
-          <Text color="gray.400" fontSize="sm">
-            {task.position.job}
-          </Text>
         </Box>
       </ScaleFade>
       <ApplicantModal task={task} isOpen={isOpen} onClose={onClose} />

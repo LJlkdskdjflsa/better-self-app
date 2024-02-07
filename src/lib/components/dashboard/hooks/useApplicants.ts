@@ -3,7 +3,10 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 
-import type { ApplicantBoardModel } from '../models/applicanModel';
+import type {
+  ApplicantBoardModel,
+  ApplicantModelNew,
+} from '../models/applicanModel';
 import { formatData } from '../utils/formData';
 
 export function useApplicants() {
@@ -41,9 +44,58 @@ export function useApplicants() {
     },
   });
 
+  const deleteApplicant = async (
+    applicantId: ApplicantModelNew['id'],
+    stage: keyof ApplicantBoardModel
+  ) => {
+    // 樂觀地更新本地狀態
+    const previousApplicants = { ...applicants };
+    if (applicants && stage in applicants) {
+      setApplicants({
+        ...applicants,
+        [stage]: applicants[stage].filter(
+          (applicant) => applicant.id !== applicantId
+        ),
+      });
+    }
+
+    try {
+      // 嘗試從服務器刪除applicant
+      await axios.delete(POSITION_URL, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+        data: {
+          jobapp_id: applicantId,
+        },
+      });
+      toast({
+        title: '刪除成功',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      });
+      // 重新獲取最新的applicant列表
+      await refetch();
+    } catch (error) {
+      // 如果刪除失敗，回滾本地狀態
+      setApplicants(previousApplicants);
+      toast({
+        title: '刪除失敗',
+        description: error.response?.data?.message || '無法刪除applicant。',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      });
+    }
+  };
+
   useEffect(() => {
     setApplicants(tasks ?? {});
   }, [tasks, toast]);
 
-  return { applicants, setApplicants, refetch };
+  return { applicants, setApplicants, refetch, deleteApplicant };
 }

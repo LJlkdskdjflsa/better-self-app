@@ -10,7 +10,7 @@ import { debug } from '../utils/logging';
 import { useApplicants } from './useApplicants';
 
 function useColumnApplicants(column: ColumnType) {
-  const { applicants, refetch } = useApplicants();
+  const { applicants, deleteApplicant, refetch } = useApplicants();
 
   const toast = useToast();
   const POSITION_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/positionapps/`;
@@ -56,27 +56,7 @@ function useColumnApplicants(column: ColumnType) {
 
   const deleteTask = useCallback(
     async (id: ApplicantModelNew['id']) => {
-      debug(`Removing task ${id}..`);
-      try {
-        await axios.delete(POSITION_URL, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-          },
-          data: {
-            jobapp_id: id,
-          },
-        });
-        refetch();
-      } catch (error) {
-        toast({
-          title: '刪除失敗',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-          position: 'top',
-        });
-      }
+      deleteApplicant(id, column.value as keyof typeof applicants);
     },
     [refetch, toast]
   );

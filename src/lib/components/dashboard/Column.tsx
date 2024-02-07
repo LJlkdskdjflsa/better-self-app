@@ -28,7 +28,7 @@ import {
 import { useState } from 'react';
 
 import ApplicantCard from './ApplicantCard';
-import useColumnApplicants from './hooks/useColumnApplicants';
+import useColumnApplicants from './hooks/useApplicantColumn';
 import useColumnDrop from './hooks/useColumnDrop';
 import usePositions from './hooks/usePosition';
 import type { ApplicantModelNew, ColumnType } from './models/applicanModel';

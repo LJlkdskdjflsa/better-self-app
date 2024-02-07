@@ -2,7 +2,7 @@
 
 import { useToast } from '@chakra-ui/react';
 import axios from 'axios';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 
 import type {
@@ -14,9 +14,13 @@ import { formatData } from '../utils/formData';
 import { debug } from '../utils/logging';
 
 function useColumnApplicants(column: ColumnType) {
+  // use state to store the applicant data
+  const [, setApplicantDict] = useState<ApplicantBoardModel>({});
+
   const toast = useToast();
   const POSITION_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/positionapps/`;
-  const fetchTasks = async () => {
+
+  const fetchApplicantDictFromApi = async () => {
     const response = await axios.get(POSITION_URL, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
@@ -32,7 +36,7 @@ function useColumnApplicants(column: ColumnType) {
     data: tasks,
     // error,
     refetch,
-  } = useQuery<ApplicantBoardModel, Error>('tasks', fetchTasks, {
+  } = useQuery<ApplicantBoardModel, Error>('tasks', fetchApplicantDictFromApi, {
     onError: () => {
       toast({
         title: '更新應聘者失敗',
@@ -43,6 +47,11 @@ function useColumnApplicants(column: ColumnType) {
       });
     },
   });
+
+  // use effect to fetch the applicant data from the api
+  useEffect(() => {
+    setApplicantDict(tasks ?? {});
+  }, [refetch]);
 
   const addNewTask = async (
     applicant: {
@@ -131,6 +140,12 @@ function useColumnApplicants(column: ColumnType) {
 
   const dropTaskFrom = useCallback(
     async (fromColumn: string, id: ApplicantModelNew['id']) => {
+      // Optimistically update the UI here
+
+      // get the object of the column
+
+      // For example, you might move the task to the new column in your local state
+
       try {
         await axios.put(
           POSITION_URL,
@@ -145,8 +160,11 @@ function useColumnApplicants(column: ColumnType) {
             },
           }
         );
-        refetch();
+        // If the request is successful, you don't need to do anything
       } catch (error) {
+        // If the request fails, rollback the optimistic update
+        // For example, you might move the task back to the original column in your local state
+
         toast({
           title: 'Error',
           description: 'Failed to update status',
@@ -169,6 +187,7 @@ function useColumnApplicants(column: ColumnType) {
 
   let safeTasks: ApplicantModelNew[] = [];
   if (tasks) {
+    // safeTasks = applicantDict[column.value as keyof typeof tasks];
     safeTasks = tasks[column.value as keyof typeof tasks];
   } else {
     safeTasks = [];

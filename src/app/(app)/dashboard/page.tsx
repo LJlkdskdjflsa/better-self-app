@@ -10,10 +10,19 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import Column from '~/lib/components/dashboard/Column';
 import type { ApplicantStatus } from '~/lib/components/dashboard/models/applicanModel';
 import { useAuth } from '~/lib/components/hooks/useAuth';
+import useApplicantsStore from '~/lib/store/applicantsStore';
 
 function App() {
   useAuth('/');
   const [columnType, setColumnType] = useState([]);
+  const { applicants, fetchApplicants } = useApplicantsStore((state) => ({
+    applicants: state.applicants,
+    fetchApplicants: state.fetchApplicants,
+  }));
+
+  useEffect(() => {
+    if (!applicants) fetchApplicants();
+  }, [applicants, fetchApplicants]);
 
   useEffect(() => {
     const fetchColumnType = async () => {

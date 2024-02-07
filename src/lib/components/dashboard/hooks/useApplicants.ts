@@ -6,8 +6,9 @@ import { useQuery } from 'react-query';
 import type {
   ApplicantBoardModel,
   ApplicantModelNew,
+  ColumnType,
 } from '../models/applicanModel';
-import { formatData } from '../utils/formData';
+import { formatData, unformatData } from '../utils/formData';
 
 export function useApplicants() {
   const [applicants, setApplicants] = useState<ApplicantBoardModel | null>(
@@ -43,6 +44,10 @@ export function useApplicants() {
       });
     },
   });
+
+  useEffect(() => {
+    setApplicants(tasks ?? {});
+  }, [tasks, toast]);
 
   const deleteApplicant = async (
     applicantId: ApplicantModelNew['id'],
@@ -93,9 +98,84 @@ export function useApplicants() {
     }
   };
 
-  useEffect(() => {
-    setApplicants(tasks ?? {});
-  }, [tasks, toast]);
+  const updateApplicantStatus = async (
+    applicantId: ApplicantModelNew['id'],
+    newStage: ColumnType
+  ) => {
+    // 保存原始狀態以便可能的回滾
+    const previousApplicants = JSON.parse(JSON.stringify(tasks));
 
-  return { applicants, setApplicants, refetch, deleteApplicant };
+    // 保存原始狀態以便可能的回滾
+    const originalStage = Object.keys(tasks || {}).find((key) =>
+      (applicants?.[key] as ApplicantModelNew[]).some(
+        (applicant) => applicant.id === applicantId
+      )
+    ) as keyof ApplicantBoardModel;
+    if (!originalStage || !applicants) return;
+
+    // 樂觀更新本地狀態
+    let updatedApplicantList: ApplicantModelNew[] = unformatData(tasks);
+
+    // 找到要移動的applicant，從 updatedApplicantList
+    const applicantToMove: ApplicantModelNew | undefined =
+      updatedApplicantList.find((applicant) => applicant.id === applicantId);
+
+    if (!applicantToMove) return;
+
+    // 從 updatedApplicantList 中移除原本的 applicant
+    updatedApplicantList = updatedApplicantList.filter(
+      (applicant) => applicant.id !== applicantId
+    );
+
+    // 添加到新階段
+    applicantToMove.application_status.id = newStage.id;
+    applicantToMove.application_status.value = newStage.value;
+    updatedApplicantList.push(applicantToMove);
+
+    setApplicants(formatData(updatedApplicantList));
+
+    try {
+      // 向服務器發送更改狀態的請求
+      await axios.put(
+        `${POSITION_URL}`,
+        {
+          jobapp_id: applicantId,
+          status_id: newStage.id, // 假設服務器需要的欄位是status_id，並且這裡是新階段的ID
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        }
+      );
+      toast({
+        title: '狀態更新成功',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      });
+      refetch(); // 可選的，根據你的需求決定是否需要重新獲取數據
+    } catch (error) {
+      // 如果更新失敗，回滾到原始狀態
+      setApplicants(previousApplicants);
+      toast({
+        title: '狀態更新失敗',
+        description: error.response?.data?.message || '無法更新applicant狀態。',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      });
+    }
+  };
+
+  return {
+    applicants,
+    setApplicants,
+    refetch,
+    deleteApplicant,
+    updateApplicantStatus,
+  };
 }

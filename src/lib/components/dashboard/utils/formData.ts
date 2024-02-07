@@ -22,6 +22,19 @@ export function formatData(response: ApplicantModelNew[]): ApplicantBoardModel {
   );
 }
 
+export function unformatData(
+  applicantBoardModel: ApplicantBoardModel
+): ApplicantModelNew[] {
+  // 使用 Object.values 獲取所有鍵的值（即所有分類下的申請人列表），然後使用 Array.prototype.reduce 將它們合併成一個單一的列表
+  return Object.values(applicantBoardModel).reduce(
+    (acc: ApplicantModelNew[], currentCategory: ApplicantModelNew[]) => {
+      // 將當前分類下的申請人列表合併到累加器中
+      return acc.concat(currentCategory);
+    },
+    []
+  );
+}
+
 // const apiResponse: ApiResponse = {
 //     "success": true,
 //     "error_code": 0,

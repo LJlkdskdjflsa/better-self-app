@@ -6,11 +6,16 @@ import { useCallback } from 'react';
 
 import type { ApplicantModelNew, ColumnType } from '../models/applicanModel';
 import { debug } from '../utils/logging';
-
-import { useApplicants } from './useApplicants';
+import useApplicantsStore from '~/lib/store/applicantsStore';
 
 function useColumnApplicants(column: ColumnType) {
-  const { applicants, deleteApplicant, refetch } = useApplicants();
+  // const { applicants, deleteApplicant, refetch, updateApplicantStatus } = useApplicants();
+  const { applicants, deleteApplicant } = useApplicantsStore((state) => ({
+    applicants: state.applicants,
+    fetchApplicants: state.fetchApplicants,
+    deleteApplicant: state.deleteApplicant,
+    isLoading: state.isLoading,
+  }));
 
   const toast = useToast();
   const POSITION_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/positionapps/`;
@@ -54,12 +59,9 @@ function useColumnApplicants(column: ColumnType) {
     }
   };
 
-  const deleteTask = useCallback(
-    async (id: ApplicantModelNew['id']) => {
-      deleteApplicant(id, column.value as keyof typeof applicants);
-    },
-    [refetch, toast]
-  );
+  const deleteTask = useCallback(async (id: ApplicantModelNew['id']) => {
+    deleteApplicant(id);
+  }, []);
 
   const updateTask = useCallback(
     (
@@ -82,42 +84,10 @@ function useColumnApplicants(column: ColumnType) {
 
   const dropTaskFrom = useCallback(
     async (fromColumn: string, id: ApplicantModelNew['id']) => {
-      // Optimistically update the UI here
-
-      // get the object of the column
-
-      // For example, you might move the task to the new column in your local state
-
-      try {
-        await axios.put(
-          POSITION_URL,
-          {
-            jobapp_id: id,
-            status_id: column.id,
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-            },
-          }
-        );
-        // If the request is successful, you don't need to do anything
-      } catch (error) {
-        // If the request fails, rollback the optimistic update
-        // For example, you might move the task back to the original column in your local state
-
-        toast({
-          title: 'Error',
-          description: 'Failed to update status',
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-          position: 'top-right',
-        });
-      }
+      debug(`Updating task ${id} with ${JSON.stringify(updateTask)}`);
+      // updateApplicantStatus(id, column);
     },
-    [column, refetch, toast]
+    [column, toast]
   );
 
   const swapTasks = useCallback(

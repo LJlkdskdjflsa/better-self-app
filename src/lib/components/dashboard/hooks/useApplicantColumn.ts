@@ -2,56 +2,18 @@
 
 import { useToast } from '@chakra-ui/react';
 import axios from 'axios';
-import { useCallback, useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useCallback } from 'react';
 
-import type {
-  ApplicantBoardModel,
-  ApplicantModelNew,
-  ColumnType,
-} from '../models/applicanModel';
-import { formatData } from '../utils/formData';
+import type { ApplicantModelNew, ColumnType } from '../models/applicanModel';
 import { debug } from '../utils/logging';
 
+import { useApplicants } from './useApplicants';
+
 function useColumnApplicants(column: ColumnType) {
-  // use state to store the applicant data
-  const [, setApplicantDict] = useState<ApplicantBoardModel>({});
+  const { applicants, refetch } = useApplicants();
 
   const toast = useToast();
   const POSITION_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/positionapps/`;
-
-  const fetchApplicantDictFromApi = async () => {
-    const response = await axios.get(POSITION_URL, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-      },
-    });
-    if (response.data.success) {
-      return formatData(response.data.data);
-    }
-    throw new Error('Failed to fetch tasks');
-  };
-
-  const {
-    data: tasks,
-    // error,
-    refetch,
-  } = useQuery<ApplicantBoardModel, Error>('tasks', fetchApplicantDictFromApi, {
-    onError: () => {
-      toast({
-        title: '更新應聘者失敗',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-        position: 'top',
-      });
-    },
-  });
-
-  // use effect to fetch the applicant data from the api
-  useEffect(() => {
-    setApplicantDict(tasks ?? {});
-  }, [refetch]);
 
   const addNewTask = async (
     applicant: {
@@ -186,9 +148,9 @@ function useColumnApplicants(column: ColumnType) {
   );
 
   let safeTasks: ApplicantModelNew[] = [];
-  if (tasks) {
+  if (applicants) {
     // safeTasks = applicantDict[column.value as keyof typeof tasks];
-    safeTasks = tasks[column.value as keyof typeof tasks];
+    safeTasks = applicants[column.value as keyof typeof applicants];
   } else {
     safeTasks = [];
   }

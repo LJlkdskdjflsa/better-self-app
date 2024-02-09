@@ -13,7 +13,7 @@ interface ApplicantsStoreState {
   applicants: ApplicantBoardModel | null;
   isLoading: boolean;
   fetchApplicants: () => Promise<void>;
-  deleteApplicant: (applicantId: string) => Promise<void>;
+  deleteApplicant: (applicantId: number) => Promise<void>;
   // updateApplicantStatus 函数如果需要的话
   // updateApplicantStatus: (applicantId: string, newStage: ColumnType) => Promise<void>;
 }
@@ -37,7 +37,7 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
         throw new Error('Failed to fetch tasks');
       }
     } catch (error) {
-      debug('Failed to fetch applicants:', error);
+      debug(`Failed to fetch applicants:${error}`);
       //   console.error('Failed to fetch applicants:', error);
     } finally {
       set({ isLoading: false });
@@ -56,13 +56,15 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
         },
       });
 
-      // 删除成功后，从本地状态移除该申请者
-      const updatedApplicants = unformatData(get().applicants).filter(
-        (applicant) => applicant.id !== applicantId
-      );
-      set({ applicants: formatData(updatedApplicants) });
+      const applicantsData = get().applicants;
+      if (applicantsData) {
+        const updatedApplicants = unformatData(applicantsData).filter(
+          (applicant) => applicant.id !== applicantId
+        );
+        set({ applicants: formatData(updatedApplicants) });
+      }
     } catch (error) {
-      debug('Failed to delete applicant:', error);
+      debug(`Failed to delete applicant:${error}`);
       // 这里可以加入更多的错误处理逻辑，比如显示错误消息
     }
   },

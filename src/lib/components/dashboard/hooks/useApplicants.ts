@@ -89,7 +89,7 @@ export function useApplicants() {
       setApplicants(previousApplicants);
       toast({
         title: '刪除失敗',
-        description: error.response?.data?.message || '無法刪除applicant。',
+        description: '無法刪除applicant。',
         status: 'error',
         duration: 3000,
         isClosable: true,
@@ -114,8 +114,7 @@ export function useApplicants() {
     if (!originalStage || !applicants) return;
 
     // 樂觀更新本地狀態
-    let updatedApplicantList: ApplicantModelNew[] = unformatData(tasks);
-
+    let updatedApplicantList: ApplicantModelNew[] = unformatData(tasks ?? {});
     // 找到要移動的applicant，從 updatedApplicantList
     const applicantToMove: ApplicantModelNew | undefined =
       updatedApplicantList.find((applicant) => applicant.id === applicantId);
@@ -162,7 +161,7 @@ export function useApplicants() {
       setApplicants(previousApplicants);
       toast({
         title: '狀態更新失敗',
-        description: error.response?.data?.message || '無法更新applicant狀態。',
+        description: '無法更新applicant狀態。',
         status: 'error',
         duration: 3000,
         isClosable: true,

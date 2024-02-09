@@ -10,12 +10,14 @@ import useApplicantsStore from '~/lib/store/applicantsStore';
 
 function useColumnApplicants(column: ColumnType) {
   // const { applicants, deleteApplicant, refetch, updateApplicantStatus } = useApplicants();
-  const { applicants, deleteApplicant } = useApplicantsStore((state) => ({
-    applicants: state.applicants,
-    fetchApplicants: state.fetchApplicants,
-    deleteApplicant: state.deleteApplicant,
-    isLoading: state.isLoading,
-  }));
+  const { applicants, fetchApplicants, deleteApplicant } = useApplicantsStore(
+    (state) => ({
+      applicants: state.applicants,
+      fetchApplicants: state.fetchApplicants,
+      deleteApplicant: state.deleteApplicant,
+      isLoading: state.isLoading,
+    })
+  );
 
   const toast = useToast();
   const POSITION_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/positionapps/`;
@@ -46,7 +48,7 @@ function useColumnApplicants(column: ColumnType) {
           },
         }
       );
-      refetch();
+      fetchApplicants();
       afterCreate();
     } catch (error) {
       toast({

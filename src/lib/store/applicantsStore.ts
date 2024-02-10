@@ -115,6 +115,19 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
     }
   },
   deleteApplicant: async (applicantId) => {
+    // 樂觀更新本地狀態
+    const applicantsNeedDelete: ApplicantModelNew[] = getApplicantsFromStatus(
+      get().applicants
+    );
+    // - 找到需要刪除的 applicant
+    const applicantNeedDelete = applicantsNeedDelete.find(
+      (applicant) => applicant.id === applicantId
+    );
+    const updatedApplicants = applicantsNeedDelete.filter(
+      (applicant) => applicant.id !== applicantId
+    );
+    set({ applicants: formatData(updatedApplicants) });
+
     try {
       await axios.delete(POSITION_URL, {
         headers: {
@@ -125,17 +138,17 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
           jobapp_id: applicantId,
         },
       });
-
-      const applicantsData = get().applicants;
-      if (applicantsData) {
-        const updatedApplicants = unformatData(applicantsData).filter(
-          (applicant) => applicant.id !== applicantId
-        );
-        set({ applicants: formatData(updatedApplicants) });
-      }
     } catch (error) {
       debug(`Failed to delete applicant:${error}`);
-      // 这里可以加入更多的错误处理逻辑，比如显示错误消息
+      // 回滚本地状态
+      const applicantsNeedRollback: ApplicantModelNew[] =
+        getApplicantsFromStatus(get().applicants);
+      // - 添加需要刪除的 applicant
+      if (applicantNeedDelete) {
+        applicantsNeedRollback.push(applicantNeedDelete);
+      }
+      // - 使用 set 更新 applicants
+      set({ applicants: formatData(applicantsNeedRollback) });
     }
   },
   updateApplicantStatus: async (applicantId, newStage) => {

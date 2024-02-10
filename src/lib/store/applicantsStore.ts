@@ -2,7 +2,10 @@
 import axios from 'axios';
 import { create } from 'zustand';
 
-import type { ApplicantBoardModel } from '../components/dashboard/models/applicanModel';
+import type {
+  ApplicantBoardModel,
+  ColumnType,
+} from '../components/dashboard/models/applicanModel';
 import {
   formatData,
   unformatData,
@@ -24,10 +27,14 @@ interface ApplicantsStoreState {
     afterOptimisticUpdate?: () => void
   ) => Promise<void>;
   // updateApplicantStatus 函数如果需要的话
-  // updateApplicantStatus: (applicantId: string, newStage: ColumnType) => Promise<void>;
+  updateApplicantStatus: (
+    applicantId: number,
+    newStage: ColumnType
+  ) => Promise<void>;
 }
 
 const POSITION_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/positionapps/`;
+const HEADER_APPLICATION_JSON = 'application/json';
 
 const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
   applicants: null,
@@ -86,7 +93,7 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
         },
         {
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': HEADER_APPLICATION_JSON,
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           },
         }
@@ -108,7 +115,7 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
     try {
       await axios.delete(POSITION_URL, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': HEADER_APPLICATION_JSON,
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
         data: {
@@ -128,30 +135,83 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
       // 这里可以加入更多的错误处理逻辑，比如显示错误消息
     }
   },
-  // updateApplicantStatus: async (applicantId, newStage) => {
-  //     const POSITION_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/positionapps/`; // 假设 API 需要 applicantId 来更新状态
-  //     try {
-  //         await axios.put(POSITION_URL, {
-  //             status_id: newStage.id, // 假设 API 需要 status_id 字段
-  //         }, {
-  //             headers: {
-  //                 'Content-Type': 'application/json',
-  //                 Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-  //             },
-  //         });
+  updateApplicantStatus: async (applicantId, newStage) => {
+    // 樂觀更新本地狀態
 
-  //         // 更新成功后，更新本地状态
-  //         const applicants = unformatData(get().applicants);
-  //         const applicantIndex = applicants.findIndex(applicant => applicant.id === applicantId);
-  //         if (applicantIndex !== -1) {
-  //             applicants[applicantIndex].application_status = newStage;
-  //             set({ applicants: formatData(applicants) });
-  //         }
-  //     } catch (error) {
-  //         console.error('Failed to update applicant status:', error);
-  //         // 这里可以加入更多的错误处理逻辑，比如显示错误消息
-  //     }
-  // },
+    // - 使用 get 获取 applicants
+    let applicantsAfterUpdate = unformatData(get().applicants);
+    // - 找到 updatedApplicant
+    const updatedApplicant = applicantsAfterUpdate.find(
+      (applicant) => applicant.id === applicantId
+    );
+
+    const originalStage = updatedApplicant;
+
+    // - 更新 updatedApplicant 的 status_id
+    if (updatedApplicant) {
+      updatedApplicant.application_status.id = newStage.id;
+      updatedApplicant.application_status.value = newStage.value;
+      updatedApplicant.application_status.pos = newStage.id;
+    }
+
+    // - 刪除本地的 applicantNeedUpdate
+    applicantsAfterUpdate = applicantsAfterUpdate.filter(
+      (applicant) => applicant.id !== applicantId
+    );
+    // - 添加 updatedApplicant 到本地
+    if (updatedApplicant) {
+      applicantsAfterUpdate.push(updatedApplicant);
+    }
+    // - 使用 set 更新 applicants
+    set({ applicants: formatData(applicantsAfterUpdate) });
+    // 更新 API
+    try {
+      const updateApplicantResult = await axios.put(
+        POSITION_URL,
+        {
+          status_id: newStage.id, // 假设 API 需要 status_id 字段
+        },
+        {
+          headers: {
+            'Content-Type': HEADER_APPLICATION_JSON,
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        }
+      );
+      // if updateApplicantResult is not successful, we should rollback the local state
+      if (!updateApplicantResult.data.success) {
+        throw new Error('Failed to update applicant status');
+      }
+    } catch (error) {
+      // 这里可以加入更多的错误处理逻辑，比如显示错误消息
+
+      // 回滚本地状态
+      // - 使用 get 获取 applicants
+      let applicantsNeedRollback = unformatData(get().applicants);
+      // - 找到 updatedApplicant
+      const applicantNeedRollBack = applicantsNeedRollback.find(
+        (applicant) => applicant.id === applicantId
+      );
+      // - 更新 updatedApplicant 的 status_id
+      if (applicantNeedRollBack) {
+        applicantNeedRollBack.application_status.id =
+          originalStage?.application_status.id;
+        applicantNeedRollBack.application_status.value =
+          originalStage?.application_status.value;
+        applicantNeedRollBack.application_status.pos =
+          originalStage?.application_status.pos;
+      }
+      // - 移除 updatedApplicant
+      applicantsNeedRollback = applicantsNeedRollback.filter(
+        (applicant) => applicant.id !== applicantId
+      );
+      // - 把 applicantNeedRollBack 添加到 applicantsAfterUpdate
+      applicantsNeedRollback.push(applicantNeedRollBack);
+
+      // - 使用 set 更新 applicants
+      set({ applicants: formatData(applicantsNeedRollback) });
+    }
+  },
 }));
 
 export default useApplicantsStore;

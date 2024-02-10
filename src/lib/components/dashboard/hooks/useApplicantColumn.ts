@@ -8,15 +8,19 @@ import { debug } from '../utils/logging';
 import useApplicantsStore from '~/lib/store/applicantsStore';
 
 function useColumnApplicants(column: ColumnType) {
-  const { applicants, addNewApplicant, deleteApplicant } = useApplicantsStore(
-    (state) => ({
-      applicants: state.applicants,
-      fetchApplicants: state.fetchApplicants,
-      addNewApplicant: state.addNewApplicant,
-      deleteApplicant: state.deleteApplicant,
-      isLoading: state.isLoading,
-    })
-  );
+  const {
+    applicants,
+    addNewApplicant,
+    updateApplicantStatus,
+    deleteApplicant,
+  } = useApplicantsStore((state) => ({
+    applicants: state.applicants,
+    fetchApplicants: state.fetchApplicants,
+    addNewApplicant: state.addNewApplicant,
+    deleteApplicant: state.deleteApplicant,
+    updateApplicantStatus: state.updateApplicantStatus,
+    isLoading: state.isLoading,
+  }));
 
   const toast = useToast();
 
@@ -46,6 +50,7 @@ function useColumnApplicants(column: ColumnType) {
   const dropTaskFrom = useCallback(
     async (fromColumn: string, id: ApplicantModelNew['id']) => {
       debug(`Updating task ${id} with ${JSON.stringify(updateTask)}`);
+      updateApplicantStatus(id, column);
       // updateApplicantStatus(id, column);
     },
     [column, toast]

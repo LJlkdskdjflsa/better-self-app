@@ -73,9 +73,78 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
   ) => {
     // 樂觀更新本地狀態
     const applicantsData = get().applicants;
-    // - 創建一個新的 applicant 物件
-    // - 將其添加到 applicantsData
+    // - 創建一個新的 applicant 物件, 並設定 id 先設定為最大值: 10000000
+    const tempNewApplicant: ApplicantModelNew = {
+      id: 45,
+      first_name: applicant.name,
+      last_name: '',
+      application_status: {
+        id: applicant.status_id,
+        value: '公司面試',
+        icon: null,
+        pos: applicant.status_id,
+        rejectable: false,
+        default: false,
+      },
+      position: {
+        id: applicant.position,
+        state: {
+          id: 1,
+          code: 'BDS',
+          name: 'Badakhshān',
+        },
+        country: {
+          id: 1,
+          code2: 'AF',
+          name: 'Afghanistan',
+        },
+        company: {
+          id: 1,
+          company: '讀取中',
+          logo: '/media/8af3c0b7-6f12-4d54-8d64-5c49f40f28fb.png',
+          domain: 'https://www.xrex.io',
+          location_lat: null,
+          location_lon: null,
+          location_address: null,
+          description: '讀取中',
+          phone_number: null,
+          employees_number: 50,
+        },
+        job: '讀取中',
+        responsibilities: '讀取中',
+        requirements: '讀取中',
+        job_type: 'full-time',
+        city: '讀取中',
+        is_deleted: false,
+        created_date: '2024-02-02T13:31:23.427728Z',
+        updated_date: '2024-02-02T13:31:23.427738Z',
+      },
+      company_object: {
+        id: 2,
+        company: 'Fuhai',
+        logo: '/media/8af3c0b7-6f12-4d54-8d64-5c49f40f28fb.png',
+        domain: null,
+        location_lat: null,
+        location_lon: null,
+        location_address: null,
+        description: null,
+        phone_number: null,
+        employees_number: null,
+      },
+      apply_date: '2024-01-13',
+      is_rejected: false,
+      email: null,
+      phone_number: '',
+      reference: null,
+    };
+    const applicantsNeedAdd: ApplicantModelNew[] = getApplicantsFromStatus(
+      get().applicants
+    );
+    // - 將其添加到 applicantsNeedAdd
+    applicantsNeedAdd.push(tempNewApplicant);
+
     // - 使用 set 更新 applicants
+    set({ applicants: formatData(applicantsNeedAdd) });
 
     // 關閉視窗
     if (afterOptimisticUpdate) {
@@ -103,30 +172,43 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
       );
 
       if (newApplicantData && applicantsData) {
-        const updatedApplicants = [
+        let updatedApplicants = [
           ...unformatData(applicantsData),
           newApplicantData.data.data,
         ];
+
+        // 回滾本地狀態
+        updatedApplicants = updatedApplicants.filter(
+          (tempApplicant) => tempApplicant.id !== tempNewApplicant.id
+        );
+
         set({ applicants: formatData(updatedApplicants) });
       }
     } catch (error) {
       debug(`Failed to create applicant: ${error}`);
-      // Handle error (e.g., display an error message)
+      // 回滾本地狀態
+      let applicantNeedRollBack: ApplicantModelNew[] = getApplicantsFromStatus(
+        get().applicants
+      );
+      applicantNeedRollBack = applicantNeedRollBack.filter(
+        (tempApplicant) => tempApplicant.id !== tempNewApplicant.id
+      );
+      set({ applicants: formatData(applicantNeedRollBack) });
     }
   },
   deleteApplicant: async (applicantId) => {
     // 樂觀更新本地狀態
-    const applicantsNeedDelete: ApplicantModelNew[] = getApplicantsFromStatus(
+    let applicantsNeedDelete: ApplicantModelNew[] = getApplicantsFromStatus(
       get().applicants
     );
     // - 找到需要刪除的 applicant
     const applicantNeedDelete = applicantsNeedDelete.find(
       (applicant) => applicant.id === applicantId
     );
-    const updatedApplicants = applicantsNeedDelete.filter(
+    applicantsNeedDelete = applicantsNeedDelete.filter(
       (applicant) => applicant.id !== applicantId
     );
-    set({ applicants: formatData(updatedApplicants) });
+    set({ applicants: formatData(applicantsNeedDelete) });
 
     try {
       await axios.delete(POSITION_URL, {

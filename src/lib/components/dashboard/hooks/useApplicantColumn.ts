@@ -15,7 +15,7 @@ function useColumnApplicants(column: ColumnType) {
     deleteApplicant,
   } = useApplicantsStore((state) => ({
     applicants: state.applicants,
-    fetchApplicants: state.fetchApplicants,
+    fetchApplicants: state.getApplicantsFromApi,
     addNewApplicant: state.addNewApplicant,
     deleteApplicant: state.deleteApplicant,
     updateApplicantStatus: state.updateApplicantStatus,

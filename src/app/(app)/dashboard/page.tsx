@@ -17,7 +17,7 @@ function App() {
   const [columnType, setColumnType] = useState([]);
   const { applicants, fetchApplicants } = useApplicantsStore((state) => ({
     applicants: state.applicants,
-    fetchApplicants: state.fetchApplicants,
+    fetchApplicants: state.getApplicantsFromApi,
   }));
 
   useEffect(() => {

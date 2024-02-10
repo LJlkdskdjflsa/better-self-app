@@ -1,9 +1,9 @@
-// store/applicantsStore.js
 import axios from 'axios';
 import { create } from 'zustand';
 
 import type {
   ApplicantBoardModel,
+  ApplicantModelNew,
   ColumnType,
 } from '../components/dashboard/models/applicanModel';
 import {
@@ -12,10 +12,12 @@ import {
 } from '../components/dashboard/utils/formData';
 import { debug } from '../components/dashboard/utils/logging';
 
+import { getApplicantsFromStatus } from './applicantsStoreHelper';
+
 interface ApplicantsStoreState {
   applicants: ApplicantBoardModel | null;
   isLoading: boolean;
-  fetchApplicants: () => Promise<void>;
+  getApplicantsFromApi: () => Promise<void>;
 
   deleteApplicant: (applicantId: number) => Promise<void>;
   addNewApplicant: (
@@ -39,7 +41,8 @@ const HEADER_APPLICATION_JSON = 'application/json';
 const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
   applicants: null,
   isLoading: true,
-  fetchApplicants: async () => {
+
+  getApplicantsFromApi: async () => {
     set({ isLoading: true });
     try {
       const response = await axios.get(POSITION_URL, {
@@ -138,10 +141,12 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
   updateApplicantStatus: async (applicantId, newStage) => {
     // 樂觀更新本地狀態
 
-    // - 使用 get 获取 applicants
-    let applicantsAfterUpdate = unformatData(get().applicants);
+    let applicantsNeedUpdate: ApplicantModelNew[] = getApplicantsFromStatus(
+      get().applicants
+    );
+
     // - 找到 updatedApplicant
-    const updatedApplicant = applicantsAfterUpdate.find(
+    const updatedApplicant = applicantsNeedUpdate.find(
       (applicant) => applicant.id === applicantId
     );
 
@@ -155,15 +160,15 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
     }
 
     // - 刪除本地的 applicantNeedUpdate
-    applicantsAfterUpdate = applicantsAfterUpdate.filter(
+    applicantsNeedUpdate = applicantsNeedUpdate.filter(
       (applicant) => applicant.id !== applicantId
     );
     // - 添加 updatedApplicant 到本地
     if (updatedApplicant) {
-      applicantsAfterUpdate.push(updatedApplicant);
+      applicantsNeedUpdate.push(updatedApplicant);
     }
     // - 使用 set 更新 applicants
-    set({ applicants: formatData(applicantsAfterUpdate) });
+    set({ applicants: formatData(applicantsNeedUpdate) });
     // 更新 API
     try {
       const updateApplicantResult = await axios.put(
@@ -183,30 +188,34 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
         throw new Error('Failed to update applicant status');
       }
     } catch (error) {
-      // 这里可以加入更多的错误处理逻辑，比如显示错误消息
-
       // 回滚本地状态
       // - 使用 get 获取 applicants
-      let applicantsNeedRollback = unformatData(get().applicants);
+      let applicantsNeedRollback: ApplicantModelNew[] = getApplicantsFromStatus(
+        get().applicants
+      );
       // - 找到 updatedApplicant
       const applicantNeedRollBack = applicantsNeedRollback.find(
         (applicant) => applicant.id === applicantId
       );
+      // - 移除 updatedApplicant
+      if (applicantNeedRollBack) {
+        applicantsNeedRollback = applicantsNeedRollback.filter(
+          (applicant) => applicant.id !== applicantId
+        );
+      }
       // - 更新 updatedApplicant 的 status_id
       if (applicantNeedRollBack) {
         applicantNeedRollBack.application_status.id =
-          originalStage?.application_status.id;
+          originalStage?.application_status.id ?? 1;
         applicantNeedRollBack.application_status.value =
-          originalStage?.application_status.value;
+          originalStage?.application_status.value ?? '';
         applicantNeedRollBack.application_status.pos =
-          originalStage?.application_status.pos;
+          originalStage?.application_status.pos ?? 1;
       }
-      // - 移除 updatedApplicant
-      applicantsNeedRollback = applicantsNeedRollback.filter(
-        (applicant) => applicant.id !== applicantId
-      );
-      // - 把 applicantNeedRollBack 添加到 applicantsAfterUpdate
-      applicantsNeedRollback.push(applicantNeedRollBack);
+      // - 加入 updatedApplicant
+      if (applicantNeedRollBack) {
+        applicantsNeedRollback.push(applicantNeedRollBack);
+      }
 
       // - 使用 set 更新 applicants
       set({ applicants: formatData(applicantsNeedRollback) });

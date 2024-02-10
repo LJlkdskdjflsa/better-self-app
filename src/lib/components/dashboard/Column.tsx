@@ -132,7 +132,16 @@ function Column({ column }: { column: ColumnType }) {
               </Button>
               <Button
                 colorScheme="blue"
-                onClick={() => addNewTask(applicant, onClose)}
+                onClick={() =>
+                  addNewTask(
+                    {
+                      position: applicant.position,
+                      status_id: column.id,
+                      name: applicant.name,
+                    },
+                    onClose
+                  )
+                }
               >
                 確認
               </Button>

@@ -13,16 +13,26 @@ interface ApplicantsStoreState {
   applicants: ApplicantBoardModel | null;
   isLoading: boolean;
   fetchApplicants: () => Promise<void>;
+
   deleteApplicant: (applicantId: number) => Promise<void>;
+  addNewApplicant: (
+    applicant: {
+      position: number;
+      status_id: number;
+      name: string;
+    },
+    afterOptimisticUpdate?: () => void
+  ) => Promise<void>;
   // updateApplicantStatus 函数如果需要的话
   // updateApplicantStatus: (applicantId: string, newStage: ColumnType) => Promise<void>;
 }
+
+const POSITION_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/positionapps/`;
 
 const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
   applicants: null,
   isLoading: true,
   fetchApplicants: async () => {
-    const POSITION_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/positionapps/`;
     set({ isLoading: true });
     try {
       const response = await axios.get(POSITION_URL, {
@@ -43,8 +53,58 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
       set({ isLoading: false });
     }
   },
+  addNewApplicant: async (
+    applicant: {
+      position: number;
+      status_id: number;
+      name: string;
+    },
+    afterOptimisticUpdate?: () => void
+  ) => {
+    // 樂觀更新本地狀態
+    const applicantsData = get().applicants;
+    // - 創建一個新的 applicant 物件
+    // - 將其添加到 applicantsData
+    // - 使用 set 更新 applicants
+
+    // 關閉視窗
+    if (afterOptimisticUpdate) {
+      afterOptimisticUpdate();
+    }
+
+    try {
+      const newApplicantData = await axios.post(
+        POSITION_URL,
+        {
+          position_id: applicant.position,
+          status_id: applicant.status_id,
+          first_name: applicant.name,
+          last_name: '',
+          company: 'Fuhai',
+          application_date: '2024-01-13',
+          source: 'N/A',
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        }
+      );
+
+      if (newApplicantData && applicantsData) {
+        const updatedApplicants = [
+          ...unformatData(applicantsData),
+          newApplicantData.data.data,
+        ];
+        set({ applicants: formatData(updatedApplicants) });
+      }
+    } catch (error) {
+      debug(`Failed to create applicant: ${error}`);
+      // Handle error (e.g., display an error message)
+    }
+  },
   deleteApplicant: async (applicantId) => {
-    const POSITION_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/positionapps/`; // 假设 API 需要 applicantId 来删除
     try {
       await axios.delete(POSITION_URL, {
         headers: {

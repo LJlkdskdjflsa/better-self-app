@@ -1,7 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string, react-hooks/exhaustive-deps */
 
 import { useToast } from '@chakra-ui/react';
-import axios from 'axios';
 import { useCallback } from 'react';
 
 import type { ApplicantModelNew, ColumnType } from '../models/applicanModel';
@@ -9,57 +8,17 @@ import { debug } from '../utils/logging';
 import useApplicantsStore from '~/lib/store/applicantsStore';
 
 function useColumnApplicants(column: ColumnType) {
-  // const { applicants, deleteApplicant, refetch, updateApplicantStatus } = useApplicants();
-  const { applicants, fetchApplicants, deleteApplicant } = useApplicantsStore(
+  const { applicants, addNewApplicant, deleteApplicant } = useApplicantsStore(
     (state) => ({
       applicants: state.applicants,
       fetchApplicants: state.fetchApplicants,
+      addNewApplicant: state.addNewApplicant,
       deleteApplicant: state.deleteApplicant,
       isLoading: state.isLoading,
     })
   );
 
   const toast = useToast();
-  const POSITION_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/positionapps/`;
-
-  const addNewTask = async (
-    applicant: {
-      name: string;
-      position: number;
-    },
-    afterCreate: () => void
-  ): Promise<void> => {
-    try {
-      await axios.post(
-        POSITION_URL,
-        {
-          position_id: applicant.position,
-          status_id: column.id,
-          first_name: applicant.name,
-          last_name: '',
-          company: 'Fuhai',
-          application_date: '2024-01-13',
-          source: 'N/A',
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-          },
-        }
-      );
-      fetchApplicants();
-      afterCreate();
-    } catch (error) {
-      toast({
-        title: '創建失敗',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-        position: 'top',
-      });
-    }
-  };
 
   const deleteTask = useCallback(async (id: ApplicantModelNew['id']) => {
     deleteApplicant(id);
@@ -109,7 +68,7 @@ function useColumnApplicants(column: ColumnType) {
 
   return {
     tasks: safeTasks,
-    addNewTask,
+    addNewTask: addNewApplicant,
     updateTask,
     dropTaskFrom,
     deleteTask,

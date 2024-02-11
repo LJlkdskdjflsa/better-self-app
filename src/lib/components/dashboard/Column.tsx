@@ -36,7 +36,7 @@ import type { ApplicantModelNew, ColumnType } from './models/applicantModel';
 function Column({ column }: { column: ColumnType }) {
   const {
     tasks,
-    addNewTask,
+    addNewApplicant,
     deleteTask,
     dropTaskFrom,
     swapTasks,
@@ -133,10 +133,10 @@ function Column({ column }: { column: ColumnType }) {
               <Button
                 colorScheme="blue"
                 onClick={() =>
-                  addNewTask(
+                  addNewApplicant(
                     {
                       position: applicant.position,
-                      status_id: column.id,
+                      status: column,
                       name: applicant.name,
                     },
                     onClose

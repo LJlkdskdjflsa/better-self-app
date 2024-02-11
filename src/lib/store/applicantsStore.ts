@@ -23,7 +23,7 @@ interface ApplicantsStoreState {
   addNewApplicant: (
     applicant: {
       position: number;
-      status_id: number;
+      status: ColumnType;
       name: string;
     },
     afterOptimisticUpdate?: () => void
@@ -66,7 +66,7 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
   addNewApplicant: async (
     applicant: {
       position: number;
-      status_id: number;
+      status: ColumnType;
       name: string;
     },
     afterOptimisticUpdate?: () => void
@@ -79,10 +79,10 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
       first_name: applicant.name,
       last_name: '',
       application_status: {
-        id: applicant.status_id,
-        value: '公司面試',
+        id: applicant.status.id,
+        value: applicant.status.value,
         icon: null,
-        pos: applicant.status_id,
+        pos: applicant.status.id,
         rejectable: false,
         default: false,
       },
@@ -158,7 +158,7 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
         POSITION_URL,
         {
           position_id: applicant.position,
-          status_id: applicant.status_id,
+          status_id: applicant.status.id,
           first_name: applicant.name,
           last_name: '',
           company: 'Fuhai',

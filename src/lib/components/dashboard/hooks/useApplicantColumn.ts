@@ -73,7 +73,7 @@ function useColumnApplicants(column: ColumnType) {
 
   return {
     tasks: safeTasks,
-    addNewTask: addNewApplicant,
+    addNewApplicant,
     updateTask,
     dropTaskFrom,
     deleteTask,

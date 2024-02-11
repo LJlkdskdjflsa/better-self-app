@@ -3,7 +3,7 @@
 import { useToast } from '@chakra-ui/react';
 import { useCallback } from 'react';
 
-import type { ApplicantModelNew, ColumnType } from '../models/applicanModel';
+import type { ApplicantModelNew, ColumnType } from '../models/applicantModel';
 import { debug } from '../utils/logging';
 import useApplicantsStore from '~/lib/store/applicantsStore';
 

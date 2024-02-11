@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import type { Note } from '../models/applicanModel';
+import type { Note } from '../models/applicantModel';
 
 export const useNotes = (taskID: number) => {
   const [notes, setNotes] = useState<Note[]>([]);

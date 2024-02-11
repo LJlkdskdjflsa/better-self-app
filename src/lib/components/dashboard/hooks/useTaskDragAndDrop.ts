@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import type { XYCoord } from 'react-dnd';
 import { useDrag, useDrop } from 'react-dnd';
 
-import type { ApplicantModelNew } from '../models/applicanModel';
+import type { ApplicantModelNew } from '../models/applicantModel';
 import { ItemType } from '../utils/enums';
 import type { DragItem } from '../utils/models';
 

@@ -1,7 +1,7 @@
 import type {
   ApplicantBoardModel,
   ApplicantModelNew,
-} from '../components/dashboard/models/applicanModel';
+} from '../components/dashboard/models/applicantModel';
 import { unformatData } from '../components/dashboard/utils/formData';
 
 export function getApplicantsFromStatus(

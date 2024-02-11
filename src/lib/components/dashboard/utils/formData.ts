@@ -1,7 +1,7 @@
 import type {
   ApplicantBoardModel,
   ApplicantModelNew,
-} from '../models/applicanModel';
+} from '../models/applicantModel';
 
 export function formatData(response: ApplicantModelNew[]): ApplicantBoardModel {
   return response.reduce(

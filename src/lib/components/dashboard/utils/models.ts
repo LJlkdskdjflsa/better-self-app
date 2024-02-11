@@ -1,11 +1,4 @@
-import type { ApplicantModelNew } from '../models/applicanModel';
-
-// export interface ApplicantModel {
-//   id: string;
-//   title: string;
-//   column: string;
-//   color: string;
-// }
+import type { ApplicantModelNew } from '../models/applicantModel';
 
 export interface DragItem {
   index: number;

@@ -5,7 +5,7 @@ import type {
   ApplicantBoardModel,
   ApplicantModelNew,
   ColumnType,
-} from '../components/dashboard/models/applicanModel';
+} from '../components/dashboard/models/applicantModel';
 import {
   formatData,
   unformatData,
@@ -75,7 +75,7 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
     const applicantsData = get().applicants;
     // - 創建一個新的 applicant 物件, 並設定 id 先設定為最大值: 10000000
     const tempNewApplicant: ApplicantModelNew = {
-      id: 45,
+      id: 10000000,
       first_name: applicant.name,
       last_name: '',
       application_status: {
@@ -118,6 +118,7 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
         is_deleted: false,
         created_date: '2024-02-02T13:31:23.427728Z',
         updated_date: '2024-02-02T13:31:23.427738Z',
+        department: '',
       },
       company_object: {
         id: 2,
@@ -136,6 +137,7 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
       email: null,
       phone_number: '',
       reference: null,
+      column: 'temp_column', // temp, TODO: remove
     };
     const applicantsNeedAdd: ApplicantModelNew[] = getApplicantsFromStatus(
       get().applicants

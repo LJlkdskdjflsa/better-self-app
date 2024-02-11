@@ -25,7 +25,7 @@ import { memo } from 'react';
 import NoteTab from './applicantCardTabs/NoteTab';
 import PositionTab from './applicantCardTabs/PositionTab';
 import { useTaskDragAndDrop } from './hooks/useTaskDragAndDrop';
-import type { ApplicantModelNew } from './models/applicanModel';
+import type { ApplicantModelNew } from './models/applicantModel';
 
 type ApplicantCardProps = {
   index: number;

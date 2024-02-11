@@ -1,6 +1,6 @@
 import { FormControl, FormLabel, TabPanel, Text } from '@chakra-ui/react';
 
-import type { ApplicantModelNew } from '../models/applicanModel';
+import type { ApplicantModelNew } from '../models/applicantModel';
 
 interface PositionTabProps {
   task: ApplicantModelNew;

@@ -10,11 +10,11 @@ import {
   Spacer,
   TabPanel,
   Text,
+  useToast,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 
-import { useNotes } from '../hooks/useNotes';
 import type { ApplicantModelNew, Note } from '../models/applicantModel';
 
 interface NoteTabProps {
@@ -22,8 +22,64 @@ interface NoteTabProps {
 }
 
 const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
-  const { notes, fetchNotes, setNotes, deleteNote } = useNotes(task.id);
+  // const { notes, fetchNotes, setNotes, deleteNote } = useNotes(task.id);
+  const [notes, setNotes] = useState<Note[]>([]);
   const [newNote, setNewNote] = useState('');
+  const toast = useToast();
+
+  const fetchNotes = useCallback(() => {
+    fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/positionapps/${task.id}/notes/`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setNotes(data.data);
+      });
+  }, [task]);
+
+  const deleteNote = (noteID: number) => {
+    // Optimistic update
+    setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteID));
+
+    fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/positionapps/${task.id}/notes/`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+        body: JSON.stringify({ jobapp_note_id: noteID }),
+      }
+    )
+      .then((response) => response.json())
+      // .then((data) => {
+      //   if (data.success) {
+      //   }
+      // })
+      .catch((error) => {
+        // Handle any errors, such as network issues
+        toast({
+          title: '刪除失敗',
+          description: (error as Error).message,
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+          position: 'top',
+        });
+        // rollback
+        fetchNotes(); // Optionally, fetch notes again to ensure UI is in sync with the server
+      });
+  };
+
+  useEffect(() => {
+    fetchNotes();
+  }, [task, fetchNotes]);
 
   const addNote = () => {
     const tempNote: Note = {
@@ -49,13 +105,13 @@ const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
       }
     )
       .then((response) => response.json())
-      .then(() =>
+      .then((actualNote) =>
         // actualNote
         {
-          // setNotes((prevNotes) => [
-          //   ...prevNotes.filter((note) => note.id !== tempNote.id),
-          //   actualNote.data,
-          // ]);
+          setNotes((prevNotes) => [
+            actualNote.data,
+            ...prevNotes.filter((note) => note.id !== tempNote.id),
+          ]);
         }
       )
       .catch(() => {
@@ -68,10 +124,6 @@ const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
         fetchNotes();
       });
   };
-
-  useEffect(() => {
-    fetchNotes();
-  });
 
   return (
     <TabPanel>

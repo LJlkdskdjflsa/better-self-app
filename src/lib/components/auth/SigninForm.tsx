@@ -175,9 +175,9 @@ export default function SigninForm() {
                 記住密碼
               </FormLabel>
             </Box>
-            <Text color="blue.500" mt={2}>
+            {/* <Text color="blue.500" mt={2}>
               忘記密碼
-            </Text>
+            </Text> */}
           </Flex>
 
           <Button mt={4} colorScheme="blue" type="submit" w="100%">

@@ -68,7 +68,7 @@ export default function CreateUpdatePositionForm({
       if (position) {
         // 如果有傳遞 position 對象，則發送 PATCH 請求來更新該職位
         await axios.patch(
-          `http://127.0.0.1:8001/api/positions/company`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/positions/company`,
           { position_id: values.id, ...values },
           {
             headers: {

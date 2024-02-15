@@ -27,14 +27,17 @@ const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
 
   const addNote = () => {
     let isCancelled = false;
-    fetch(`http://127.0.0.1:8001/api/positionapps/${task.id}/notes/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-      },
-      body: JSON.stringify({ description: newNote }),
-    })
+    fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/positionapps/${task.id}/notes/`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+        body: JSON.stringify({ description: newNote }),
+      }
+    )
       .then((response) => response.json())
       .then(() => {
         if (!isCancelled) {

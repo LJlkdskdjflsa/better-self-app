@@ -15,18 +15,28 @@ import { useEffect, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 
 import { useNotes } from '../hooks/useNotes';
-import type { ApplicantModelNew } from '../models/applicantModel';
+import type { ApplicantModelNew, Note } from '../models/applicantModel';
 
 interface NoteTabProps {
   task: ApplicantModelNew;
 }
 
 const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
-  const { notes, fetchNotes, deleteNote } = useNotes(task.id);
+  const { notes, fetchNotes, setNotes, deleteNote } = useNotes(task.id);
   const [newNote, setNewNote] = useState('');
 
   const addNote = () => {
-    let isCancelled = false;
+    const tempNote: Note = {
+      id: 10000000, // Use a temporary negative ID to avoid conflicts
+      description: newNote,
+      created_date: new Date().toISOString(),
+      updated_date: new Date().toISOString(),
+    };
+    setNewNote('');
+
+    // Optimistically add the new note to the UI
+    setNotes([tempNote, ...notes]);
+
     fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/positionapps/${task.id}/notes/`,
       {
@@ -39,21 +49,29 @@ const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
       }
     )
       .then((response) => response.json())
-      .then(() => {
-        if (!isCancelled) {
-          //   console.log(data);
-          fetchNotes();
-          setNewNote('');
+      .then(() =>
+        // actualNote
+        {
+          // setNotes((prevNotes) => [
+          //   ...prevNotes.filter((note) => note.id !== tempNote.id),
+          //   actualNote.data,
+          // ]);
         }
+      )
+      .catch(() => {
+        // If the API call fails, remove the temporary note
+        setNotes((prevNotes) =>
+          prevNotes.filter((note) => note.id !== tempNote.id)
+        );
+      })
+      .finally(() => {
+        fetchNotes();
       });
-    return () => {
-      isCancelled = true;
-    };
   };
 
   useEffect(() => {
     fetchNotes();
-  }, [task, fetchNotes]);
+  });
 
   return (
     <TabPanel>

@@ -47,5 +47,5 @@ export const useNotes = (taskID: number) => {
     fetchNotes();
   }, [fetchNotes]);
 
-  return { notes, fetchNotes, deleteNote };
+  return { notes, fetchNotes, setNotes, deleteNote };
 };

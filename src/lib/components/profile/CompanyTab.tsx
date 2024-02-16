@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Divider,
   Flex,
   FormControl,
   FormLabel,
@@ -102,12 +101,8 @@ const CompanyTab: React.FC = () => {
     <form onSubmit={handleSubmit}>
       <TabPanel>
         <FormControl>
-          <Text fontSize="xl">公司簡介</Text>
-
-          <Divider pt={10} />
-
           <Flex>
-            <Text pt={5} fontSize="lg">
+            <Text pt={3} fontSize="lg">
               基本資料
             </Text>
             <Spacer />

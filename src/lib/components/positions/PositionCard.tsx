@@ -21,28 +21,9 @@ import {
 import axios from 'axios';
 import { FaTrash } from 'react-icons/fa';
 
+import { restorePosition } from './apis';
 import CreateUpdatePositionForm from './CreatePositionForm';
-
-interface Position {
-  id: number;
-  job: string;
-  job_type: string;
-  department: string;
-  created_date: string;
-  company: {
-    id: number;
-    company: string;
-  };
-  state: {
-    id: number;
-  };
-  country: {
-    id: number;
-  };
-  city: string;
-  responsibilities: string;
-  requirements: string;
-}
+import type { Position } from './interfaces';
 
 export default function PositionCard({ position }: { position: Position }) {
   const toast = useToast();
@@ -118,9 +99,18 @@ export default function PositionCard({ position }: { position: Position }) {
               <Button onClick={onOpenUpdate} colorScheme="green">
                 更新職位
               </Button>
-              <Button onClick={deletePosition} colorScheme="red">
-                <Icon as={FaTrash} />
-              </Button>
+              {!position.is_deleted ? (
+                <Button onClick={deletePosition} colorScheme="red">
+                  <Icon as={FaTrash} />
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => restorePosition(position.id, toast)}
+                  colorScheme="yellow"
+                >
+                  恢復職位
+                </Button>
+              )}
             </Stack>
             <Modal isOpen={isOpen} onClose={onClose}>
               <ModalOverlay />

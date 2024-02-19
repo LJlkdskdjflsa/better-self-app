@@ -16,47 +16,14 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import axios from 'axios';
 import type { NextPage } from 'next';
 import { useQuery } from 'react-query';
 
 import { useAuth } from '~/lib/components/hooks/useAuth';
+import { fetchPositions } from '~/lib/components/positions/apis';
 import AddPositionForm from '~/lib/components/positions/CreatePositionForm';
+import type { Position } from '~/lib/components/positions/interfaces';
 import PositionCard from '~/lib/components/positions/PositionCard';
-
-interface Position {
-  id: number;
-  job: string;
-  job_type: string;
-  department: string;
-  created_date: string;
-  company: {
-    id: number;
-    company: string;
-  };
-  state: {
-    id: number;
-  };
-  country: {
-    id: number;
-  };
-  city: string;
-  responsibilities: string;
-  requirements: string;
-}
-
-const fetchPositions = async () => {
-  // const { token } = useAuth();
-  const { data } = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/positions/company`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-      },
-    }
-  );
-  return data.data;
-};
 
 const PositionsPage: NextPage = () => {
   useAuth('/');

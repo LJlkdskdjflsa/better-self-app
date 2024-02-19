@@ -29,6 +29,11 @@ const menuItems = [
     items: [
       { label: '招聘版面', icon: <IoMdClipboard />, href: '/dashboard' },
       { label: '職位管理', icon: <CiViewTable />, href: '/positions' },
+      {
+        label: '已刪除職位',
+        icon: <CiViewTable />,
+        href: '/deleted-positions',
+      },
     ],
   },
   {

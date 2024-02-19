@@ -2,7 +2,7 @@ import { useToast } from '@chakra-ui/react'; // Import useToast from Chakra UI
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-export function useAuth(redirectUrl = '/') {
+export function useAuth(redirectUrl = '/dashboard') {
   const router = useRouter();
   const pathname = usePathname();
   const toast = useToast(); // Initialize the useToast hook

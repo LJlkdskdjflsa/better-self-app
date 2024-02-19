@@ -25,6 +25,8 @@ function App() {
   }, [applicants, fetchApplicants]);
 
   useEffect(() => {
+    // if token is in localstorage
+
     const fetchColumnType = async () => {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/api/positionapps/statuses/`,
@@ -40,7 +42,9 @@ function App() {
       }
     };
 
-    fetchColumnType();
+    if (localStorage.getItem('accessToken')) {
+      fetchColumnType();
+    }
   }, []);
 
   return (

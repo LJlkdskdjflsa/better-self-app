@@ -8,7 +8,7 @@ import i18nConfig from '../i18nConfig';
 export default async function initTranslations(
   locale: string,
   namespaces: string[],
-  i18nInstanceOptional: i18n | undefined,
+  i18nInstanceOptional?: i18n | undefined,
   resources?: Resource
 ) {
   const i18nInstance = i18nInstanceOptional || createInstance();

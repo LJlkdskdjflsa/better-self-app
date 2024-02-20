@@ -13,7 +13,7 @@ import PositionCard from '~/lib/components/positions/PositionCard';
 const PositionsPage: NextPage = () => {
   useAuth('/');
   const { data: positions, isLoading } = useQuery<Position[]>(
-    'positions',
+    'deleted-positions',
     fetchDeletedPositions
   );
 

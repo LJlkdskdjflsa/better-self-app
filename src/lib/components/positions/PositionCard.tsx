@@ -96,13 +96,16 @@ export default function PositionCard({ position }: { position: Position }) {
               <Button onClick={onOpen} colorScheme="blue">
                 了解詳情
               </Button>
-              <Button onClick={onOpenUpdate} colorScheme="green">
-                更新職位
-              </Button>
+
               {!position.is_deleted ? (
-                <Button onClick={deletePosition} colorScheme="red">
-                  <Icon as={FaTrash} />
-                </Button>
+                <>
+                  <Button onClick={onOpenUpdate} colorScheme="green">
+                    更新職位
+                  </Button>
+                  <Button onClick={deletePosition} colorScheme="red">
+                    <Icon as={FaTrash} />
+                  </Button>
+                </>
               ) : (
                 <Button
                   onClick={() => restorePosition(position.id, toast)}

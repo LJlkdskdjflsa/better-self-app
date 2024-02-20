@@ -9,10 +9,12 @@ import {
   Text,
 } from '@chakra-ui/react';
 import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
 
 import { Illustration } from './Illustration';
 
 export default function BetterSelfLandingPage() {
+  const { t } = useTranslation();
   return (
     <Container maxW="5xl">
       <Stack
@@ -26,7 +28,7 @@ export default function BetterSelfLandingPage() {
           fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
           lineHeight="110%"
         >
-          用 AI 解鎖人才探索的潛能
+          {t('header')}
         </Heading>
         <Text color="gray.500" maxW="3xl">
           開始使用 HR AI，讓你的人才探索更有效率

@@ -18,5 +18,8 @@
         "react/prop-types": "off"
       }
     }
-  ]
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  }
 }

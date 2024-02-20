@@ -1,10 +1,14 @@
-'use client';
-
 import { Flex } from '@chakra-ui/react';
 
+import initTranslations from '~/i18n';
 import LandingPage from '~/lib/components/landing/LandingPage';
 
-const Home = () => {
+export default async function Home({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) {
+  const { t } = await initTranslations(locale, ['landing-page']);
   return (
     <Flex
       direction="column"
@@ -15,9 +19,8 @@ const Home = () => {
       mb={8}
       w="full"
     >
+      <>{t('header')}</>
       <LandingPage />
     </Flex>
   );
-};
-
-export default Home;
+}

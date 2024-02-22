@@ -151,7 +151,7 @@ export default function SigninForm() {
             <InputGroup>
               <Input
                 type={showPassword ? 'text' : 'password'}
-                placeholder="Password"
+                placeholder={t('password')}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />

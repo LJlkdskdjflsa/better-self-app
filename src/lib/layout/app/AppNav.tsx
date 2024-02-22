@@ -33,10 +33,18 @@ export default function AppNav() {
       label: 'Menu',
       icon: <HamburgerIcon />,
       items: [
-        { label: t('dashboard'), icon: <IoMdClipboard />, href: '/dashboard' },
-        { label: t('positions'), icon: <CiViewTable />, href: '/positions' },
         {
-          label: t('positions-deleted'),
+          label: t('common:dashboard'),
+          icon: <IoMdClipboard />,
+          href: '/dashboard',
+        },
+        {
+          label: t('common:positions'),
+          icon: <CiViewTable />,
+          href: '/positions',
+        },
+        {
+          label: t('common:positions-deleted'),
           icon: <CiViewTable />,
           href: '/deleted-positions',
         },
@@ -47,12 +55,12 @@ export default function AppNav() {
       icon: <Avatar src="/avatar.png" size="sm" />,
       items: [
         {
-          label: t('company-setting'),
+          label: t('common:company-setting'),
           icon: <SettingsIcon />,
           href: '/profile',
         },
         {
-          label: t('log-out'),
+          label: t('common:log-out'),
           icon: <IoMdLogOut />,
           href: '/',
           onClick: logout,

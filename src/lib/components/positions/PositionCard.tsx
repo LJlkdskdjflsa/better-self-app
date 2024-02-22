@@ -19,6 +19,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import { FaTrash } from 'react-icons/fa';
 
 import { restorePosition } from './apis';
@@ -33,6 +34,7 @@ export default function PositionCard({ position }: { position: Position }) {
     onOpen: onOpenUpdate,
     onClose: onCloseUpdate,
   } = useDisclosure();
+  const { t } = useTranslation();
 
   const deletePosition = async () => {
     try {
@@ -83,10 +85,14 @@ export default function PositionCard({ position }: { position: Position }) {
             <Text fontSize="xl" fontWeight="bold">
               {position.job}
             </Text>
-            <Text>部門：{position.department}</Text>
-            <Text>形式：{position.job_type}</Text>
             <Text>
-              創建日期：
+              {t('department')}：{position.department}
+            </Text>
+            <Text>
+              {t('job-type')}：{position.job_type}
+            </Text>
+            <Text>
+              {t('created-date')}：
               {new Date(position.created_date).toLocaleDateString()}
             </Text>
           </Box>
@@ -94,13 +100,13 @@ export default function PositionCard({ position }: { position: Position }) {
           <Flex>
             <Stack direction="row" spacing={3}>
               <Button onClick={onOpen} colorScheme="blue">
-                了解詳情
+                {t('job-detail')}
               </Button>
 
               {!position.is_deleted ? (
                 <>
                   <Button onClick={onOpenUpdate} colorScheme="green">
-                    更新職位
+                    {t('job-update')}
                   </Button>
                   <Button onClick={deletePosition} colorScheme="red">
                     <Icon as={FaTrash} />
@@ -111,24 +117,32 @@ export default function PositionCard({ position }: { position: Position }) {
                   onClick={() => restorePosition(position.id, toast)}
                   colorScheme="yellow"
                 >
-                  恢復職位
+                  {t('job-restore')}
                 </Button>
               )}
             </Stack>
             <Modal isOpen={isOpen} onClose={onClose}>
               <ModalOverlay />
               <ModalContent>
-                <ModalHeader>職位詳情</ModalHeader>
+                <ModalHeader>{t('job-detail')}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                   <Stack spacing={3}>
-                    <Text>公司：{position.company.company}</Text>
-                    <Text>職位：{position.job}</Text>
-                    <Text>部門：{position.department}</Text>
-                    <Text>工作類型：{position.job_type}</Text>
-                    <Text>職位介紹</Text>
+                    <Text>
+                      {t('company')}：{position.company.company}
+                    </Text>
+                    <Text>
+                      {t('job-position')}：{position.job}
+                    </Text>
+                    <Text>
+                      {t('department')}：{position.department}
+                    </Text>
+                    <Text>
+                      {t('job-type')}：{position.job_type}
+                    </Text>
+                    <Text>{t('job-introduction')}</Text>
                     <Textarea value={position.responsibilities} readOnly />
-                    <Text>職位要求</Text>
+                    <Text>{t('job-requirement')}</Text>
                     <Textarea value={position.requirements} readOnly />
                   </Stack>
                 </ModalBody>
@@ -137,7 +151,7 @@ export default function PositionCard({ position }: { position: Position }) {
             <Modal isOpen={isUpdateOpen} onClose={onCloseUpdate}>
               <ModalOverlay />
               <ModalContent>
-                <ModalHeader>更新職位</ModalHeader>
+                <ModalHeader>{t('update-position')}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                   <CreateUpdatePositionForm

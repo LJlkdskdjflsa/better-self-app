@@ -9,7 +9,7 @@ import { useAuth } from '~/lib/components/hooks/useAuth';
 import PositionsList from '~/lib/components/positions/PositionsList';
 import TranslationsProvider from '~/lib/components/TranslationsProvider';
 
-const i18nNamespaces = ['position'];
+const i18nNamespaces = ['position', 'common'];
 
 export default function PositionsPage({
   params: { locale },

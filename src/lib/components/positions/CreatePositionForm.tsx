@@ -13,6 +13,7 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 interface CreateUpdatePositionFormProps {
   onClose: () => void;
@@ -37,6 +38,7 @@ export default function CreateUpdatePositionForm({
   onClose,
   position,
 }: CreateUpdatePositionFormProps) {
+  const { t } = useTranslation();
   const toast = useToast();
   const {
     handleSubmit,
@@ -92,7 +94,9 @@ export default function CreateUpdatePositionForm({
       }
 
       toast({
-        title: position ? '職位已成功更新' : '職位已成功新增',
+        title: position
+          ? t('common:update-completed')
+          : t('common:create-completed'),
         status: 'success',
         duration: 3000,
         isClosable: true,
@@ -102,7 +106,7 @@ export default function CreateUpdatePositionForm({
       onClose();
     } catch (error) {
       toast({
-        title: position ? '更新職位失敗' : '新增職位失敗',
+        title: position ? t('common:update-failed') : t('common:create-failed'),
         status: 'error',
         duration: 3000,
         isClosable: true,
@@ -128,7 +132,7 @@ export default function CreateUpdatePositionForm({
         <FormControl>
           <Input
             id="department"
-            placeholder="部門"
+            placeholder={t('department')}
             {...register('department', {
               required: 'Required',
             })}
@@ -138,14 +142,14 @@ export default function CreateUpdatePositionForm({
         <FormControl>
           <Select
             id="job_type"
-            placeholder="工作性質"
+            // placeholder="工作性質"
             {...register('job_type', {
               required: 'Required',
             })}
           >
-            <option value="full-time">全職</option>
-            <option value="part-time">兼職</option>
-            <option value="contract">約聘</option>
+            <option value="full-time">{t('full-time')}</option>
+            <option value="part-time">{t('part-time')}</option>
+            <option value="contract">{t('contract')}</option>
           </Select>
         </FormControl>
 
@@ -171,7 +175,7 @@ export default function CreateUpdatePositionForm({
 
         <Flex justifyContent="flex-end" mt={4}>
           <Button onClick={onClose} colorScheme="red">
-            取消
+            {t('common:confirm')}
           </Button>
           <Box w={4} />
           <Button
@@ -180,7 +184,7 @@ export default function CreateUpdatePositionForm({
             isLoading={isSubmitting}
             mr={2}
           >
-            確認
+            {t('common:cancel')}
           </Button>
         </Flex>
       </VStack>

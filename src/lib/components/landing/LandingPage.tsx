@@ -16,8 +16,6 @@ import { Illustration } from './Illustration';
 export default function BetterSelfLandingPage() {
   const { t } = useTranslation();
 
-  // const { i18n } = useTranslation();
-  // console.log(t);
   return (
     <Container maxW="5xl">
       <Stack

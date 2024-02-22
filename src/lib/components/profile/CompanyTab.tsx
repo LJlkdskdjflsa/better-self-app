@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Box,
   Button,
@@ -11,15 +13,15 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import type { Company } from '../dashboard/models/profileModel';
-
-// interface CompanyTabProps {}
 
 const CompanyTab: React.FC = () => {
   const [company, setCompany] = useState<Company>({} as Company);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const toast = useToast();
+  const { t } = useTranslation();
 
   // update the company state with the company data from the API
   useEffect(() => {
@@ -103,7 +105,7 @@ const CompanyTab: React.FC = () => {
         <FormControl>
           <Flex>
             <Text pt={3} fontSize="lg">
-              基本資料
+              {t('basic-information')}
             </Text>
             <Spacer />
             {/* Add a submit button */}
@@ -113,14 +115,14 @@ const CompanyTab: React.FC = () => {
               isLoading={isSubmitting}
               type="submit"
             >
-              更新資料
+              {t('update-button')}
             </Button>
           </Flex>
 
           <Box m={5}>
             {/* Each input field now has a name attribute and an onChange handler */}
             <FormControl id="companyName">
-              <FormLabel>公司名稱</FormLabel>
+              <FormLabel>{t('company-name')}</FormLabel>
               <Input
                 name="company"
                 type="text"
@@ -130,7 +132,7 @@ const CompanyTab: React.FC = () => {
             </FormControl>
 
             <FormControl id="website">
-              <FormLabel>公司網頁</FormLabel>
+              <FormLabel>{t('company-website')}</FormLabel>
               <Input
                 name="domain"
                 type="url"
@@ -140,7 +142,7 @@ const CompanyTab: React.FC = () => {
             </FormControl>
 
             <FormControl id="about">
-              <FormLabel>關於公司</FormLabel>
+              <FormLabel>{t('about-company')}</FormLabel>
               <Input
                 name="description"
                 type="text"
@@ -150,7 +152,7 @@ const CompanyTab: React.FC = () => {
             </FormControl>
 
             <FormControl id="employees">
-              <FormLabel>員工人數</FormLabel>
+              <FormLabel>{t('number-of-employees')}</FormLabel>
               <Input
                 name="employees_number"
                 type="number"
@@ -160,7 +162,7 @@ const CompanyTab: React.FC = () => {
             </FormControl>
 
             <FormControl id="phone">
-              <FormLabel>電話</FormLabel>
+              <FormLabel>{t('company-phone-number')}</FormLabel>
               <Input
                 name="phone_number"
                 type="tel"
@@ -170,7 +172,7 @@ const CompanyTab: React.FC = () => {
             </FormControl>
 
             <FormControl id="address">
-              <FormLabel>地址</FormLabel>
+              <FormLabel>{t('company-address')}</FormLabel>
               <Input
                 name="location_address"
                 type="text"

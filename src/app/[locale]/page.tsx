@@ -1,7 +1,8 @@
-import { Flex } from '@chakra-ui/react';
+import { Flex, Spacer } from '@chakra-ui/react';
 
 import initTranslations from '~/i18n';
 import LandingPage from '~/lib/components/landing/LandingPage';
+import LanguageChanger from '~/lib/components/LanguageChanger';
 import TranslationsProvider from '~/lib/components/TranslationsProvider';
 
 const i18nNamespaces = ['landing-page'];
@@ -18,6 +19,10 @@ export default async function Home({
       locale={locale}
       resources={resources}
     >
+      <Flex p={5}>
+        <Spacer />
+        <LanguageChanger />
+      </Flex>
       <Flex
         direction="column"
         alignItems="center"

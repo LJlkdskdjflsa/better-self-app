@@ -18,6 +18,8 @@ import Link from 'next/link';
 import { CiViewTable } from 'react-icons/ci';
 import { IoMdClipboard, IoMdLogOut } from 'react-icons/io';
 
+import LanguageChanger from '~/lib/components/LanguageChanger';
+
 const logout = () => {
   localStorage.removeItem('accessToken');
 };
@@ -50,7 +52,7 @@ export default function AppNav() {
   return (
     <Box w="100%" px={4}>
       <Flex h={16} alignItems="center" justifyContent="space-between">
-        <Image src="logo.png" alt="Logo" boxSize="50px" />
+        <Image src="/logo.png" alt="Logo" boxSize="50px" />
         <Spacer />
         {menuItems.map((menuItem) => (
           <Menu key={menuItem.label}>
@@ -73,6 +75,7 @@ export default function AppNav() {
             </MenuList>
           </Menu>
         ))}
+        <LanguageChanger />
       </Flex>
     </Box>
   );

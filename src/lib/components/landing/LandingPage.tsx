@@ -15,6 +15,9 @@ import { Illustration } from './Illustration';
 
 export default function BetterSelfLandingPage() {
   const { t } = useTranslation();
+
+  // const { i18n } = useTranslation();
+  // console.log(t);
   return (
     <Container maxW="5xl">
       <Stack
@@ -31,7 +34,7 @@ export default function BetterSelfLandingPage() {
           {t('header')}
         </Heading>
         <Text color="gray.500" maxW="3xl">
-          開始使用 HR AI，讓你的人才探索更有效率
+          {t('description')}
         </Text>
         <Stack spacing={6} direction="row">
           <Button
@@ -42,7 +45,7 @@ export default function BetterSelfLandingPage() {
             _hover={{ bg: 'blue.500' }}
           >
             <Link href="/dashboard" passHref>
-              開始使用
+              {t('start-using')}
             </Link>
           </Button>
           {/* <Button rounded="full" px={6}>

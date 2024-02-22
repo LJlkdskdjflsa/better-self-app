@@ -1,11 +1,17 @@
 import { Analytics } from '@vercel/analytics/react';
+// import { dir } from 'i18next'; // Function to determine text direction
 import type { Metadata, Viewport } from 'next';
+// import { Inter } from 'next/font/google'; // Assuming you're using Next.js fonts
 
+import i18nConfig from '../../i18nConfig';
 import Providers from '~/app/providers';
 import Layout from '~/lib/layout';
 
 type RootLayoutProps = {
   children: React.ReactNode;
+  params: {
+    locale: string;
+  };
 };
 
 const APP_NAME = 'HR AI';
@@ -46,9 +52,16 @@ export const viewport: Viewport = {
   themeColor: '#FFFFFF',
 };
 
-const RootLayout = ({ children }: RootLayoutProps) => {
+export function generateStaticParams() {
+  return i18nConfig.locales.map((locale) => ({ params: { locale } }));
+}
+
+const RootLayout = ({ children, params: { locale } }: RootLayoutProps) => {
   return (
-    <html lang="en">
+    <html
+      lang={locale}
+      // dir={dir(locale)}
+    >
       <body>
         <Providers>
           <Layout>

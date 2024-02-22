@@ -13,6 +13,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 import { FaTrash } from 'react-icons/fa';
 
 import type { ApplicantModelNew, Note } from '../models/applicantModel';
@@ -22,10 +23,10 @@ interface NoteTabProps {
 }
 
 const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
-  // const { notes, fetchNotes, setNotes, deleteNote } = useNotes(task.id);
   const [notes, setNotes] = useState<Note[]>([]);
   const [newNote, setNewNote] = useState('');
   const toast = useToast();
+  const { t } = useTranslation(); // Use the useTranslation hook
 
   const fetchNotes = useCallback(() => {
     fetch(
@@ -58,14 +59,10 @@ const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
       }
     )
       .then((response) => response.json())
-      // .then((data) => {
-      //   if (data.success) {
-      //   }
-      // })
       .catch((error) => {
         // Handle any errors, such as network issues
         toast({
-          title: '刪除失敗',
+          title: t('common:delete-failed'), // Translated
           description: (error as Error).message,
           status: 'error',
           duration: 9000,
@@ -105,15 +102,12 @@ const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
       }
     )
       .then((response) => response.json())
-      .then((actualNote) =>
-        // actualNote
-        {
-          setNotes((prevNotes) => [
-            actualNote.data,
-            ...prevNotes.filter((note) => note.id !== tempNote.id),
-          ]);
-        }
-      )
+      .then((actualNote) => {
+        setNotes((prevNotes) => [
+          actualNote.data,
+          ...prevNotes.filter((note) => note.id !== tempNote.id),
+        ]);
+      })
       .catch(() => {
         // If the API call fails, remove the temporary note
         setNotes((prevNotes) =>
@@ -128,8 +122,15 @@ const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
   return (
     <TabPanel>
       {notes.map((note) => (
-        <Box w="100%" p={2} m={2} border="1px solid gray" borderRadius="md">
-          <FormControl key={note.id}>
+        <Box
+          w="100%"
+          p={2}
+          m={2}
+          border="1px solid gray"
+          borderRadius="md"
+          key={note.id}
+        >
+          <FormControl>
             <Flex>
               <Text>{note.description}</Text>
               <Spacer />
@@ -137,7 +138,7 @@ const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
                 icon={<Icon as={FaTrash} />}
                 colorScheme="red"
                 onClick={() => deleteNote(note.id)}
-                aria-label=""
+                aria-label={t('common:delete')} // Translated
               />
             </Flex>
           </FormControl>
@@ -146,7 +147,7 @@ const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
 
       <Box m={2}>
         <FormControl>
-          <FormLabel>新增備註</FormLabel>
+          <FormLabel>{t('common:create-note')}</FormLabel>
           <Flex w="100%">
             <Input
               value={newNote}
@@ -154,7 +155,7 @@ const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
             />
             <Spacer />
             <Button ml={10} onClick={addNote}>
-              新增
+              {t('common:create')} {/* Translate the button text */}
             </Button>
           </Flex>
         </FormControl>

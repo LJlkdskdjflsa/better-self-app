@@ -52,7 +52,7 @@ export default function PositionCard({ position }: { position: Position }) {
       );
 
       toast({
-        title: '職位已成功刪除',
+        title: t('common:delete-completed'),
         status: 'success',
         duration: 3000,
         isClosable: true,
@@ -61,7 +61,7 @@ export default function PositionCard({ position }: { position: Position }) {
       // Refresh the list of positions
     } catch (error) {
       toast({
-        title: '刪除職位失敗',
+        title: t('common:delete-failed'),
         status: 'error',
         duration: 3000,
         isClosable: true,
@@ -100,7 +100,7 @@ export default function PositionCard({ position }: { position: Position }) {
           <Flex>
             <Stack direction="row" spacing={3}>
               <Button onClick={onOpen} colorScheme="blue">
-                {t('job-detail')}
+                {t('position-detail')}
               </Button>
 
               {!position.is_deleted ? (
@@ -124,7 +124,7 @@ export default function PositionCard({ position }: { position: Position }) {
             <Modal isOpen={isOpen} onClose={onClose}>
               <ModalOverlay />
               <ModalContent>
-                <ModalHeader>{t('job-detail')}</ModalHeader>
+                <ModalHeader>{t('position-detail')}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                   <Stack spacing={3}>
@@ -142,7 +142,7 @@ export default function PositionCard({ position }: { position: Position }) {
                     </Text>
                     <Text>{t('job-introduction')}</Text>
                     <Textarea value={position.responsibilities} readOnly />
-                    <Text>{t('job-requirement')}</Text>
+                    <Text>{t('position-requirement')}</Text>
                     <Textarea value={position.requirements} readOnly />
                   </Stack>
                 </ModalBody>

@@ -1,5 +1,3 @@
-// @ts-ignore
-
 'use client';
 
 import { AddIcon } from '@chakra-ui/icons';
@@ -26,6 +24,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import ApplicantCard from './ApplicantCard';
 import useColumnApplicants from './hooks/useApplicantColumn';
@@ -42,6 +41,7 @@ function Column({ column }: { column: ColumnType }) {
     swapTasks,
     // updateTask,
   } = useColumnApplicants(column);
+  const { t } = useTranslation();
 
   const { dropRef, isOver } = useColumnDrop(column.value, dropTaskFrom);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -94,11 +94,11 @@ function Column({ column }: { column: ColumnType }) {
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>新增應聘者</ModalHeader>
+            <ModalHeader>{t('new-applicant')}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <FormControl>
-                <FormLabel>姓名</FormLabel>
+                <FormLabel>{t('common:name')}</FormLabel>
                 <Input
                   value={applicant.name}
                   onChange={(e) =>
@@ -107,9 +107,9 @@ function Column({ column }: { column: ColumnType }) {
                 />
               </FormControl>
               <FormControl mt={4}>
-                <FormLabel>職位</FormLabel>
+                <FormLabel>{t('common:position')}</FormLabel>
                 <Select
-                  placeholder="選擇職位"
+                  // placeholder="選擇職位"
                   value={applicant.position}
                   onChange={(e) =>
                     setApplicant((prev) => ({
@@ -127,8 +127,8 @@ function Column({ column }: { column: ColumnType }) {
               </FormControl>
             </ModalBody>
             <ModalFooter>
-              <Button variant="ghost" mr={3} onClick={onClose}>
-                取消
+              <Button colorScheme="red" mr={3} onClick={onClose}>
+                {t('common:cancel')}
               </Button>
               <Button
                 colorScheme="blue"
@@ -143,7 +143,7 @@ function Column({ column }: { column: ColumnType }) {
                   )
                 }
               >
-                確認
+                {t('common:confirm')}
               </Button>
             </ModalFooter>
           </ModalContent>

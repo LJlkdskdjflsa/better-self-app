@@ -156,7 +156,6 @@ export default function CreateUpdatePositionForm({
         <FormControl>
           <Textarea
             id="responsibilities"
-            placeholder="職位介紹"
             {...register('responsibilities', {
               required: 'Required',
             })}
@@ -166,7 +165,6 @@ export default function CreateUpdatePositionForm({
         <FormControl>
           <Textarea
             id="requirements"
-            placeholder="職位要求"
             {...register('requirements', {
               required: 'Required',
             })}

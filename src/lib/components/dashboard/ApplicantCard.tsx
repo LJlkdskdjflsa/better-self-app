@@ -21,6 +21,7 @@ import {
 } from '@chakra-ui/react';
 import _ from 'lodash';
 import { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import NoteTab from './applicantCardTabs/NoteTab';
 import PositionTab from './applicantCardTabs/PositionTab';
@@ -44,6 +45,7 @@ function ApplicantModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
+  const { t } = useTranslation();
   // const positions = usePositions();
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="6xl">
@@ -69,9 +71,11 @@ function ApplicantModal({
           <Tabs orientation="vertical">
             <TabList>
               <Tab>
-                <Text style={{ whiteSpace: 'nowrap' }}>職位</Text>
+                <Text style={{ whiteSpace: 'nowrap' }}>
+                  {t('common:position')}
+                </Text>
               </Tab>
-              <Tab>備註</Tab>
+              <Tab>{t('common:note')}</Tab>
             </TabList>
 
             <TabPanels>

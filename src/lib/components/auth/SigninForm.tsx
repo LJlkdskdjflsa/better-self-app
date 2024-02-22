@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export default function SigninForm() {
@@ -22,6 +23,7 @@ export default function SigninForm() {
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const { t } = useTranslation();
 
   const toast = useToast();
   const router = useRouter();
@@ -89,8 +91,8 @@ export default function SigninForm() {
 
         // Display success toast
         toast({
-          title: '登入成功',
-          description: "You've logged in successfully.",
+          title: t('sign-in-successfully'),
+          // description: "You've logged in successfully.",
           status: 'success',
           position: 'top',
           duration: 5000,
@@ -102,7 +104,7 @@ export default function SigninForm() {
         // Redirect or other post-login logic
       } else {
         toast({
-          title: '登入失敗',
+          title: t('sign-in-failed'),
           status: 'error',
           position: 'top',
           duration: 9000,
@@ -112,8 +114,8 @@ export default function SigninForm() {
       }
     } catch (error) {
       toast({
-        title: '登入失敗',
-        description: (error as Error).message,
+        title: t('sign-in-failed'),
+        // description: (error as Error).message,
         status: 'error',
         position: 'top',
         duration: 9000,
@@ -133,14 +135,14 @@ export default function SigninForm() {
       mt={200}
     >
       <Text fontSize="2xl" fontWeight="bold">
-        登入
+        {t('signin')}
       </Text>
       <Box p={5}>
         <form onSubmit={handleSubmit}>
           <FormControl isRequired width="300px">
             <Input
               type="text"
-              placeholder="帳號"
+              placeholder={t('username')}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
@@ -172,7 +174,7 @@ export default function SigninForm() {
                 onChange={(e) => setRememberMe(e.target.checked)}
               />
               <FormLabel ml={4} htmlFor="remember-me" mb="0">
-                記住密碼
+                {t('remember-password')}
               </FormLabel>
             </Box>
             {/* <Text color="blue.500" mt={2}>
@@ -181,7 +183,7 @@ export default function SigninForm() {
           </Flex>
 
           <Button mt={4} colorScheme="blue" type="submit" w="100%">
-            登入
+            {t('signin')}
           </Button>
         </form>
       </Box>

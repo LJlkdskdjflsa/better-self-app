@@ -40,7 +40,7 @@ const menuItems = [
   },
   {
     label: 'Profile',
-    icon: <Avatar src="avatar.png" size="sm" />,
+    icon: <Avatar src="/avatar.png" size="sm" />,
     items: [
       { label: '公司設定', icon: <SettingsIcon />, href: '/profile' },
       { label: '登出', icon: <IoMdLogOut />, href: '/', onClick: logout },

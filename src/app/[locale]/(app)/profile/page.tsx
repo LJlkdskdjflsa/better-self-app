@@ -18,8 +18,8 @@ export default function PersonalDataPage({
 }) {
   useAuth('/profile');
 
+  // i18n
   const [i18nResources, setI18nResources] = useState<Resource | null>(null);
-
   useEffect(() => {
     const loadResources = async () => {
       const { resources } = await initTranslations(locale, i18nNamespaces);
@@ -28,7 +28,6 @@ export default function PersonalDataPage({
 
     loadResources();
   }, [locale]);
-
   if (!i18nResources) {
     return <div>Loading...</div>;
   }

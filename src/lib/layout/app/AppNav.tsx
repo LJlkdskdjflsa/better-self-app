@@ -15,6 +15,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
 import { CiViewTable } from 'react-icons/ci';
 import { IoMdClipboard, IoMdLogOut } from 'react-icons/io';
 
@@ -24,31 +25,41 @@ const logout = () => {
   localStorage.removeItem('accessToken');
 };
 
-const menuItems = [
-  {
-    label: 'Menu',
-    icon: <HamburgerIcon />,
-    items: [
-      { label: '招聘版面', icon: <IoMdClipboard />, href: '/dashboard' },
-      { label: '職位管理', icon: <CiViewTable />, href: '/positions' },
-      {
-        label: '已刪除職位',
-        icon: <CiViewTable />,
-        href: '/deleted-positions',
-      },
-    ],
-  },
-  {
-    label: 'Profile',
-    icon: <Avatar src="/avatar.png" size="sm" />,
-    items: [
-      { label: '公司設定', icon: <SettingsIcon />, href: '/profile' },
-      { label: '登出', icon: <IoMdLogOut />, href: '/', onClick: logout },
-    ],
-  },
-];
-
 export default function AppNav() {
+  const { t } = useTranslation();
+
+  const menuItems = [
+    {
+      label: 'Menu',
+      icon: <HamburgerIcon />,
+      items: [
+        { label: t('dashboard'), icon: <IoMdClipboard />, href: '/dashboard' },
+        { label: t('positions'), icon: <CiViewTable />, href: '/positions' },
+        {
+          label: t('positions-deleted'),
+          icon: <CiViewTable />,
+          href: '/deleted-positions',
+        },
+      ],
+    },
+    {
+      label: 'Profile',
+      icon: <Avatar src="/avatar.png" size="sm" />,
+      items: [
+        {
+          label: t('company-setting'),
+          icon: <SettingsIcon />,
+          href: '/profile',
+        },
+        {
+          label: t('log-out'),
+          icon: <IoMdLogOut />,
+          href: '/',
+          onClick: logout,
+        },
+      ],
+    },
+  ];
   return (
     <Box w="100%" px={4}>
       <Flex h={16} alignItems="center" justifyContent="space-between">

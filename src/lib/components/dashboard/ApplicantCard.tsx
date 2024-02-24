@@ -31,7 +31,6 @@ import type { ApplicantModelNew } from './models/applicantModel';
 type ApplicantCardProps = {
   index: number;
   task: ApplicantModelNew;
-  // onUpdate: (id: ApplicantModelNew['id'], updatedTask: ApplicantModelNew) => void;
   onDelete: (id: ApplicantModelNew['id']) => void;
   onDropHover: (i: number, j: number) => void;
 };
@@ -46,7 +45,6 @@ function ApplicantModal({
   onClose: () => void;
 }) {
   const { t } = useTranslation();
-  // const positions = usePositions();
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="6xl">
       <ModalOverlay />
@@ -97,7 +95,6 @@ function ApplicantModal({
 function ApplicantCard({
   index,
   task,
-  // onUpdate: handleUpdate,
   onDropHover: handleDropHover,
   onDelete: handleDelete,
 }: ApplicantCardProps) {

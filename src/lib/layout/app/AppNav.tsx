@@ -69,7 +69,7 @@ export default function AppNav() {
     },
   ];
   return (
-    <Box w="100%" px={4}>
+    <Box w="100%" px={4} height="8vh">
       <Flex h={16} alignItems="center" justifyContent="space-between">
         <Image src="/logo.png" alt="Logo" boxSize="50px" />
         <Spacer />

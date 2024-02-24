@@ -25,7 +25,6 @@ const usePositions = () => {
       } catch (error) {
         toast({
           title: 'Error',
-          // description: '無法獲取職位數據',
           status: 'error',
           duration: 3000,
           isClosable: true,

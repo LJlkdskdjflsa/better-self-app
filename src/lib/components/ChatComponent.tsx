@@ -1,4 +1,5 @@
 import { Box, useToast } from '@chakra-ui/react';
+import type { MessageModel } from '@chatscope/chat-ui-kit-react';
 import {
   ChatContainer,
   MainContainer,
@@ -9,17 +10,25 @@ import {
 } from '@chatscope/chat-ui-kit-react';
 import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid'; // Added import for uuid
+import { useTranslation } from 'react-i18next'; // Import useTranslation
+import { v4 as uuidv4 } from 'uuid';
 
 import { debug } from './dashboard/utils/logging';
 
+interface CustomMessageModel extends MessageModel {
+  id: string;
+}
+
 const ChatComponent = () => {
-  const [messages, setMessages] = useState([
+  const { t } = useTranslation(); // Initialize useTranslation
+  const [messages, setMessages] = useState<CustomMessageModel[]>([
     {
-      id: uuidv4(), // Added UUID to initial message
-      message: "Hello, I'm Your HR assistance! Ask me anything!",
+      id: uuidv4(),
+      message: t('common:initial-message'), // Use t function for translation
       sentTime: 'just now',
       sender: 'ChatGPT',
+      direction: 'incoming',
+      position: 'normal',
     },
   ]);
   const [isTyping, setIsTyping] = useState(false);
@@ -70,7 +79,12 @@ const ChatComponent = () => {
 
     setMessages((prevMessages) => [
       ...prevMessages,
-      { ...newMessage, sentTime: 'just now' },
+      {
+        ...newMessage,
+        sentTime: 'just now',
+        direction: 'outgoing',
+        position: 'normal',
+      },
     ]);
     setIsTyping(true);
     try {
@@ -87,7 +101,12 @@ const ChatComponent = () => {
         };
         setMessages((prevMessages) => [
           ...prevMessages,
-          { ...chatGPTResponse, message: content },
+          {
+            ...chatGPTResponse,
+            message: content,
+            direction: 'incoming',
+            position: 'normal',
+          },
         ]); // Ensured the message property is of type string
       }
     } catch (error: unknown) {
@@ -113,7 +132,7 @@ const ChatComponent = () => {
           borderRadius="20px"
           boxShadow="0 0 10px 0 rgba(0,0,0,0.1)"
         >
-          Chat with AI
+          {t('common:chat-with-ai')} {/* Translate static text */}
           <MainContainer
             style={{ padding: '0', border: 'none', height: '100%' }}
           >
@@ -122,13 +141,13 @@ const ChatComponent = () => {
                 style={{
                   borderRadius: '5px',
                   backgroundColor: '#EDF2F7',
-                  maxHeight: '700px', // Set a max-height that fits your layout
-                  overflowY: 'auto', // Enable vertical scrolling
+                  maxHeight: '700px',
+                  overflowY: 'auto',
                 }}
                 scrollBehavior="smooth"
                 typingIndicator={
                   isTyping ? (
-                    <TypingIndicator content="ChatGPT is typing" />
+                    <TypingIndicator content={t('common:typing-indicator')} /> // Translate dynamic content
                   ) : null
                 }
               >
@@ -137,15 +156,13 @@ const ChatComponent = () => {
                     key={message.id}
                     model={{
                       ...message,
-                      direction: 'outgoing',
-                      position: 'single',
                     }}
                   />
                 ))}
               </MessageList>
               <MessageInput
                 attachButton={false}
-                placeholder="Send a Message"
+                placeholder={t('common:sendMessagePlaceholder')} // Translate placeholders
                 onSend={handleSendRequest}
               />
             </ChatContainer>

@@ -25,17 +25,8 @@ export default function LanguageChanger() {
     // redirect to the new locale path
     if (currentLocale === i18nConfig.defaultLocale) {
       //   console.log('first');
-      router.push(`/${newLocale}${currentPathname}`);
+      router.push(`/${newLocale}/${currentPathname}`);
     } else {
-      //   console.log('second');
-      //   console.log('current local');
-      //   console.log(currentLocale);
-      //   console.log('new local');
-      //   console.log(newLocale);
-      //   console.log(
-      //     currentPathname.replace(`/${currentLocale}`, `/${newLocale}`)
-      //   );
-
       if (currentLocale === newLocale) {
         return;
       }

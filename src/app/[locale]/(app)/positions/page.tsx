@@ -39,7 +39,7 @@ export default function PositionsPage({
       locale={locale}
       resources={i18nResources}
     >
-      <Flex justifyContent="center" height="60%">
+      <Flex justifyContent="center" height="90%">
         <PositionsList isDeleted={false} />
       </Flex>
     </TranslationsProvider>

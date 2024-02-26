@@ -69,33 +69,35 @@ export default function AppNav() {
     },
   ];
   return (
-    <Box w="100%" px={4} height="8vh">
-      <Flex h={16} alignItems="center" justifyContent="space-between">
-        <Image src="/logo.png" alt="Logo" boxSize="50px" />
-        <Spacer />
-        {menuItems.map((menuItem) => (
-          <Menu key={menuItem.label}>
-            <MenuButton
-              as={Button}
-              rightIcon={menuItem.icon}
-              variant="ghost"
-              mr={4}
-            />
-            <MenuList>
-              {menuItem.items.map((item) => (
-                <Link href={item.href} passHref key={item.label}>
-                  <Flex>
-                    <MenuItem icon={item.icon} onClick={item.onClick}>
-                      <Text>{item.label}</Text>
-                    </MenuItem>
-                  </Flex>
-                </Link>
-              ))}
-            </MenuList>
-          </Menu>
-        ))}
-        <LanguageChanger />
-      </Flex>
-    </Box>
+    <div style={{ position: 'relative', zIndex: 1000 }}>
+      <Box w="100%" px={4} height="8vh">
+        <Flex h={16} alignItems="center" justifyContent="space-between">
+          <Image src="/logo.png" alt="Logo" boxSize="50px" />
+          <Spacer />
+          {menuItems.map((menuItem) => (
+            <Menu key={menuItem.label}>
+              <MenuButton
+                as={Button}
+                rightIcon={menuItem.icon}
+                variant="ghost"
+                mr={4}
+              />
+              <MenuList>
+                {menuItem.items.map((item) => (
+                  <Link href={item.href} passHref key={item.label}>
+                    <Flex>
+                      <MenuItem icon={item.icon} onClick={item.onClick}>
+                        <Text>{item.label}</Text>
+                      </MenuItem>
+                    </Flex>
+                  </Link>
+                ))}
+              </MenuList>
+            </Menu>
+          ))}
+          <LanguageChanger />
+        </Flex>
+      </Box>
+    </div>
   );
 }

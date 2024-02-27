@@ -94,7 +94,7 @@ function Column({ column }: { column: ColumnType }) {
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>{t('new-applicant')}</ModalHeader>
+            <ModalHeader>{t('common:new-applicant')}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <FormControl>

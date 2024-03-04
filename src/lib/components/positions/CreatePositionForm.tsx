@@ -3,6 +3,7 @@ import {
   Button,
   Flex,
   FormControl,
+  FormLabel,
   Input,
   Select,
   Textarea,
@@ -154,6 +155,14 @@ export default function CreateUpdatePositionForm({
         </FormControl>
 
         <FormControl>
+          <FormLabel
+            htmlFor="responsibilities"
+            {...register('responsibilities', {
+              required: 'Required',
+            })}
+          >
+            {t('common:responsibilities')}
+          </FormLabel>
           <Textarea
             id="responsibilities"
             {...register('responsibilities', {
@@ -163,6 +172,15 @@ export default function CreateUpdatePositionForm({
         </FormControl>
 
         <FormControl>
+          <FormLabel
+            htmlFor="requirements"
+            {...register('requirements', {
+              required: 'Required',
+            })}
+          >
+            {t('common:requirements')}
+          </FormLabel>
+
           <Textarea
             id="requirements"
             {...register('requirements', {

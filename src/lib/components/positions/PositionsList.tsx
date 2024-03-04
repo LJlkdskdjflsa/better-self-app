@@ -56,9 +56,11 @@ const PositionsList: React.FC<PositionsListProps> = ({ isDeleted }) => {
           {t('position-list')}
         </Heading>
         <Spacer />
-        <Button onClick={onOpen} mb={4} colorScheme="blue">
-          {t('common:create')}
-        </Button>
+        {!isDeleted && (
+          <Button onClick={onOpen} mb={4} colorScheme="blue">
+            {t('common:create')}
+          </Button>
+        )}
       </Flex>
       {/* Modal for CreateUpdatePositionForm */}
       <Modal isOpen={isOpen} onClose={onClose}>

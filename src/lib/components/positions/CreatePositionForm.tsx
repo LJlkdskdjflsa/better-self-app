@@ -15,6 +15,9 @@ import { useEffect } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useQueryClient } from 'react-query';
+
+import type { Position } from './interfaces';
 
 interface CreateUpdatePositionFormProps {
   onClose: () => void;
@@ -39,6 +42,7 @@ export default function CreateUpdatePositionForm({
   onClose,
   position,
 }: CreateUpdatePositionFormProps) {
+  const queryClient = useQueryClient();
   const { t } = useTranslation();
   const toast = useToast();
   const {
@@ -49,7 +53,7 @@ export default function CreateUpdatePositionForm({
   } = useForm<IFormValues>({
     defaultValues: position || {
       // 如果有傳遞 position 對象，則使用該對象作為默認值
-      city: '預設城市',
+      city: 'defaut-city',
       state_id: 1,
       country_id: 1,
       company_id: 1,
@@ -81,8 +85,7 @@ export default function CreateUpdatePositionForm({
           }
         );
       } else {
-        // 如果沒有傳遞 position 對象，則發送 POST 請求來創建新的職位
-        await axios.post(
+        const response = await axios.post(
           `${process.env.NEXT_PUBLIC_API_URL}/api/positions/company`,
           values,
           {
@@ -92,6 +95,16 @@ export default function CreateUpdatePositionForm({
             },
           }
         );
+
+        // if response success
+        const existingPositions =
+          queryClient.getQueryData<Position[]>('positions');
+        if (existingPositions) {
+          queryClient.setQueryData<Position[]>('positions', [
+            ...existingPositions,
+            response.data.data,
+          ]);
+        }
       }
 
       toast({
@@ -191,7 +204,7 @@ export default function CreateUpdatePositionForm({
 
         <Flex justifyContent="flex-end" mt={4}>
           <Button onClick={onClose} colorScheme="red">
-            {t('common:confirm')}
+            {t('common:cancel')}
           </Button>
           <Box w={4} />
           <Button
@@ -200,7 +213,7 @@ export default function CreateUpdatePositionForm({
             isLoading={isSubmitting}
             mr={2}
           >
-            {t('common:cancel')}
+            {t('common:confirm')}
           </Button>
         </Flex>
       </VStack>

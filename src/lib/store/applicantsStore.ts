@@ -73,7 +73,6 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
   ) => {
     // 樂觀更新本地狀態
     const applicantsData = get().applicants;
-    // - 創建一個新的 applicant 物件, 並設定 id 先設定為最大值: 10000000
     const tempNewApplicant: ApplicantModelNew = {
       id: 10000000,
       first_name: applicant.name,

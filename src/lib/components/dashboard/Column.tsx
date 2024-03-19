@@ -23,7 +23,7 @@ import {
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import ApplicantCard from './ApplicantCard';
@@ -45,7 +45,10 @@ function Column({ column }: { column: ColumnType }) {
 
   const { dropRef, isOver } = useColumnDrop(column.value, dropTaskFrom);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [applicant, setApplicant] = useState({ name: '', position: 1 });
+  const [applicant, setApplicant] = useState({
+    name: '',
+    position: 0, // invalid value
+  });
   // const [positions, setPositions] = useState<Job[]>([]);
   const positions = usePositions();
 
@@ -63,6 +66,16 @@ function Column({ column }: { column: ColumnType }) {
       />
     )
   );
+
+  useEffect(() => {
+    if (positions.length > 0) {
+      setApplicant((prev) => ({
+        ...prev,
+        // Set the position to the first position's ID
+        position: positions[0].id,
+      }));
+    }
+  }, [positions]);
 
   return (
     <Box>
@@ -109,8 +122,7 @@ function Column({ column }: { column: ColumnType }) {
               <FormControl mt={4}>
                 <FormLabel>{t('common:position')}</FormLabel>
                 <Select
-                  // placeholder="選擇職位"
-                  value={applicant.position}
+                  value={applicant.position || ''}
                   onChange={(e) =>
                     setApplicant((prev) => ({
                       ...prev,

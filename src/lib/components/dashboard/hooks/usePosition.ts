@@ -13,6 +13,7 @@ const usePositions = () => {
   useEffect(() => {
     const fetchPositions = async () => {
       try {
+        // console.log('try to fetch positions');
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}/api/positions/company`,
           {

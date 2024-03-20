@@ -4,6 +4,7 @@ import axios from 'axios';
 type ToastFunction = (options: UseToastOptions) => void;
 export const fetchPositions = async () => {
   // const { token } = useAuth();
+  // console.log('try to fetch positions');
   const { data } = await axios.get(
     `${process.env.NEXT_PUBLIC_API_URL}/api/positions/company`,
     {

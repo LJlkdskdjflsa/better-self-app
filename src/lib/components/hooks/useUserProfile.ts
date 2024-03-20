@@ -1,6 +1,8 @@
 import { useQuery } from 'react-query';
 
-const fetchUserProfile = async () => {
+import type { UserProfile } from '../domain/user/interface/UserProfile';
+
+const fetchUserProfile = async (): Promise<UserProfile> => {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/users/profile/?basic=True`,
     {
@@ -17,5 +19,5 @@ const fetchUserProfile = async () => {
 };
 
 export function useUserProfile() {
-  return useQuery('userProfile', fetchUserProfile);
+  return useQuery<UserProfile, Error>('userProfile', fetchUserProfile);
 }

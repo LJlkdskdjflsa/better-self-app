@@ -37,7 +37,7 @@ export default function DashboardPage({
     return <div>Loading...</div>;
   }
 
-  const showChatComponent = userProfile?.data?.can_use_chat_with_ai || false;
+  const showChatComponent = userProfile?.can_use_chat_with_ai || false;
 
   return (
     <Grid

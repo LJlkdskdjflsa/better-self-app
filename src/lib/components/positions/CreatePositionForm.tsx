@@ -17,6 +17,8 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useQueryClient } from 'react-query';
 
+import { useUserProfile } from '../hooks/useUserProfile';
+
 import type { Position } from './interfaces';
 
 interface CreateUpdatePositionFormProps {
@@ -45,6 +47,8 @@ export default function CreateUpdatePositionForm({
   const queryClient = useQueryClient();
   const { t } = useTranslation();
   const toast = useToast();
+  const { data: userProfile, isLoading } = useUserProfile(); // Destructure to get data and isLoading
+
   const {
     handleSubmit,
     register,
@@ -76,7 +80,10 @@ export default function CreateUpdatePositionForm({
         // 如果有傳遞 position 對象，則發送 PATCH 請求來更新該職位
         await axios.patch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/positions/company`,
-          { position_id: values.id, ...values },
+          {
+            position_id: values.id,
+            ...values,
+          },
           {
             headers: {
               'Content-Type': 'application/json',
@@ -87,7 +94,10 @@ export default function CreateUpdatePositionForm({
       } else {
         const response = await axios.post(
           `${process.env.NEXT_PUBLIC_API_URL}/api/positions/company`,
-          values,
+          {
+            ...values,
+            company_id: userProfile?.company?.id,
+          },
           {
             headers: {
               'Content-Type': 'application/json',
@@ -210,7 +220,8 @@ export default function CreateUpdatePositionForm({
           <Button
             type="submit"
             colorScheme="blue"
-            isLoading={isSubmitting}
+            isLoading={isLoading || isSubmitting}
+            disabled={isLoading || isSubmitting}
             mr={2}
           >
             {t('common:confirm')}

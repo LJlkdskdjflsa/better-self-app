@@ -4,7 +4,7 @@ import type { UserProfile } from '../domain/user/interface/UserProfile';
 
 const fetchUserProfile = async (): Promise<UserProfile> => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/users/profile/?basic=True`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/users/profile/`,
     {
       headers: {
         'Content-Type': 'application/json',
@@ -15,7 +15,9 @@ const fetchUserProfile = async (): Promise<UserProfile> => {
   if (!response.ok) {
     throw new Error('Network response was not ok');
   }
-  return response.json();
+
+  const data = await response.json();
+  return data.data;
 };
 
 export function useUserProfile() {

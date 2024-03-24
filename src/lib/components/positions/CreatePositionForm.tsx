@@ -46,7 +46,7 @@ export default function CreateUpdatePositionForm({
 }: CreateUpdatePositionFormProps) {
   const { t } = useTranslation();
   const toast = useToast();
-  const { data: userProfile, isLoading } = useUserProfile(); // Destructure to get data and isLoading
+  const { profile: userProfile, isLoading } = useUserProfile(); // Destructure to get data and isLoading
 
   const {
     handleSubmit,

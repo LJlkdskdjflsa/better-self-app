@@ -21,7 +21,7 @@ export default function DashboardPage({
   useAuth('/');
 
   const [i18nResources, setI18nResources] = useState<Resource | null>(null);
-  const { data: userProfile, isLoading } = useUserProfile();
+  const { profile: userProfile, isLoading } = useUserProfile();
 
   // i18n
   useEffect(() => {

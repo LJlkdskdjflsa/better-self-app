@@ -56,7 +56,7 @@ const PositionsList: React.FC<PositionsListProps> = ({ isDeleted }) => {
           queryClient.setQueryData(cacheKey, data);
         }
 
-        setPositions(data);
+        setPositions(data || []);
       } catch (error) {
         setIsError(true);
       } finally {

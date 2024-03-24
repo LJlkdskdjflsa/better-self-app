@@ -33,6 +33,7 @@ interface ApplicantsStoreState {
     applicantId: number,
     newStage: ColumnType
   ) => Promise<void>;
+  resetStore: () => void;
 }
 
 const POSITION_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/positionapps/`;
@@ -317,6 +318,7 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
       set({ applicants: formatData(applicantsNeedRollback) });
     }
   },
+  resetStore: () => set({ applicants: null, isLoading: true }),
 }));
 
 export default useApplicantsStore;

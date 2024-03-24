@@ -14,9 +14,10 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import type React from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-query';
 
+import { queryClient } from '~/app/providers';
 import {
   fetchDeletedPositions,
   fetchPositions,
@@ -32,16 +33,39 @@ interface PositionsListProps {
 
 const PositionsList: React.FC<PositionsListProps> = ({ isDeleted }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const fetchFunction = isDeleted ? fetchDeletedPositions : fetchPositions;
   const { t } = useTranslation();
+  const [positions, setPositions] = useState<Position[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
-  const {
-    data: positions,
-    isLoading,
-    isError,
-  } = useQuery<Position[], Error>(['positions', { isDeleted }], () =>
-    fetchFunction()
-  );
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      setIsError(false);
+      try {
+        // Construct a unique key for caching based on the isDeleted flag
+        const cacheKey = isDeleted ? 'deletedPositions' : 'positions';
+        let data = queryClient.getQueryData<Position[]>(cacheKey);
+
+        if (!data) {
+          // Determine the appropriate fetch function
+          const fetchFunction = isDeleted
+            ? fetchDeletedPositions
+            : fetchPositions;
+          data = await fetchFunction();
+          queryClient.setQueryData(cacheKey, data);
+        }
+
+        setPositions(data);
+      } catch (error) {
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [isDeleted]);
 
   if (isLoading) return <Text>{t('loading')}</Text>;
   if (isError) return <Text>{t('error-loading-positions')}</Text>;

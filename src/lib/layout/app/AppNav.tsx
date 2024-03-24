@@ -19,9 +19,15 @@ import { useTranslation } from 'react-i18next';
 import { CiViewTable } from 'react-icons/ci';
 import { IoMdClipboard, IoMdLogOut } from 'react-icons/io';
 
+import { queryClient } from '~/app/providers';
 import LanguageChanger from '~/lib/components/LanguageChanger';
+import useApplicantsStore from '~/lib/store/applicantsStore';
 
 const logout = () => {
+  // clear cache
+  queryClient.clear();
+  useApplicantsStore.getState().resetStore();
+
   localStorage.removeItem('accessToken');
 };
 

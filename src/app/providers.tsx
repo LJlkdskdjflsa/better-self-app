@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 
 import { Chakra as ChakraProvider } from '~/lib/components/Chakra';
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (

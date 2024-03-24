@@ -15,9 +15,9 @@ import { useEffect } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useQueryClient } from 'react-query';
 
 import { useUserProfile } from '../hooks/useUserProfile';
+import { queryClient } from '~/app/providers';
 
 import type { Position } from './interfaces';
 
@@ -44,7 +44,6 @@ export default function CreateUpdatePositionForm({
   onClose,
   position,
 }: CreateUpdatePositionFormProps) {
-  const queryClient = useQueryClient();
   const { t } = useTranslation();
   const toast = useToast();
   const { data: userProfile, isLoading } = useUserProfile(); // Destructure to get data and isLoading

@@ -1,6 +1,7 @@
-import { useQuery } from 'react-query';
+import { useState, useEffect } from 'react';
 
 import type { UserProfile } from '../domain/user/interface/UserProfile';
+import { queryClient } from '~/app/providers';
 
 const fetchUserProfile = async (): Promise<UserProfile> => {
   const response = await fetch(
@@ -21,5 +22,32 @@ const fetchUserProfile = async (): Promise<UserProfile> => {
 };
 
 export function useUserProfile() {
-  return useQuery<UserProfile, Error>('userProfile', fetchUserProfile);
+  const [profile, setProfile] = useState<UserProfile | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Attempt to get the cached data
+        let cachedData = queryClient.getQueryData<UserProfile>('userProfile');
+
+        if (!cachedData) {
+          // If not in cache, fetch it and then update the cache
+          cachedData = await fetchUserProfile();
+          queryClient.setQueryData('userProfile', cachedData);
+        }
+
+        setProfile(cachedData);
+      } catch (err) {
+        setError(err instanceof Error ? err : new Error('An error occurred'));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  return { profile, isLoading, error };
 }

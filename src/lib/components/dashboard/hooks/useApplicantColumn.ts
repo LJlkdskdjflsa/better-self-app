@@ -49,7 +49,7 @@ function useColumnApplicants(column: ColumnType) {
 
   const dropTaskFrom = useCallback(
     async (fromColumn: string, id: ApplicantModelNew['id']) => {
-      debug(`Updating task ${id} with ${JSON.stringify(updateTask)}`);
+      debug(`Drop task ${id} with ${JSON.stringify(updateTask)}`);
       updateApplicantStatus(id, column);
       // updateApplicantStatus(id, column);
     },

@@ -271,7 +271,8 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
       const updateApplicantResult = await axios.put(
         POSITION_URL,
         {
-          status_id: newStage.id, // 假设 API 需要 status_id 字段
+          status_id: newStage.id,
+          jobapp_id: applicantId,
         },
         {
           headers: {

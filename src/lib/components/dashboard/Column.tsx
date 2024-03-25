@@ -5,6 +5,7 @@ import {
   Badge,
   Box,
   Button,
+  Center,
   Flex,
   FormControl,
   FormLabel,
@@ -19,6 +20,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Select,
+  Spacer,
   Stack,
   useColorModeValue,
   useDisclosure,
@@ -90,91 +92,108 @@ function Column({ column }: { column: ColumnType }) {
         </Badge>
       </Heading>
 
-      <Flex
-        direction="column"
-        justifyContent="space-between"
-        ref={dropRef}
-        h={{ base: 300, md: 600 }}
-        p={4}
-        mt={2}
-        bgColor={useColorModeValue('gray.300', 'gray.900')}
-        rounded="lg"
+      <Box
+        h="90%"
         boxShadow="md"
-        overflow="auto"
-        opacity={isOver ? 0.85 : 1}
+        borderRadius="lg"
+        bgColor={useColorModeValue('gray.300', 'gray.900')}
+        justifyContent="center"
       >
-        <Stack spacing={4}>{ColumnTasks}</Stack>
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>{t('common:new-applicant')}</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <FormControl>
-                <FormLabel>{t('common:name')}</FormLabel>
-                <Input
-                  value={applicant.name}
-                  onChange={(e) =>
-                    setApplicant((prev) => ({ ...prev, name: e.target.value }))
-                  }
-                />
-              </FormControl>
-              <FormControl mt={4}>
-                <FormLabel>{t('common:position')}</FormLabel>
-                <Select
-                  value={applicant.position || ''}
-                  onChange={(e) =>
-                    setApplicant((prev) => ({
-                      ...prev,
-                      position: Number(e.target.value),
-                    }))
-                  }
-                >
-                  {positions.map((position) => (
-                    <option key={position.id} value={position.id}>
-                      {position.job}
-                    </option>
-                  ))}
-                </Select>
-              </FormControl>
-            </ModalBody>
-            <ModalFooter>
-              <Button colorScheme="red" mr={3} onClick={onClose}>
-                {t('common:cancel')}
-              </Button>
-              <Button
-                colorScheme="blue"
-                onClick={() =>
-                  addNewApplicant(
-                    {
-                      position: applicant.position,
-                      status: column,
-                      name: applicant.name,
-                    },
-                    onClose
-                  )
-                }
-              >
-                {t('common:confirm')}
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-
-        <IconButton
-          size="xs"
-          w="full"
-          color={useColorModeValue('gray.500', 'gray.400')}
-          bgColor={useColorModeValue('gray.100', 'gray.700')}
-          _hover={{ bgColor: useColorModeValue('gray.200', 'gray.600') }}
-          py={2}
-          variant="solid"
-          onClick={onOpen}
-          colorScheme="black"
-          aria-label="add-task"
-          icon={<AddIcon />}
-        />
-      </Flex>
+        <Flex direction="column" maxH="80vh" h="100%">
+          <Flex
+            direction="column"
+            justifyContent="space-between"
+            ref={dropRef}
+            // h={{ base: 300, md: 600 }}
+            maxH="80vh"
+            h="100%"
+            p={4}
+            mt={2}
+            rounded="lg"
+            overflow="auto"
+            opacity={isOver ? 0.85 : 1}
+          >
+            <Stack spacing={4}>{ColumnTasks}</Stack>
+            <Modal isOpen={isOpen} onClose={onClose}>
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader>{t('common:new-applicant')}</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  <FormControl>
+                    <FormLabel>{t('common:name')}</FormLabel>
+                    <Input
+                      value={applicant.name}
+                      onChange={(e) =>
+                        setApplicant((prev) => ({
+                          ...prev,
+                          name: e.target.value,
+                        }))
+                      }
+                    />
+                  </FormControl>
+                  <FormControl mt={4}>
+                    <FormLabel>{t('common:position')}</FormLabel>
+                    <Select
+                      value={applicant.position || ''}
+                      onChange={(e) =>
+                        setApplicant((prev) => ({
+                          ...prev,
+                          position: Number(e.target.value),
+                        }))
+                      }
+                    >
+                      {positions.map((position) => (
+                        <option key={position.id} value={position.id}>
+                          {position.job}
+                        </option>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </ModalBody>
+                <ModalFooter>
+                  <Button colorScheme="red" mr={3} onClick={onClose}>
+                    {t('common:cancel')}
+                  </Button>
+                  <Button
+                    colorScheme="blue"
+                    onClick={() =>
+                      addNewApplicant(
+                        {
+                          position: applicant.position,
+                          status: column,
+                          name: applicant.name,
+                        },
+                        onClose
+                      )
+                    }
+                  >
+                    {t('common:confirm')}
+                  </Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
+          </Flex>
+          <Spacer />
+          <Center>
+            <IconButton
+              size="xs"
+              w="80%"
+              color={useColorModeValue('gray.500', 'gray.400')}
+              bgColor={useColorModeValue('gray.100', 'gray.700')}
+              _hover={{ bgColor: useColorModeValue('gray.200', 'gray.600') }}
+              py={2}
+              mb={3}
+              mt={3}
+              variant="solid"
+              onClick={onOpen}
+              colorScheme="black"
+              aria-label="add-task"
+              icon={<AddIcon />}
+            />
+          </Center>
+        </Flex>
+      </Box>
     </Box>
   );
 }

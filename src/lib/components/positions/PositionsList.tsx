@@ -110,10 +110,10 @@ const PositionsList: React.FC<PositionsListProps> = ({ isDeleted }) => {
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           isDisabled={currentPage === 1}
         >
-          Previous
+          {t('common:previous-page')}
         </Button>
         <Text>
-          Page {currentPage} of {totalPages}
+          {currentPage} / {totalPages}
         </Text>
         <Button
           onClick={() =>
@@ -121,7 +121,7 @@ const PositionsList: React.FC<PositionsListProps> = ({ isDeleted }) => {
           }
           isDisabled={currentPage === totalPages}
         >
-          Next
+          {t('common:next-page')}
         </Button>
       </Flex>
     </Box>

@@ -72,16 +72,8 @@ const PositionsList: React.FC<PositionsListProps> = ({ isDeleted }) => {
   if (isError) return <Text>{t('error-loading-positions')}</Text>;
 
   return (
-    <Box
-      bg="white"
-      p={10}
-      mt={10}
-      boxShadow="xl"
-      borderRadius="lg"
-      w="60%"
-      overflowY="auto"
-    >
-      <Flex alignItems="center" justifyContent="space-between" mb={10}>
+    <Box bg="white" p={10} mt={10} boxShadow="xl" borderRadius="lg" w="60%">
+      <Flex alignItems="center" justifyContent="space-between">
         <Heading as="h1" size="xl">
           {t('position-list')}
         </Heading>
@@ -102,35 +94,36 @@ const PositionsList: React.FC<PositionsListProps> = ({ isDeleted }) => {
           </ModalBody>
         </ModalContent>
       </Modal>
-
-      <Box>
-        {positions && positions.length > 0 ? (
-          positions.map((position) => (
-            <PositionCard position={position} key={position.id} />
-          ))
-        ) : (
-          <Text>{t('position-list-empty')}</Text>
-        )}
-        <Flex justifyContent="space-between" alignItems="center" mt="4">
-          <Button
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            isDisabled={currentPage === 1}
-          >
-            Previous
-          </Button>
-          <Text>
-            Page {currentPage} of {totalPages}
-          </Text>
-          <Button
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-            }
-            isDisabled={currentPage === totalPages}
-          >
-            Next
-          </Button>
-        </Flex>
+      <Box w="100%" h="85%" m={5} overflowY="auto">
+        <Box>
+          {positions && positions.length > 0 ? (
+            positions.map((position) => (
+              <PositionCard position={position} key={position.id} />
+            ))
+          ) : (
+            <Text>{t('position-list-empty')}</Text>
+          )}
+        </Box>
       </Box>
+      <Flex justifyContent="space-between" alignItems="center" mt="4">
+        <Button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          isDisabled={currentPage === 1}
+        >
+          Previous
+        </Button>
+        <Text>
+          Page {currentPage} of {totalPages}
+        </Text>
+        <Button
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
+          isDisabled={currentPage === totalPages}
+        >
+          Next
+        </Button>
+      </Flex>
     </Box>
   );
 };

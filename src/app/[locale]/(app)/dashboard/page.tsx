@@ -43,10 +43,10 @@ export default function DashboardPage({
     <Grid
       templateColumns={showChatComponent ? '75% 25%' : '100%'}
       w="100%"
-      // h="100vh"
-      maxH="80vh"
+      h="95vh"
+      // maxH="80vh"
     >
-      <GridItem h="90%" w="100%">
+      <GridItem h="100%" w="100%">
         <ApplicantTrackingPanel />
       </GridItem>
       {showChatComponent && (

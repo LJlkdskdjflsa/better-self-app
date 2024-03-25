@@ -100,13 +100,13 @@ export default function PositionCard({ position }: { position: Position }) {
           <Flex>
             <Stack direction="row" spacing={3}>
               <Button onClick={onOpen} colorScheme="blue">
-                {t('position-detail')}
+                {t('common:detail')}
               </Button>
 
               {!position.is_deleted ? (
                 <>
                   <Button onClick={onOpenUpdate} colorScheme="green">
-                    {t('job-update')}
+                    {t('common:update')}
                   </Button>
                   <Button onClick={deletePosition} colorScheme="red">
                     <Icon as={FaTrash} />
@@ -124,7 +124,7 @@ export default function PositionCard({ position }: { position: Position }) {
             <Modal isOpen={isOpen} onClose={onClose}>
               <ModalOverlay />
               <ModalContent>
-                <ModalHeader>{t('position-detail')}</ModalHeader>
+                <ModalHeader>{t('detail')}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                   <Stack spacing={3}>

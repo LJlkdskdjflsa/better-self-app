@@ -2,23 +2,14 @@ import type { UseToastOptions } from '@chakra-ui/react';
 import axios from 'axios';
 
 type ToastFunction = (options: UseToastOptions) => void;
-export const fetchPositions = async () => {
-  // const { token } = useAuth();
-  // console.log('try to fetch positions');
+export const fetchPositions = async ({
+  page = 1,
+  pageSize = 10,
+  deleted = false,
+} = {}) => {
+  const deletedQueryParam = deleted ? 'deleted=only' : '';
   const { data } = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/positions/company`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-      },
-    }
-  );
-  return data.data;
-};
-
-export const fetchDeletedPositions = async () => {
-  const { data } = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/positions/company?deleted=only`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/positions/company?page_size=${pageSize}&page=${page}&${deletedQueryParam}`,
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,

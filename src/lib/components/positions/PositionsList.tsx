@@ -18,10 +18,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { queryClient } from '~/app/providers';
-import {
-  fetchDeletedPositions,
-  fetchPositions,
-} from '~/lib/components/positions/apis';
+import { fetchPositions } from '~/lib/components/positions/apis';
 import type { Position } from '~/lib/components/positions/interfaces';
 import PositionCard from '~/lib/components/positions/PositionCard';
 
@@ -45,18 +42,19 @@ const PositionsList: React.FC<PositionsListProps> = ({ isDeleted }) => {
       try {
         // Construct a unique key for caching based on the isDeleted flag
         const cacheKey = isDeleted ? 'deletedPositions' : 'positions';
-        let data = queryClient.getQueryData<Position[]>(cacheKey);
+        const data = queryClient.getQueryData<Position[]>(cacheKey);
 
         if (!data) {
-          // Determine the appropriate fetch function
-          const fetchFunction = isDeleted
-            ? fetchDeletedPositions
-            : fetchPositions;
-          data = await fetchFunction();
-          queryClient.setQueryData(cacheKey, data);
+          const positionDataList = await fetchPositions({
+            // page: currentPage,
+            // pageSize: pageSize,
+            deleted: isDeleted,
+          });
+          setPositions(positionDataList);
+          queryClient.setQueryData(cacheKey, positionDataList);
+        } else {
+          setPositions(data || []);
         }
-
-        setPositions(data || []);
       } catch (error) {
         setIsError(true);
       } finally {

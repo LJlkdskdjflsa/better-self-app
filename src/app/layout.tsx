@@ -1,4 +1,4 @@
-import { Analytics } from '@vercel/analytics/react';
+// import { Analytics } from '@vercel/analytics/react';
 // import { dir } from 'i18next'; // Function to determine text direction
 import type { Metadata, Viewport } from 'next';
 // import { Inter } from 'next/font/google'; // Assuming you're using Next.js fonts
@@ -66,7 +66,7 @@ const RootLayout = ({ children, params: { locale } }: RootLayoutProps) => {
         <Providers>
           <Layout>
             {children}
-            <Analytics />
+            {/* <Analytics /> */}
           </Layout>
         </Providers>
       </body>

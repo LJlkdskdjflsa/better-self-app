@@ -141,7 +141,6 @@ const ChatComponent = () => {
                 style={{
                   borderRadius: '5px',
                   backgroundColor: '#EDF2F7',
-                  maxHeight: '700px',
                   overflowY: 'auto',
                 }}
                 scrollBehavior="smooth"

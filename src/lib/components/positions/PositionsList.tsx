@@ -17,7 +17,6 @@ import type React from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { queryClient } from '~/app/providers';
 import { fetchPositions } from '~/lib/components/positions/apis';
 import type { Position } from '~/lib/components/positions/interfaces';
 import PositionCard from '~/lib/components/positions/PositionCard';
@@ -34,6 +33,9 @@ const PositionsList: React.FC<PositionsListProps> = ({ isDeleted }) => {
   const [positions, setPositions] = useState<Position[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,20 +43,21 @@ const PositionsList: React.FC<PositionsListProps> = ({ isDeleted }) => {
       setIsError(false);
       try {
         // Construct a unique key for caching based on the isDeleted flag
-        const cacheKey = isDeleted ? 'deletedPositions' : 'positions';
-        const data = queryClient.getQueryData<Position[]>(cacheKey);
+        // const cacheKey = isDeleted ? 'deletedPositions' : 'positions';
+        // const data = queryClient.getQueryData<Position[]>(cacheKey);
 
-        if (!data) {
-          const positionDataList = await fetchPositions({
-            // page: currentPage,
-            // pageSize: pageSize,
-            deleted: isDeleted,
-          });
-          setPositions(positionDataList);
-          queryClient.setQueryData(cacheKey, positionDataList);
-        } else {
-          setPositions(data || []);
-        }
+        // if (!data) {
+        const response = await fetchPositions({
+          page: currentPage,
+          pageSize,
+          deleted: isDeleted,
+        });
+        setPositions(response.data || []);
+        // queryClient.setQueryData(cacheKey, response.data || []);
+        setTotalPages(response.pagination.page_count);
+        // } else {
+        //   setPositions(data || []);
+        // }
       } catch (error) {
         setIsError(true);
       } finally {
@@ -63,16 +66,13 @@ const PositionsList: React.FC<PositionsListProps> = ({ isDeleted }) => {
     };
 
     fetchData();
-  }, [isDeleted]);
+  }, [isDeleted, currentPage, pageSize]);
 
   if (isLoading) return <Text>{t('loading')}</Text>;
   if (isError) return <Text>{t('error-loading-positions')}</Text>;
 
   return (
     <Box bg="white" p={10} mt={10} boxShadow="xl" borderRadius="lg" w="60%">
-      {/* Button to open the modal */}
-
-      {/* Header */}
       <Flex alignItems="center" justifyContent="space-between" mb={10}>
         <Heading as="h1" size="xl">
           {t('position-list')}
@@ -84,7 +84,6 @@ const PositionsList: React.FC<PositionsListProps> = ({ isDeleted }) => {
           </Button>
         )}
       </Flex>
-      {/* Modal for CreateUpdatePositionForm */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -96,7 +95,6 @@ const PositionsList: React.FC<PositionsListProps> = ({ isDeleted }) => {
         </ModalContent>
       </Modal>
 
-      {/* Positions List */}
       <Box>
         {positions && positions.length > 0 ? (
           positions.map((position) => (
@@ -105,6 +103,25 @@ const PositionsList: React.FC<PositionsListProps> = ({ isDeleted }) => {
         ) : (
           <Text>{t('position-list-empty')}</Text>
         )}
+        <Flex justifyContent="space-between" alignItems="center" mt="4">
+          <Button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            isDisabled={currentPage === 1}
+          >
+            Previous
+          </Button>
+          <Text>
+            Page {currentPage} of {totalPages}
+          </Text>
+          <Button
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
+            isDisabled={currentPage === totalPages}
+          >
+            Next
+          </Button>
+        </Flex>
       </Box>
     </Box>
   );

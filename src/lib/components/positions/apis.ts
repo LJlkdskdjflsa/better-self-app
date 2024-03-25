@@ -16,7 +16,7 @@ export const fetchPositions = async ({
       },
     }
   );
-  return data.data;
+  return data;
 };
 
 export async function restorePosition(

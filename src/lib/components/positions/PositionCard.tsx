@@ -124,7 +124,7 @@ export default function PositionCard({ position }: { position: Position }) {
             <Modal isOpen={isOpen} onClose={onClose}>
               <ModalOverlay />
               <ModalContent>
-                <ModalHeader>{t('detail')}</ModalHeader>
+                <ModalHeader>{t('common:detail')}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                   <Stack spacing={3}>

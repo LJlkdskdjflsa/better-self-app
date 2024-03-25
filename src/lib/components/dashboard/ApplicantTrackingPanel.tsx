@@ -60,14 +60,13 @@ const ApplicantTrackingPanel = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <Box px={4} py={10} h="90hv" w="100%">
+      <Box px={4} py={10} h="90%" w="100%">
         <SimpleGrid
           columns={{ base: 1, md: 5 }}
           spacing={{ base: 16, md: 5 }}
           // templateColumns="repeat(5, 1fr)"
-          // h="90%"
-          bgColor="gray.100"
           w="100%"
+          h="100%"
         >
           {columnType.map((type) => (
             <Column key={type.id} column={type} />

@@ -72,15 +72,7 @@ const PositionsList: React.FC<PositionsListProps> = ({ isDeleted }) => {
   if (isError) return <Text>{t('error-loading-positions')}</Text>;
 
   return (
-    <Box
-      bg="white"
-      p={10}
-      mt={10}
-      boxShadow="xl"
-      borderRadius="lg"
-      w="60%"
-      overflowY="auto"
-    >
+    <Box bg="white" p={10} mt={10} boxShadow="xl" borderRadius="lg" w="60%">
       <Flex alignItems="center" justifyContent="space-between" mb={10}>
         <Heading as="h1" size="xl">
           {t('position-list')}

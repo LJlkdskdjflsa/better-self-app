@@ -1,7 +1,6 @@
 'use client';
 
 import { Box } from '@chakra-ui/react';
-import { Analytics } from '@vercel/analytics/react';
 import type { Resource } from 'i18next';
 import { useEffect, useState } from 'react';
 
@@ -42,7 +41,6 @@ const AppRootLayout = ({ children }: RootLayoutProps) => {
           </Box>
         </div>
       </main>
-      <Analytics />
     </AppLayout>
   );
 };

@@ -69,6 +69,28 @@ export default function PositionCard({ position }: { position: Position }) {
     }
   };
 
+  const copyLinkToClipboard = async () => {
+    try {
+      const link = `${process.env.NEXT_PUBLIC_APP_URL}/jobs/${position.uuid}`; // Replace with the actual link you want to copy
+      await navigator.clipboard.writeText(link);
+      toast({
+        title: t('common:link-copied'),
+        status: 'success',
+        duration: 3000,
+        position: 'top',
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: t('common:link-copy-failed'),
+        status: 'error',
+        duration: 3000,
+        position: 'top',
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <Box>
       {/* ...existing position card content... */}
@@ -107,6 +129,9 @@ export default function PositionCard({ position }: { position: Position }) {
                 <>
                   <Button onClick={onOpenUpdate} colorScheme="green">
                     {t('common:update')}
+                  </Button>
+                  <Button onClick={copyLinkToClipboard} colorScheme="yellow">
+                    {t('common:link')}
                   </Button>
                   <Button onClick={deletePosition} colorScheme="red">
                     <Icon as={FaTrash} />

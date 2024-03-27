@@ -18,4 +18,5 @@ export interface Position {
   is_deleted: boolean;
   responsibilities: string;
   requirements: string;
+  uuid: string;
 }

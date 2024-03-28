@@ -8,8 +8,6 @@ import {
   HStack,
   Heading,
   Input,
-  List,
-  ListItem,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -21,16 +19,48 @@ import {
   VStack,
   useDisclosure,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-function JobListingPage() {
+import { debug } from '~/lib/components/dashboard/utils/logging';
+
+function JobListingPage({ params }: { params: { id: string } }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [
-    // resume,
-    setResume,
-  ] = useState(null);
+  // const [
+  //   // resume,
+  //   setResume,
+  // ] = useState(null);
+  const [jobDetails, setJobDetails] = useState({
+    job: '',
+    responsibilities: '',
+    requirements: '',
+    company: {},
+    location: '',
+  });
+
+  // const id = "95a12389-f6e3-4863-9b2d-bbb343bb1817"
+
+  useEffect(() => {
+    if (params.id) {
+      fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/public/positions/${params.id}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            setJobDetails({
+              job: data.data.job,
+              responsibilities: data.data.responsibilities,
+              requirements: data.data.requirements,
+              company: data.data.company,
+              location: `${data.data.city}, ${data.data.state.name}, ${data.data.country.name}`,
+            });
+          }
+        })
+        .catch((error) => debug(`Error fetching job details: ${error}`));
+    }
+  }, [params.id]);
 
   const handleResumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -40,7 +70,7 @@ function JobListingPage() {
       // type ignore below
 
       if (file) {
-        setResume(file); // type-ignoring
+        // setResume(file); // type-ignoring
       }
     }
   };
@@ -58,40 +88,20 @@ function JobListingPage() {
       <HStack spacing={100} w="100%">
         <VStack spacing={5} align="start" w="60%">
           <Heading as="h1" size="xl">
-            Product Content Designer
+            {jobDetails.job}
           </Heading>
-          <Text>Taipei, TW</Text>
+          <Text>{jobDetails.location}</Text>
           <Text>Full Time - Product Experience</Text>
 
           <Heading as="h2" size="md">
             Job introduction
           </Heading>
-          <List spacing={2}>
-            <ListItem>
-              Content Creation: Writing, editing, and testing content for apps,
-              websites, FAQs, emails, and other digital channels.
-            </ListItem>
-            <ListItem>
-              User-Centered Design: Ensuring that content meets the needs and
-              expectations of the target audience.
-            </ListItem>
-            {/* Add other responsibilities */}
-          </List>
+          <Text>{jobDetails.responsibilities}</Text>
 
           <Heading as="h2" size="md">
             Position requirement
           </Heading>
-          <List spacing={2}>
-            <ListItem>
-              5+ years’ experience in UX writing in the internet/ software
-              products.
-            </ListItem>
-            <ListItem>
-              Language skills: excellent in English (native speaker) and very
-              good in Mandarin (Traditional Characters).
-            </ListItem>
-            {/* Add other requirements */}
-          </List>
+          <Text>{jobDetails.requirements}</Text>
 
           {/* Use HStack for horizontal layout */}
         </VStack>

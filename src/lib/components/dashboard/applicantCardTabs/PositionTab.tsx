@@ -20,7 +20,7 @@ const PositionTab: React.FC<PositionTabProps> = ({ task }) => {
         <FormLabel pt={5}>{t('common:application-date')}</FormLabel>
         <Text> {task.apply_date}</Text>
 
-        <FormLabel pt={5}>{t('position:position-detail')}</FormLabel>
+        <FormLabel pt={5}>{t('common:detail')}</FormLabel>
         <Text> {task.position.responsibilities}</Text>
 
         <FormLabel pt={5}>{t('position:position-requirement')}</FormLabel>

@@ -58,6 +58,32 @@ export const getCurrentLocalTime = () => {
   return `${hoursString}:${minutesString}`;
 };
 
+/**
+ * Converts an ISO 8601 date string to a human-readable local date and time format.
+ * @param isoDateString - The ISO 8601 date string to convert.
+ * @returns A human-readable local date and time string.
+ */
+export const transferUtcTimestampToLocalDatetime = (
+  isoDateString: string
+): string => {
+  const dateObject = new Date(isoDateString);
+
+  const localDateString = dateObject.toLocaleDateString(undefined, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    weekday: 'long',
+  });
+
+  const localTimeString = dateObject.toLocaleTimeString(undefined, {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  });
+
+  return `${localDateString} at ${localTimeString}`;
+};
+
 export const fetchLastEndTime = async (token: string): Promise<string> => {
   try {
     const response = await fetch(

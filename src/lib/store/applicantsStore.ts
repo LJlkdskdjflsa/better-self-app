@@ -72,8 +72,9 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
     },
     afterOptimisticUpdate?: () => void
   ) => {
-    // 樂觀更新本地狀態
-    const applicantsData = get().applicants;
+    // Use the current date instead of a hardcoded date
+    const currentDate = new Date().toISOString();
+
     const tempNewApplicant: ApplicantModelNew = {
       id: 10000000,
       first_name: applicant.name,
@@ -116,8 +117,8 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
         job_type: 'full-time',
         city: '讀取中',
         is_deleted: false,
-        created_date: '2024-02-02T13:31:23.427728Z',
-        updated_date: '2024-02-02T13:31:23.427738Z',
+        created_date: currentDate, // Use the current date and time in ISO format
+        updated_date: currentDate, // Use the current date and time in ISO format
         department: '',
       },
       company_object: {
@@ -132,7 +133,7 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
         phone_number: null,
         employees_number: null,
       },
-      apply_date: '2024-01-13',
+      apply_date: currentDate, // Use the current date
       is_rejected: false,
       email: null,
       phone_number: '',
@@ -162,7 +163,7 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
           first_name: applicant.name,
           last_name: '',
           company: 'Fuhai',
-          application_date: '2024-01-13',
+          application_date: currentDate, // Use the current date
           source: 'N/A',
         },
         {

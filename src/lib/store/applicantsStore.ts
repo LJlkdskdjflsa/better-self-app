@@ -73,6 +73,7 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
     afterOptimisticUpdate?: () => void
   ) => {
     // Use the current date instead of a hardcoded date
+    const applicantsData = get().applicants;
     const currentDate = new Date().toISOString();
 
     const tempNewApplicant: ApplicantModelNew = {

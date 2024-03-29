@@ -51,7 +51,9 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
       });
+
       if (response.data.success) {
+        // console.log('response.data.data', response.data.data);
         const formattedData = formatData(response.data.data);
         set({ applicants: formattedData });
       } else {

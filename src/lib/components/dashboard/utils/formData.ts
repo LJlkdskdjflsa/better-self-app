@@ -3,9 +3,24 @@ import type {
   ApplicantModelNew,
 } from '../models/applicantModel';
 
+import { debug } from './logging';
+
 export function formatData(response: ApplicantModelNew[]): ApplicantBoardModel {
   return response.reduce(
     (acc, applicant) => {
+      // Check if application_status is null or undefined
+      if (
+        !applicant.application_status ||
+        !applicant.application_status.value
+      ) {
+        debug(
+          `Error: applicant.application_status is null for applicant ${JSON.stringify(
+            applicant
+          )}`
+        );
+        // Skip this iteration, effectively skipping the applicant
+        return acc;
+      }
       const statusValue = applicant.application_status.value;
 
       // If the statusValue key doesn't exist in the accumulator, initialize it

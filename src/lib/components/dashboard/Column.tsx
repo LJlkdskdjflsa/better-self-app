@@ -51,6 +51,7 @@ function Column({ column }: { column: ColumnType }) {
     name: '',
     position: 0, // invalid value
   });
+
   // const [positions, setPositions] = useState<Job[]>([]);
   const positions = usePositions();
 

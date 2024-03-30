@@ -9,11 +9,9 @@ import JobListingBoard from '~/lib/components/jobs/JobListingBoard';
 const i18nNamespaces = ['common'];
 
 function JobListingPage({
-  params,
-  locale,
+  params: { id, locale },
 }: {
-  params: { id: string };
-  locale: string;
+  params: { id: string; locale: string };
 }) {
   const [i18nResources, setI18nResources] = useState<Resource | null>(null);
 
@@ -30,7 +28,7 @@ function JobListingPage({
     return <div>Loading localization...</div>;
   }
 
-  return <JobListingBoard postId={params.id} />;
+  return <JobListingBoard postId={id} />;
 }
 
 export default JobListingPage;

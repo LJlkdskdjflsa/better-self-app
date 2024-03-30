@@ -26,6 +26,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { debug } from '~/lib/components/dashboard/utils/logging';
+import { toastError, toastSuccess } from '~/utils/toastUtils';
 
 function JobListingBoard({ postId }: { postId: string }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -79,13 +80,7 @@ function JobListingBoard({ postId }: { postId: string }) {
     e.preventDefault();
 
     if (!resume) {
-      toast({
-        title: t(failTitle),
-        description: 'Please select a resume to upload.',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
+      toastError(toast, t(failTitle), 'Please select a resume to upload.');
       return;
     }
 
@@ -108,31 +103,21 @@ function JobListingBoard({ postId }: { postId: string }) {
       const result = await response.json();
 
       if (result.success) {
-        toast({
-          title: 'Application Success',
-          description: 'Application submitted successfully.',
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
-        });
+        toastSuccess(
+          toast,
+          'Application Success',
+          'Application submitted successfully.'
+        );
         onClose();
       } else {
-        toast({
-          title: t(failTitle),
-          description: `Failed to submit application: ${result.error_message}`,
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-        });
+        toastError(
+          toast,
+          t(failTitle),
+          `Failed to submit application: ${result.error_message}`
+        );
       }
     } catch (error) {
-      toast({
-        title: t(failTitle),
-        description: `Error submitting application: ${error}`,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
+      toastError(toast, t(failTitle), `Error submitting application: ${error}`);
     }
   };
 

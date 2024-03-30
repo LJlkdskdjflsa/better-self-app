@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import initTranslations from '~/i18n';
 import JobListingBoard from '~/lib/components/jobs/JobListingBoard';
 
-const i18nNamespaces = ['common'];
+const i18nNamespaces = ['common', 'position'];
 
 function JobListingPage({
   params: { id, locale },

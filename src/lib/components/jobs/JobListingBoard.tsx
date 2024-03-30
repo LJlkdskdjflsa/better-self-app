@@ -41,6 +41,8 @@ function JobListingBoard({ postId }: { postId: string }) {
     requirements: '',
     company: {},
     location: '',
+    job_type: '',
+    department: '',
   });
 
   // React Hook Form setup
@@ -124,6 +126,8 @@ function JobListingBoard({ postId }: { postId: string }) {
               requirements: data.data.requirements,
               company: data.data.company,
               location: `${data.data.city}, ${data.data.state.name}, ${data.data.country.name}`,
+              job_type: data.data.job_type,
+              department: data.data.department,
             });
           }
         })
@@ -147,16 +151,18 @@ function JobListingBoard({ postId }: { postId: string }) {
           <Heading as="h1" size="xl">
             {jobDetails.job}
           </Heading>
-          <Text>{jobDetails.location}</Text>
-          <Text>Full Time - Product Experience</Text>
+          {/* <Text>{jobDetails.location}</Text> */}
+          <Text>
+            {jobDetails.job_type} - {jobDetails.department}
+          </Text>
 
           <Heading as="h2" size="md">
-            Job introduction
+            {t('position:position-introduction')}
           </Heading>
           <Text>{jobDetails.responsibilities}</Text>
 
           <Heading as="h2" size="md">
-            Position requirement
+            {t('position:position-requirement')}
           </Heading>
           <Text>{jobDetails.requirements}</Text>
 
@@ -164,7 +170,7 @@ function JobListingBoard({ postId }: { postId: string }) {
         </VStack>
         <VStack spacing={3} w="20%">
           <Button colorScheme="blue" onClick={onOpen}>
-            Apply to Position
+            {t('position:apply-to-position')}
           </Button>
           {/* Modal for application form */}
           <Modal isOpen={isOpen} onClose={onClose}>
@@ -175,9 +181,9 @@ function JobListingBoard({ postId }: { postId: string }) {
               <form onSubmit={handleSubmit(onSubmit)}>
                 <ModalBody pb={6}>
                   <FormControl isInvalid={!!errors.name}>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>{t('common:name')}</FormLabel>
                     <Input
-                      placeholder="Your name"
+                      // placeholder={t('common:name')}
                       {...register('name', { required: 'Name is required' })}
                     />
                     {errors.name && (
@@ -185,9 +191,9 @@ function JobListingBoard({ postId }: { postId: string }) {
                     )}
                   </FormControl>
                   <FormControl mt={4} isInvalid={!!errors.email}>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t('common:email')}</FormLabel>
                     <Input
-                      placeholder="Your email"
+                      // placeholder={t('common:email')}
                       type="email"
                       {...register('email', { required: 'Email is required' })}
                     />
@@ -216,9 +222,9 @@ function JobListingBoard({ postId }: { postId: string }) {
                     type="submit"
                     isLoading={isSubmitting}
                   >
-                    Submit Application
+                    {t('common:confirm')}
                   </Button>
-                  <Button onClick={onClose}>Cancel</Button>
+                  <Button onClick={onClose}>{t('common:cancel')}</Button>
                 </ModalFooter>
               </form>
             </ModalContent>

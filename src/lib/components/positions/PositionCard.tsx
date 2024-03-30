@@ -165,7 +165,7 @@ export default function PositionCard({ position }: { position: Position }) {
                     <Text>
                       {t('job-type')}：{position.job_type}
                     </Text>
-                    <Text>{t('job-introduction')}</Text>
+                    <Text>{t('position:position-introduction')}</Text>
                     <Textarea value={position.responsibilities} readOnly />
                     <Text>{t('position-requirement')}</Text>
                     <Textarea value={position.requirements} readOnly />

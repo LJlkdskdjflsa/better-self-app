@@ -3,6 +3,7 @@
 import {
   Button,
   Container,
+  Flex,
   FormControl,
   FormLabel,
   HStack,
@@ -15,6 +16,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Spinner, // Import Spinner from Chakra UI
   Text,
   VStack,
   useDisclosure,
@@ -25,6 +27,7 @@ import { debug } from '~/lib/components/dashboard/utils/logging';
 
 function JobListingPage({ params }: { params: { id: string } }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isLoading, setIsLoading] = useState(true); // Add a state to track loading status
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   // const [
@@ -43,6 +46,7 @@ function JobListingPage({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     if (params.id) {
+      setIsLoading(true); // Set loading to true when starting to fetch
       fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/public/positions/${params.id}`
       )
@@ -58,7 +62,8 @@ function JobListingPage({ params }: { params: { id: string } }) {
             });
           }
         })
-        .catch((error) => debug(`Error fetching job details: ${error}`));
+        .catch((error) => debug(`Error fetching job details: ${error}`))
+        .finally(() => setIsLoading(false)); // Set loading to false when fetching is complete
     }
   }, [params.id]);
 
@@ -82,6 +87,14 @@ function JobListingPage({ params }: { params: { id: string } }) {
     // Close the modal after submission
     onClose();
   };
+
+  if (isLoading) {
+    return (
+      <Flex height="100vh" justifyContent="center" alignItems="center">
+        <Spinner size="xl" />
+      </Flex>
+    );
+  }
 
   return (
     <Container maxW="container.md" py={10} w="100%">

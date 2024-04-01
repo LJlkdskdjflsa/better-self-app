@@ -150,10 +150,10 @@ const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
       <Flex mb={5}>
         {task.candidate_resume ? (
           <Button colorScheme="blue" onClick={downloadResume}>
-            Download Resume
+            {t('common:download-resume')}
           </Button>
         ) : (
-          <Text>No Resume</Text>
+          <Text>{t('common:no-resume')}</Text>
         )}
       </Flex>
       {notes.map((note) => (

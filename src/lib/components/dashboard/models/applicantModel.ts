@@ -58,6 +58,8 @@ interface ApplicantModelNew {
   phone_number: string;
   reference: string | null;
   column: string; // temp, TODO: remove
+  uuid: string;
+  candidate_resume: string | null;
 }
 
 interface ApiResponse {

@@ -80,6 +80,7 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
 
     const tempNewApplicant: ApplicantModelNew = {
       id: 10000000,
+      uuid: '67830b77-27c7-4def-83b9-090bc1debcf8',
       first_name: applicant.name,
       last_name: '',
       application_status: {
@@ -142,6 +143,7 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
       phone_number: '',
       reference: null,
       column: 'temp_column', // temp, TODO: remove
+      candidate_resume: null,
     };
     const applicantsNeedAdd: ApplicantModelNew[] = getApplicantsFromStatus(
       get().applicants

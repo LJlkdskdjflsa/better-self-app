@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next'; // Import useTranslation
 import { FaTrash } from 'react-icons/fa';
 
 import type { ApplicantModelNew, Note } from '../models/applicantModel';
+import { debug } from '../utils/logging';
 
 interface NoteTabProps {
   task: ApplicantModelNew;
@@ -119,8 +120,42 @@ const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
       });
   };
 
+  const downloadResume = () => {
+    // Construct the URL for downloading the resume
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/user/positionapps/${task.uuid}/download_resume`;
+
+    // Perform a GET request to the constructed URL
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        // Include the Authorization header with the access token
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
+    })
+      .then((response) => response.blob()) // Convert the response to a Blob
+      .then((blob) => {
+        // Create a new URL for the blob and trigger the download
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.setAttribute('download', 'resume.pdf'); // Set the filename for the downloaded file
+        document.body.appendChild(link); // Temporarily add the link to the document
+        link.click(); // Programmatically click the link to trigger the download
+        document.body.removeChild(link); // Remove the link from the document safely
+      })
+      .catch((error) => debug(`Download error: ${error}`)); // Log any errors that occur during the download process
+  };
   return (
     <TabPanel>
+      <Flex mb={5}>
+        {task.candidate_resume ? (
+          <Button colorScheme="blue" onClick={downloadResume}>
+            Download Resume
+          </Button>
+        ) : (
+          <Text>No Resume</Text>
+        )}
+      </Flex>
       {notes.map((note) => (
         <Box
           w="100%"
@@ -146,7 +181,7 @@ const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
       ))}
 
       <Box m={2}>
-        <FormControl>
+        <FormControl mt={5}>
           <FormLabel>{t('common:create-note')}</FormLabel>
           <Flex w="100%">
             <Input

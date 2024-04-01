@@ -205,7 +205,7 @@ function JobListingBoard({ postId }: { postId: string }) {
                     <FormLabel>Resume</FormLabel>
                     <Input
                       type="file"
-                      accept=".pdf"
+                      accept=".pdf,.doc,.docx"
                       {...register('resume', {
                         required: 'Resume is required',
                       })}

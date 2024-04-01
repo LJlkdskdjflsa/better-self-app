@@ -138,7 +138,7 @@ const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
         const downloadUrl = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = downloadUrl;
-        link.setAttribute('download', 'resume.pdf'); // Set the filename for the downloaded file
+        link.setAttribute('download', `${task.first_name}_resume`); // Set the filename for the downloaded file
         document.body.appendChild(link); // Temporarily add the link to the document
         link.click(); // Programmatically click the link to trigger the download
         document.body.removeChild(link); // Remove the link from the document safely

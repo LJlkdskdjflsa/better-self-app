@@ -75,7 +75,7 @@ const PositionsList: React.FC<PositionsListProps> = ({ isDeleted }) => {
     <Box bg="white" p={10} mt={10} boxShadow="xl" borderRadius="lg" w="60%">
       <Flex alignItems="center" justifyContent="space-between">
         <Heading as="h1" size="xl">
-          {t('position-list')}
+          {t('position-list')} {isDeleted ? `(${t('common:removed')})` : ''}
         </Heading>
         <Spacer />
         {!isDeleted && (

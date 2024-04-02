@@ -50,7 +50,7 @@ export default function AppNav() {
           href: '/positions',
         },
         {
-          label: t('common:positions-deleted'),
+          label: `${t('common:positions')}(${t('common:removed')})`,
           icon: <CiViewTable />,
           href: '/deleted-positions',
         },

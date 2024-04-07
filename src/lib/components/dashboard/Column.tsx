@@ -28,6 +28,8 @@ import {
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { baseModalStyles } from '~/lib/styles/modal';
+
 import ApplicantCard from './ApplicantCard';
 import useColumnApplicants from './hooks/useApplicantColumn';
 import useColumnDrop from './hooks/useColumnDrop';
@@ -115,9 +117,9 @@ function Column({ column }: { column: ColumnType }) {
             opacity={isOver ? 0.85 : 1}
           >
             <Stack spacing={4}>{ColumnTasks}</Stack>
-            <Modal isOpen={isOpen} onClose={onClose}>
+            <Modal isOpen={isOpen} onClose={onClose} {...baseModalStyles.modal}>
               <ModalOverlay />
-              <ModalContent>
+              <ModalContent {...baseModalStyles.modalContent}>
                 <ModalHeader>{t('common:new-applicant')}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
@@ -152,7 +154,7 @@ function Column({ column }: { column: ColumnType }) {
                     </Select>
                   </FormControl>
                 </ModalBody>
-                <ModalFooter>
+                <ModalFooter justifyContent="center">
                   <Button colorScheme="red" mr={3} onClick={onClose}>
                     {t('common:cancel')}
                   </Button>

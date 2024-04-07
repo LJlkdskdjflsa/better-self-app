@@ -27,6 +27,7 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { debug } from '~/lib/components/dashboard/utils/logging';
+import { baseModalStyles } from '~/lib/styles/modal';
 import { toastError, toastSuccess } from '~/utils/toastUtils';
 
 type Company = {
@@ -181,7 +182,7 @@ function JobListingBoard({ postId }: { postId: string }) {
             {t('position:apply-to-position')}
           </Button>
           {/* Modal for application form */}
-          <Modal isOpen={isOpen} onClose={onClose}>
+          <Modal isOpen={isOpen} onClose={onClose} {...baseModalStyles.modal}>
             <ModalOverlay />
             <ModalContent>
               <ModalHeader>Application Form</ModalHeader>

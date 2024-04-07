@@ -23,9 +23,10 @@ import { useTranslation } from 'react-i18next';
 import { FaTrash } from 'react-icons/fa';
 
 import type { usePositions } from '../hooks/usePositions';
+import { baseModalStyles } from '~/lib/styles/modal';
 
 import { restorePosition } from './apis';
-import CreateUpdatePositionForm from './CreatePositionForm';
+import CreateUpdatePositionForm from './CreateUpdatePositionForm';
 import type { Position } from './interfaces';
 
 export default function PositionCard({
@@ -161,7 +162,7 @@ export default function PositionCard({
               )}
             </Stack>
             {/* detail modal */}
-            <Modal isOpen={isOpen} onClose={onClose}>
+            <Modal isOpen={isOpen} onClose={onClose} {...baseModalStyles.modal}>
               <ModalOverlay />
               <ModalContent>
                 <ModalHeader>{t('common:detail')}</ModalHeader>
@@ -189,9 +190,13 @@ export default function PositionCard({
               </ModalContent>
             </Modal>
             {/* update modal */}
-            <Modal isOpen={isUpdateOpen} onClose={onCloseUpdate}>
+            <Modal
+              isOpen={isUpdateOpen}
+              onClose={onCloseUpdate}
+              {...baseModalStyles.modal}
+            >
               <ModalOverlay />
-              <ModalContent>
+              <ModalContent {...baseModalStyles.modalContent}>
                 <ModalHeader>{t('update-position')}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>

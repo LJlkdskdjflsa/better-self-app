@@ -134,7 +134,12 @@ const ChatComponent = () => {
         >
           {t('common:chat-with-ai')} {/* Translate static text */}
           <MainContainer
-            style={{ padding: '0', border: 'none', height: '100%' }}
+            style={{
+              padding: '0',
+              border: 'none',
+              height: '100%',
+              maxHeight: '81dvh',
+            }}
           >
             <ChatContainer style={{ backgroundColor: 'white', padding: '2px' }}>
               <MessageList

@@ -22,11 +22,21 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { FaTrash } from 'react-icons/fa';
 
+import type { usePositions } from '../hooks/usePositions';
+
 import { restorePosition } from './apis';
 import CreateUpdatePositionForm from './CreatePositionForm';
 import type { Position } from './interfaces';
 
-export default function PositionCard({ position }: { position: Position }) {
+export default function PositionCard({
+  position,
+  refetch,
+  onDeleteSuccess,
+}: {
+  position: Position;
+  refetch: ReturnType<typeof usePositions>['refetch'];
+  onDeleteSuccess: () => void;
+}) {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -38,7 +48,7 @@ export default function PositionCard({ position }: { position: Position }) {
 
   const deletePosition = async () => {
     try {
-      await axios.delete(
+      const res = await axios.delete(
         `${process.env.NEXT_PUBLIC_API_URL}/api/positions/company`,
         {
           headers: {
@@ -50,6 +60,10 @@ export default function PositionCard({ position }: { position: Position }) {
           },
         }
       );
+
+      if (res?.status === 200) {
+        onDeleteSuccess();
+      }
 
       toast({
         title: t('common:delete-completed'),
@@ -146,6 +160,7 @@ export default function PositionCard({ position }: { position: Position }) {
                 </Button>
               )}
             </Stack>
+            {/* detail modal */}
             <Modal isOpen={isOpen} onClose={onClose}>
               <ModalOverlay />
               <ModalContent>
@@ -173,6 +188,7 @@ export default function PositionCard({ position }: { position: Position }) {
                 </ModalBody>
               </ModalContent>
             </Modal>
+            {/* update modal */}
             <Modal isOpen={isUpdateOpen} onClose={onCloseUpdate}>
               <ModalOverlay />
               <ModalContent>
@@ -181,6 +197,10 @@ export default function PositionCard({ position }: { position: Position }) {
                 <ModalBody>
                   <CreateUpdatePositionForm
                     onClose={onCloseUpdate}
+                    onCreateOrUpdateSuccess={() => {
+                      refetch();
+                      onCloseUpdate();
+                    }}
                     position={{
                       ...position,
                       job_title: position.job,

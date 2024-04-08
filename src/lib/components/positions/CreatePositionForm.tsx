@@ -17,12 +17,10 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { useUserProfile } from '../hooks/useUserProfile';
-import { queryClient } from '~/app/providers';
-
-import type { Position } from './interfaces';
 
 interface CreateUpdatePositionFormProps {
   onClose: () => void;
+  onCreateOrUpdateSuccess: () => void;
   position?: IFormValues; // 新增一個 position 屬性
 }
 
@@ -42,6 +40,7 @@ interface IFormValues {
 
 export default function CreateUpdatePositionForm({
   onClose,
+  onCreateOrUpdateSuccess,
   position,
 }: CreateUpdatePositionFormProps) {
   const { t } = useTranslation();
@@ -91,7 +90,7 @@ export default function CreateUpdatePositionForm({
           }
         );
       } else {
-        const response = await axios.post(
+        await axios.post(
           `${process.env.NEXT_PUBLIC_API_URL}/api/positions/company`,
           {
             ...values,
@@ -106,14 +105,15 @@ export default function CreateUpdatePositionForm({
         );
 
         // if response success
-        const existingPositions =
-          queryClient.getQueryData<Position[]>('positions');
-        if (existingPositions) {
-          queryClient.setQueryData<Position[]>('positions', [
-            ...existingPositions,
-            response.data.data,
-          ]);
-        }
+        //   const existingPositions =
+        //     queryClient.getQueryData<Position[]>('positions');
+
+        //   if (existingPositions) {
+        //     queryClient.setQueryData<Position[]>('positions', [
+        //       ...existingPositions,
+        //       response.data.data,
+        //     ]);
+        //   }
       }
 
       toast({
@@ -126,6 +126,7 @@ export default function CreateUpdatePositionForm({
         position: 'top',
       });
 
+      onCreateOrUpdateSuccess();
       onClose();
     } catch (error) {
       toast({

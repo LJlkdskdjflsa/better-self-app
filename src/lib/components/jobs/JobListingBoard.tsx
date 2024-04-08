@@ -146,7 +146,7 @@ function JobListingBoard({ postId }: { postId: string }) {
 
   return (
     <Container maxW="container.md" py={10} w="100%">
-      <HStack spacing={100} w="100%">
+      <HStack spacing={100} w="100%" whiteSpace="pre-wrap">
         <VStack spacing={5} align="start" w="60%">
           <Heading as="h1" size="xl">
             {jobDetails.job}

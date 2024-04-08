@@ -3,6 +3,7 @@
 import { DeleteIcon } from '@chakra-ui/icons';
 import {
   Box,
+  Flex,
   IconButton,
   Modal,
   ModalBody,
@@ -12,6 +13,7 @@ import {
   ModalHeader,
   ModalOverlay,
   ScaleFade,
+  Spacer,
   Tab,
   TabList,
   TabPanels,
@@ -144,9 +146,15 @@ function ApplicantCard({
             >
               {task.first_name}
             </Text>
-            <Text color="gray.400" fontSize="sm">
-              {task.position.job}
-            </Text>
+            <Flex alignItems="end">
+              <Text wordBreak="break-word" color="gray.400" fontSize="sm">
+                {task.position.job}
+              </Text>
+              <Spacer />
+              <Text color="gray.400" fontSize="small">
+                {new Date(task.apply_date).toLocaleDateString()}
+              </Text>
+            </Flex>
           </Box>
           <IconButton
             position="absolute"

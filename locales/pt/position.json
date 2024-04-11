@@ -1,0 +1,17 @@
+{
+  "apply-to-position": "Candidatar-se à vaga",
+  "company": "Empresa",
+  "contract": "Contrato",
+  "created-date": "Data de criação",
+  "department": "Departamento",
+  "full-time": "Integral",
+  "job-position": "Cargo",
+  "job-restore": "Restaurar vaga",
+  "job-type": "Tipo de emprego",
+  "part-time": "Parcial",
+  "position-introduction": "Descrição da vaga",
+  "position-list": "Lista de vagas",
+  "position-list-empty": "Não há vagas disponíveis",
+  "position-requirement": "Requisitos da vaga",
+  "update-position": "Atualizar vaga"
+}

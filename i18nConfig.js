@@ -4,7 +4,8 @@ const i18nConfig = {
         'zh',
         'fr',
         'nl',
-        'ja'
+        'ja',
+        'pt'
     ],
     defaultLocale: 'en',
 };

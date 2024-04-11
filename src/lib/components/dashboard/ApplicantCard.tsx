@@ -146,10 +146,10 @@ function ApplicantCard({
             >
               {task.first_name}
             </Text>
+            <Text wordBreak="break-word" color="gray.400" fontSize="sm">
+              {task.position.job}
+            </Text>
             <Flex alignItems="end">
-              <Text wordBreak="break-word" color="gray.400" fontSize="sm">
-                {task.position.job}
-              </Text>
               <Spacer />
               <Text color="gray.400" fontSize="small">
                 {new Date(task.apply_date).toLocaleDateString()}

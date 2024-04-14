@@ -28,6 +28,9 @@ const PositionTab: React.FC<PositionTabProps> = ({ task }) => {
 
         <FormLabel pt={5}>{t('position:position-requirement')}</FormLabel>
         <Text> {task.position.requirements}</Text>
+
+        <FormLabel pt={5}>{t('common:application-note')}</FormLabel>
+        <Text> {task.application_note}</Text>
       </FormControl>
     </TabPanel>
   );

@@ -63,6 +63,7 @@ function JobListingBoard({ postId }: { postId: string }) {
     name: string;
     email: string;
     resume?: FileList;
+    application_note: string; // Add application_note to the data type
   }) => {
     setIsSubmitting(true);
 
@@ -77,6 +78,7 @@ function JobListingBoard({ postId }: { postId: string }) {
     if (data.resume) {
       formData.append('candidate_resume', data.resume[0]); // Ensure resume is not undefined before appending
     }
+    formData.append('application_note', data.application_note); // Append application_note to formData
 
     try {
       const response = await fetch(applyUrl, {
@@ -214,6 +216,18 @@ function JobListingBoard({ postId }: { postId: string }) {
                       <Text color="red.500">{errors.resume.message}</Text>
                     )}
                   </FormControl>
+                  {/* Application Note if jobDetails.compand.can_use_application_note is true than render */}
+                  {jobDetails.company.can_use_application_note && (
+                    <FormControl mt={4} isInvalid={!!errors.application_note}>
+                      <FormLabel>Application Note</FormLabel>
+                      <Input type="text" {...register('application_note')} />
+                      {errors.application_note && (
+                        <Text color="red.500">
+                          {errors.application_note.message}
+                        </Text>
+                      )}
+                    </FormControl>
+                  )}
                 </ModalBody>
                 <ModalFooter>
                   <Button

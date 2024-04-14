@@ -9,4 +9,5 @@ export interface Company {
   description: string | null;
   employees_number: number | null;
   phone_number: string | null;
+  can_use_application_note: boolean;
 }

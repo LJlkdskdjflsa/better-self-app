@@ -144,6 +144,7 @@ const useApplicantsStore = create<ApplicantsStoreState>((set, get) => ({
       reference: null,
       column: 'temp_column', // temp, TODO: remove
       candidate_resume: null,
+      application_note: '', // Add this line
     };
     const applicantsNeedAdd: ApplicantModelNew[] = getApplicantsFromStatus(
       get().applicants

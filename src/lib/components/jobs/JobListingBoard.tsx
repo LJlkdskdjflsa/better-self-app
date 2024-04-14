@@ -29,6 +29,11 @@ import { useTranslation } from 'react-i18next';
 import { debug } from '~/lib/components/dashboard/utils/logging';
 import { toastError, toastSuccess } from '~/utils/toastUtils';
 
+type Company = {
+  can_use_application_note: boolean;
+  // other properties of the company object
+};
+
 function JobListingBoard({ postId }: { postId: string }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast(); // Initialize useToast
@@ -39,7 +44,7 @@ function JobListingBoard({ postId }: { postId: string }) {
     job: '',
     responsibilities: '',
     requirements: '',
-    company: {},
+    company: {} as Company, // Use the Company type here
     location: '',
     job_type: '',
     department: '',
@@ -56,6 +61,7 @@ function JobListingBoard({ postId }: { postId: string }) {
       name: '',
       email: '',
       resume: undefined,
+      application_note: '', // Add application_note to the defaultValues
     },
   });
 
@@ -63,6 +69,7 @@ function JobListingBoard({ postId }: { postId: string }) {
     name: string;
     email: string;
     resume?: FileList;
+    application_note: string; // Add application_note to the data type
   }) => {
     setIsSubmitting(true);
 
@@ -77,6 +84,7 @@ function JobListingBoard({ postId }: { postId: string }) {
     if (data.resume) {
       formData.append('candidate_resume', data.resume[0]); // Ensure resume is not undefined before appending
     }
+    formData.append('application_note', data.application_note); // Append application_note to formData
 
     try {
       const response = await fetch(applyUrl, {
@@ -124,7 +132,7 @@ function JobListingBoard({ postId }: { postId: string }) {
               job: data.data.job,
               responsibilities: data.data.responsibilities,
               requirements: data.data.requirements,
-              company: data.data.company,
+              company: data.data.company as Company, // Cast to Company type
               location: `${data.data.city}, ${data.data.state.name}, ${data.data.country.name}`,
               job_type: data.data.job_type,
               department: data.data.department,
@@ -214,6 +222,23 @@ function JobListingBoard({ postId }: { postId: string }) {
                       <Text color="red.500">{errors.resume.message}</Text>
                     )}
                   </FormControl>
+                  {/* Application Note if jobDetails.company.can_use_application_note is true then render */}
+                  {jobDetails.company.can_use_application_note && (
+                    <FormControl mt={4} isInvalid={!!errors.application_note}>
+                      <FormLabel>Application Note</FormLabel>
+                      <Input
+                        type="text"
+                        {...register('application_note', {
+                          required: 'Application Note is required',
+                        })}
+                      />
+                      {errors.application_note && (
+                        <Text color="red.500">
+                          {errors.application_note.message}
+                        </Text>
+                      )}
+                    </FormControl>
+                  )}
                 </ModalBody>
                 <ModalFooter>
                   <Button

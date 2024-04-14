@@ -60,6 +60,7 @@ interface ApplicantModelNew {
   column: string; // temp, TODO: remove
   uuid: string;
   candidate_resume: string | null;
+  application_note: string | null;
 }
 
 interface ApiResponse {

@@ -3,6 +3,7 @@
 import { FormControl, FormLabel, TabPanel, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next'; // Import useTranslation
 
+import { useUserProfile } from '../../hooks/useUserProfile';
 import type { ApplicantModelNew } from '../models/applicantModel';
 import { transferUtcTimestampToLocalDatetime } from '~/utils/timeUtils';
 
@@ -12,9 +13,14 @@ interface PositionTabProps {
 
 const PositionTab: React.FC<PositionTabProps> = ({ task }) => {
   const { t } = useTranslation('common'); // Use the common namespace
+  const { profile: userProfile, isLoading } = useUserProfile();
 
   const readableDate = transferUtcTimestampToLocalDatetime(task.apply_date);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
+  const showApplicationNote = userProfile?.company.can_use_application_note;
   return (
     <TabPanel>
       <FormControl>
@@ -29,8 +35,12 @@ const PositionTab: React.FC<PositionTabProps> = ({ task }) => {
         <FormLabel pt={5}>{t('position:position-requirement')}</FormLabel>
         <Text> {task.position.requirements}</Text>
 
-        <FormLabel pt={5}>{t('common:application-note')}</FormLabel>
-        <Text> {task.application_note}</Text>
+        {showApplicationNote && (
+          <>
+            <FormLabel pt={5}>{t('common:application-note')}</FormLabel>
+            <Text> {task.application_note}</Text>
+          </>
+        )}
       </FormControl>
     </TabPanel>
   );

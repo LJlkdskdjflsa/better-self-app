@@ -46,6 +46,7 @@ export default function LanguageChanger() {
       <option value="fr">French</option>
       <option value="nl">Dutch</option>
       <option value="ja">日本語</option>
+      <option value="pt">Portuguese</option>
     </select>
   );
 }

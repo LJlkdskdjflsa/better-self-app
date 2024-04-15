@@ -2,6 +2,7 @@
 
 import { DeleteIcon } from '@chakra-ui/icons';
 import {
+  Badge,
   Box,
   Flex,
   IconButton,
@@ -109,6 +110,15 @@ function ApplicantCard({
     handleDelete(task.id);
   };
 
+  function getBadgeColorScheme(score: ApplicantModelNew['ai_resume_score']) {
+    if (score === 'A') return 'green';
+    if (score === 'B') return 'blue';
+    if (score === 'C') return 'orange';
+    if (score === 'D') return 'red';
+    if (score === 'W') return 'gray';
+    return 'white'; // Default case
+  }
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -128,24 +138,42 @@ function ApplicantCard({
           cursor="grab"
           fontWeight="bold"
           userSelect="none"
-          // bgColor={task.color}
           bgColor="white"
           opacity={isDragging ? 0.5 : 1}
         >
           <Box bg="white" onClick={onOpen}>
-            <Text
-              fontWeight="semibold"
-              cursor="inherit"
-              border="none"
-              p={0}
-              resize="none"
-              // minH={70}
-              // maxH={200}
-              color="gray.700"
-              // onChange={handleTitleChange}
-            >
-              {task.first_name}
-            </Text>
+            <Flex pr={4}>
+              <Text
+                fontWeight="semibold"
+                cursor="inherit"
+                border="none"
+                p={0}
+                resize="none"
+                color="gray.700"
+              >
+                {task.first_name}
+              </Text>
+              <Spacer />
+
+              <Text
+                fontWeight="semibold"
+                cursor="inherit"
+                border="none"
+                p={0}
+                resize="none"
+                color="gray.700"
+              >
+                <Badge
+                  ml="4"
+                  colorScheme={getBadgeColorScheme(task.ai_resume_score)}
+                >
+                  {task.ai_resume_score === 'W'
+                    ? 'Waiting'
+                    : task.ai_resume_score}
+                </Badge>
+              </Text>
+            </Flex>
+
             <Text wordBreak="break-word" color="gray.400" fontSize="sm">
               {task.position.job}
             </Text>
@@ -185,6 +213,5 @@ export default memo(ApplicantCard, (prev, next) => {
     _.isEqual(prev.index, next.index) &&
     prev.onDelete === next.onDelete &&
     prev.onDropHover === next.onDropHover
-    // prev.onUpdate === next.onUpdate
   );
 });

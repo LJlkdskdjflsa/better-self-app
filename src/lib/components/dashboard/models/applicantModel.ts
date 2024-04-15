@@ -61,6 +61,7 @@ interface ApplicantModelNew {
   uuid: string;
   candidate_resume: string | null;
   application_note: string | null;
+  ai_resume_score: string | null;
 }
 
 interface ApiResponse {

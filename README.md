@@ -9,6 +9,8 @@ HR AI is a web app that helps HR to find the best candidate and empower their wo
 1. [Node.js](https://nodejs.org/en/) or nvm installed.
 2. `pnpm` installed.
 
+! before start develop please read the `[Tech team onboarding guide](https://www.notion.so/Tech-team-onboarding-Guide-c1d2fb93fe8b40d6af029623bf088bb5?pvs=4)` document.
+
 ## Getting Started
 
 Run this command: `pnpm` or `pnpm install`

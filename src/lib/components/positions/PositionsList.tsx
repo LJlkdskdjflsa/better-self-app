@@ -33,7 +33,7 @@ const PositionsList: React.FC<PositionsListProps> = ({ isDeleted }) => {
   // const [isLoading, setIsLoading] = useState(true);
   // const [isError, setIsError] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(3);
+  const [pageSize] = useState(10);
   // const [totalPages, setTotalPages] = useState(0);
 
   const {

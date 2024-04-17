@@ -158,11 +158,11 @@ function JobListingBoard({ postId }: { postId: string }) {
       <HStack spacing={100} w="100%" whiteSpace="pre-wrap">
         <VStack spacing={5} align="start" w="60%">
           <Heading as="h1" size="xl">
-            永續力評測
+            履歷健檢
           </Heading>
           <Box h="200px" />
           <Button colorScheme="blue" onClick={onOpen}>
-            上傳履歷獲得永續力
+            取得 AI 建議
           </Button>
           {/* Use HStack for horizontal layout */}
         </VStack>

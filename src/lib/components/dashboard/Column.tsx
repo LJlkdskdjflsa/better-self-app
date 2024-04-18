@@ -25,6 +25,7 @@ import {
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react';
+import type { LegacyRef } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -106,7 +107,7 @@ function Column({ column }: { column: ColumnType }) {
           <Flex
             direction="column"
             justifyContent="space-between"
-            ref={dropRef}
+            ref={dropRef as unknown as LegacyRef<HTMLDivElement> | undefined}
             // h={{ base: 300, md: 600 }}
             maxH="80vh"
             h="100%"

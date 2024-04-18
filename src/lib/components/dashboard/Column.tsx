@@ -83,7 +83,7 @@ function Column({ column }: { column: ColumnType }) {
   }, [positions]);
 
   return (
-    <Box>
+    <Box overflowY="hidden" py={3} borderRadius="20px">
       <Heading fontSize="md" mb={4} letterSpacing="wide">
         <Badge
           px={2}
@@ -96,7 +96,7 @@ function Column({ column }: { column: ColumnType }) {
       </Heading>
 
       <Box
-        h="90%"
+        h="100%"
         boxShadow="md"
         borderRadius="lg"
         bgColor={useColorModeValue('gray.300', 'gray.900')}

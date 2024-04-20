@@ -181,7 +181,7 @@ const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
                 title="Resume"
               />
             </Box>
-            <Button colorScheme="blue" onClick={downloadResume}>
+            <Button colorScheme="blue" onClick={downloadResume} maxW={200}>
               {t('common:download-resume')}
             </Button>
           </>

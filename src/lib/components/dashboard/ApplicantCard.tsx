@@ -2,7 +2,6 @@
 
 import { DeleteIcon } from '@chakra-ui/icons';
 import {
-  Badge,
   Box,
   Flex,
   IconButton,
@@ -111,12 +110,10 @@ function ApplicantCard({
   };
 
   function getBadgeColorScheme(score: ApplicantModelNew['ai_resume_score']) {
-    if (score === 'A') return 'green';
-    if (score === 'B') return 'blue';
-    if (score === 'C') return 'orange';
-    if (score === 'D') return 'red';
-    if (score === 'W') return 'gray';
-    return 'white'; // Default case
+    if (score === 'A') return 'red.500';
+    if (score === 'B') return 'green.500';
+    if (score === 'C') return 'gray.500';
+    return ''; // Return an empty string for scores not A, B, or C
   }
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -143,40 +140,34 @@ function ApplicantCard({
         >
           <Box bg="white" onClick={onOpen}>
             <Flex pr={4}>
-              <Text
-                fontWeight="semibold"
-                cursor="inherit"
-                border="none"
-                p={0}
-                resize="none"
-                color="gray.700"
-              >
-                {task.first_name}
-              </Text>
-              <Spacer />
-
-              <Text
-                fontWeight="semibold"
-                cursor="inherit"
-                border="none"
-                p={0}
-                resize="none"
-                color="gray.700"
-              >
-                <Badge
-                  ml="4"
-                  colorScheme={getBadgeColorScheme(task.ai_resume_score)}
+              <Box>
+                <Text
+                  fontWeight="semibold"
+                  cursor="inherit"
+                  border="none"
+                  p={0}
+                  resize="none"
+                  color="gray.700"
                 >
-                  {task.ai_resume_score === 'W'
-                    ? 'Waiting'
-                    : task.ai_resume_score}
-                </Badge>
-              </Text>
+                  {task.first_name}
+                </Text>
+                <Text wordBreak="break-word" color="gray.400" fontSize="sm">
+                  {task.position.job}
+                </Text>
+              </Box>
+              <Spacer />
+              {['A', 'B', 'C'].includes(task.ai_resume_score ?? '') && (
+                <Text
+                  ml="4"
+                  fontSize="3xl"
+                  fontWeight="bold"
+                  color={getBadgeColorScheme(task.ai_resume_score)}
+                >
+                  {task.ai_resume_score}
+                </Text>
+              )}
             </Flex>
 
-            <Text wordBreak="break-word" color="gray.400" fontSize="sm">
-              {task.position.job}
-            </Text>
             <Flex alignItems="end">
               <Spacer />
               <Text color="gray.400" fontSize="small">

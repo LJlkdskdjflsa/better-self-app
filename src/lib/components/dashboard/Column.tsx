@@ -25,8 +25,11 @@ import {
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react';
+import type { LegacyRef } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { baseModalStyles } from '~/lib/styles/modal';
 
 import ApplicantCard from './ApplicantCard';
 import useColumnApplicants from './hooks/useApplicantColumn';
@@ -81,7 +84,7 @@ function Column({ column }: { column: ColumnType }) {
   }, [positions]);
 
   return (
-    <Box>
+    <Box overflowY="hidden" py={3} borderRadius="20px">
       <Heading fontSize="md" mb={4} letterSpacing="wide">
         <Badge
           px={2}
@@ -94,7 +97,7 @@ function Column({ column }: { column: ColumnType }) {
       </Heading>
 
       <Box
-        h="90%"
+        h="100%"
         boxShadow="md"
         borderRadius="lg"
         bgColor={useColorModeValue('gray.300', 'gray.900')}
@@ -104,7 +107,7 @@ function Column({ column }: { column: ColumnType }) {
           <Flex
             direction="column"
             justifyContent="space-between"
-            ref={dropRef}
+            ref={dropRef as unknown as LegacyRef<HTMLDivElement> | undefined}
             // h={{ base: 300, md: 600 }}
             maxH="80vh"
             h="100%"
@@ -115,9 +118,9 @@ function Column({ column }: { column: ColumnType }) {
             opacity={isOver ? 0.85 : 1}
           >
             <Stack spacing={4}>{ColumnTasks}</Stack>
-            <Modal isOpen={isOpen} onClose={onClose}>
+            <Modal isOpen={isOpen} onClose={onClose} {...baseModalStyles.modal}>
               <ModalOverlay />
-              <ModalContent>
+              <ModalContent {...baseModalStyles.modalContent}>
                 <ModalHeader>{t('common:new-applicant')}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
@@ -152,7 +155,7 @@ function Column({ column }: { column: ColumnType }) {
                     </Select>
                   </FormControl>
                 </ModalBody>
-                <ModalFooter>
+                <ModalFooter justifyContent="center">
                   <Button colorScheme="red" mr={3} onClick={onClose}>
                     {t('common:cancel')}
                   </Button>

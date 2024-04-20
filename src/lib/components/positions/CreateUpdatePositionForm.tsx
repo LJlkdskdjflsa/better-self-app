@@ -5,6 +5,7 @@ import {
   FormControl,
   FormLabel,
   Input,
+  ModalFooter,
   Select,
   Textarea,
   VStack,
@@ -140,79 +141,100 @@ export default function CreateUpdatePositionForm({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <VStack spacing={4}>
-        <FormControl>
-          <FormControl>
-            <Input
-              id="job_title"
-              placeholder="職稱"
-              {...register('job_title', {
-                required: 'Required',
-              })}
-            />
-          </FormControl>
-        </FormControl>
-        <FormControl>
-          <Input
-            id="department"
-            placeholder={t('department')}
-            {...register('department', {
-              required: 'Required',
-            })}
-          />
-        </FormControl>
+    <>
+      <Box p={4} borderRadius="md" w="100%" h="100%">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <VStack spacing={4}>
+            <FormControl>
+              <FormControl>
+                <Input
+                  id="job_title"
+                  placeholder="職稱"
+                  {...register('job_title', {
+                    required: 'Required',
+                  })}
+                />
+              </FormControl>
+            </FormControl>
+            <FormControl>
+              <Input
+                id="department"
+                placeholder={t('department')}
+                {...register('department', {
+                  required: 'Required',
+                })}
+              />
+            </FormControl>
 
-        <FormControl>
-          <Select
-            id="job_type"
-            // placeholder="工作性質"
-            {...register('job_type', {
-              required: 'Required',
-            })}
-          >
-            <option value="full-time">{t('full-time')}</option>
-            <option value="part-time">{t('part-time')}</option>
-            <option value="contract">{t('contract')}</option>
-          </Select>
-        </FormControl>
+            <FormControl>
+              <Select
+                id="job_type"
+                {...register('job_type', {
+                  required: 'Required',
+                })}
+              >
+                <option value="full-time">{t('full-time')}</option>
+                <option value="part-time">{t('part-time')}</option>
+                <option value="contract">{t('contract')}</option>
+              </Select>
+            </FormControl>
 
-        <FormControl>
-          <FormLabel
-            htmlFor="responsibilities"
-            {...register('responsibilities', {
-              required: 'Required',
-            })}
-          >
-            {t('common:responsibilities')}
-          </FormLabel>
-          <Textarea
-            id="responsibilities"
-            {...register('responsibilities', {
-              required: 'Required',
-            })}
-          />
-        </FormControl>
+            <FormControl size="2xl">
+              <FormLabel
+                htmlFor="responsibilities"
+                {...register('responsibilities', {
+                  required: 'Required',
+                })}
+              >
+                {t('common:responsibilities')}
+              </FormLabel>
+              <Textarea
+                id="responsibilities"
+                minHeight="20vh"
+                {...register('responsibilities', {
+                  required: 'Required',
+                })}
+              />
+            </FormControl>
 
-        <FormControl>
-          <FormLabel
-            htmlFor="requirements"
-            {...register('requirements', {
-              required: 'Required',
-            })}
-          >
-            {t('common:requirements')}
-          </FormLabel>
+            <FormControl>
+              <FormLabel
+                htmlFor="requirements"
+                {...register('requirements', {
+                  required: 'Required',
+                })}
+              >
+                {t('common:requirements')}
+              </FormLabel>
+              <Textarea
+                id="requirements"
+                minHeight="20vh"
+                {...register('requirements', {
+                  required: 'Required',
+                })}
+              />
+            </FormControl>
 
-          <Textarea
-            id="requirements"
-            {...register('requirements', {
-              required: 'Required',
-            })}
-          />
-        </FormControl>
-
-        <Flex justifyContent="flex-end" mt={4}>
+            {/* <Flex justifyContent="flex-end" mt={4}>
+              <Button onClick={onClose} colorScheme="red">
+                {t('common:cancel')}
+              </Button>
+              <Box w={4} />
+              <Button
+                type="submit"
+                colorScheme="blue"
+                isLoading={isLoading || isSubmitting}
+                disabled={isLoading || isSubmitting}
+                mr={2}
+              >
+                {t('common:confirm')}
+              </Button>
+            </Flex> */}
+          </VStack>
+        </form>
+      </Box>
+      <ModalFooter bottom="1px" justifyContent="center" position="sticky">
+        <Flex justifyContent="center" mt={4}>
           <Button onClick={onClose} colorScheme="red">
             {t('common:cancel')}
           </Button>
@@ -227,7 +249,7 @@ export default function CreateUpdatePositionForm({
             {t('common:confirm')}
           </Button>
         </Flex>
-      </VStack>
-    </form>
+      </ModalFooter>
+    </>
   );
 }

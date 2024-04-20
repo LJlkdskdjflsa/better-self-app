@@ -19,8 +19,9 @@ import { useTranslation } from 'react-i18next';
 
 import { usePositions } from '../hooks/usePositions';
 import PositionCard from '~/lib/components/positions/PositionCard';
+import { baseModalStyles } from '~/lib/styles/modal';
 
-import CreateUpdatePositionForm from './CreatePositionForm';
+import CreateUpdatePositionForm from './CreateUpdatePositionForm';
 
 interface PositionsListProps {
   isDeleted: boolean;
@@ -107,12 +108,12 @@ const PositionsList: React.FC<PositionsListProps> = ({ isDeleted }) => {
           </Button>
         )}
       </Flex>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} {...baseModalStyles.modal}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent {...baseModalStyles.modalContent}>
           <ModalHeader>{t('common:create')}</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody position="relative">
             <CreateUpdatePositionForm
               onClose={onClose}
               onCreateOrUpdateSuccess={() => {

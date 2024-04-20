@@ -60,7 +60,7 @@ const ApplicantTrackingPanel = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <Box px={4} py={10} h="90%" w="100%">
+      <Box px={4} h="90%" w="100%">
         <SimpleGrid
           columns={{ base: 1, md: 5 }}
           spacing={{ base: 16, md: 5 }}

@@ -128,7 +128,7 @@ const ChatComponent = () => {
           h="100%"
           bg="white"
           p={3}
-          pb={8}
+          // pb={8}
           borderRadius="20px"
           boxShadow="0 0 10px 0 rgba(0,0,0,0.1)"
         >

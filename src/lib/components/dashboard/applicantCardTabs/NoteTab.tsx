@@ -26,6 +26,7 @@ interface NoteTabProps {
 const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
   const [notes, setNotes] = useState<Note[]>([]);
   const [newNote, setNewNote] = useState('');
+  const [resumeUrl, setResumeUrl] = useState('');
   const toast = useToast();
   const { t } = useTranslation(); // Use the useTranslation hook
 
@@ -78,6 +79,26 @@ const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
   useEffect(() => {
     fetchNotes();
   }, [task, fetchNotes]);
+
+  useEffect(() => {
+    if (task.candidate_resume) {
+      fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/user/positionapps/8769e3bd-3e7f-4762-a788-4e5357bba72e/download_resume`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        }
+      )
+        .then((response) => response.blob())
+        .then((blob) => {
+          const blobUrl = window.URL.createObjectURL(blob);
+          setResumeUrl(blobUrl);
+        })
+        .catch((error) => debug(`Error fetching resume: ${error}`));
+    }
+  }, [task]);
 
   const addNote = () => {
     const tempNote: Note = {
@@ -147,11 +168,23 @@ const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
   };
   return (
     <TabPanel>
-      <Flex mb={5}>
+      <Flex mb={5} direction="column">
         {task.candidate_resume ? (
-          <Button colorScheme="blue" onClick={downloadResume}>
-            {t('common:download-resume')}
-          </Button>
+          <>
+            <Box mb={4} height="500px" overflow="scroll">
+              <iframe
+                src={resumeUrl}
+                frameBorder="0"
+                width="100%"
+                height="100%"
+                allow="autoplay"
+                title="Resume"
+              />
+            </Box>
+            <Button colorScheme="blue" onClick={downloadResume}>
+              {t('common:download-resume')}
+            </Button>
+          </>
         ) : (
           <Text>{t('common:no-resume')}</Text>
         )}

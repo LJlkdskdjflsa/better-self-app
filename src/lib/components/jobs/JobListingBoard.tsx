@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  Box,
   Button,
   Container,
   Flex,
@@ -42,7 +41,7 @@ function JobListingBoard({ postId }: { postId: string }) {
   const [isLoading, setIsLoading] = useState(true); // Add a state to track loading status
   const [isSubmitting, setIsSubmitting] = useState(false); // New state to track form submission
   const { t } = useTranslation();
-  const [, setJobDetails] = useState({
+  const [jobDetails, setJobDetails] = useState({
     job: '',
     responsibilities: '',
     requirements: '',
@@ -159,20 +158,34 @@ function JobListingBoard({ postId }: { postId: string }) {
       <HStack spacing={100} w="100%" whiteSpace="pre-wrap">
         <VStack spacing={5} align="start" w="60%">
           <Heading as="h1" size="xl">
-            履歷健檢
+            {jobDetails.job}
           </Heading>
-          <Box h="200px" />
-          <Button colorScheme="blue" onClick={onOpen}>
-            取得 AI 建議
-          </Button>
+          {/* <Text>{jobDetails.location}</Text> */}
+          <Text>
+            {jobDetails.job_type} - {jobDetails.department}
+          </Text>
+
+          <Heading as="h2" size="md">
+            {t('position:position-introduction')}
+          </Heading>
+          <Text>{jobDetails.responsibilities}</Text>
+
+          <Heading as="h2" size="md">
+            {t('position:position-requirement')}
+          </Heading>
+          <Text>{jobDetails.requirements}</Text>
+
           {/* Use HStack for horizontal layout */}
         </VStack>
         <VStack spacing={3} w="20%">
+          <Button colorScheme="blue" onClick={onOpen}>
+            {t('position:apply-to-position')}
+          </Button>
           {/* Modal for application form */}
           <Modal isOpen={isOpen} onClose={onClose} {...baseModalStyles.modal}>
             <ModalOverlay />
             <ModalContent>
-              <ModalHeader>上傳履歷</ModalHeader>
+              <ModalHeader>Application Form</ModalHeader>
               <ModalCloseButton />
               <form onSubmit={handleSubmit(onSubmit)}>
                 <ModalBody pb={6}>
@@ -198,12 +211,10 @@ function JobListingBoard({ postId }: { postId: string }) {
                     )}
                   </FormControl>
                   <FormControl mt={4} isInvalid={!!errors.resume}>
-                    <FormLabel>履歷</FormLabel>
+                    <FormLabel>Resume</FormLabel>
                     <Input
                       type="file"
                       accept=".pdf,.doc,.docx"
-                      // customise choose file
-
                       {...register('resume', {
                         required: 'Resume is required',
                       })}
@@ -213,7 +224,7 @@ function JobListingBoard({ postId }: { postId: string }) {
                     )}
                   </FormControl>
                   {/* Application Note if jobDetails.company.can_use_application_note is true then render */}
-                  {/* {jobDetails.company.can_use_application_note && (
+                  {jobDetails.company.can_use_application_note && (
                     <FormControl mt={4} isInvalid={!!errors.application_note}>
                       <FormLabel>Application Note</FormLabel>
                       <Input
@@ -228,7 +239,7 @@ function JobListingBoard({ postId }: { postId: string }) {
                         </Text>
                       )}
                     </FormControl>
-                  )} */}
+                  )}
                 </ModalBody>
                 <ModalFooter>
                   <Button

@@ -11,10 +11,13 @@ import {
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 
+import { isTaiwanPlatform } from '~/utils/getOrgnizationUtils';
+
 import { Illustration } from './Illustration';
 
 export default function BetterSelfLandingPage() {
   const { t } = useTranslation();
+  const showFionaAI = isTaiwanPlatform();
 
   return (
     <Container maxW="5xl">
@@ -24,6 +27,16 @@ export default function BetterSelfLandingPage() {
         spacing={{ base: 8, md: 10 }}
         py={{ base: 20, md: 28 }}
       >
+        {showFionaAI && (
+          <Heading
+            fontWeight={600}
+            fontSize={{ base: '4xl', sm: '6xl', md: '8xl' }}
+            lineHeight="110%"
+            color="#B6A713"
+          >
+            Fiona AI
+          </Heading>
+        )}
         <Heading
           fontWeight={600}
           fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}

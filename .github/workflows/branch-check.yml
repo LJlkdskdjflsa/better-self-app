@@ -1,0 +1,18 @@
+name: Branch Prefix Check
+
+on:
+  pull_request:
+    branches:
+      - developer # 監聽對 developer 分支的 PR
+
+jobs:
+  check-prefix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for branch prefix
+        run: |
+          PREFIX=$(echo "${{ github.head_ref }}" | cut -d'/' -f1)
+          if [[ "$PREFIX" == "design" ]]; then
+            echo "PR from branches with 'design' prefix are not allowed to merge into developer."
+            exit 1
+          fi

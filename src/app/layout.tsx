@@ -5,6 +5,8 @@ import type { Metadata, Viewport } from 'next';
 
 import i18nConfig from '../../i18nConfig';
 import Providers from '~/app/providers';
+import initTranslations from '~/i18n';
+import TranslationsProvider from '~/lib/components/TranslationsProvider';
 import Layout from '~/lib/layout';
 
 type RootLayoutProps = {
@@ -56,19 +58,31 @@ export function generateStaticParams() {
   return i18nConfig.locales.map((locale) => ({ params: { locale } }));
 }
 
-const RootLayout = ({ children, params: { locale } }: RootLayoutProps) => {
+const i18nNamespaces = ['signin', 'common'];
+
+const RootLayout = async ({
+  children,
+  params: { locale },
+}: RootLayoutProps) => {
+  const { resources } = await initTranslations(locale, i18nNamespaces);
   return (
     <html
       lang={locale}
       // dir={dir(locale)}
     >
       <body>
-        <Providers>
-          <Layout>
-            {children}
-            {/* <Analytics /> */}
-          </Layout>
-        </Providers>
+        <TranslationsProvider
+          locale={locale}
+          namespaces={i18nNamespaces}
+          resources={resources}
+        >
+          <Providers>
+            <Layout>
+              {children}
+              {/* <Analytics /> */}
+            </Layout>
+          </Providers>
+        </TranslationsProvider>
       </body>
     </html>
   );

@@ -25,6 +25,8 @@ import _ from 'lodash';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { baseModalStyles } from '~/lib/styles/modal';
+
 import NoteTab from './applicantCardTabs/NoteTab';
 import PositionTab from './applicantCardTabs/PositionTab';
 import { useTaskDragAndDrop } from './hooks/useTaskDragAndDrop';
@@ -48,9 +50,14 @@ function ApplicantModal({
 }) {
   const { t } = useTranslation();
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="6xl">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      // size="6xl"
+      {...baseModalStyles.modal}
+    >
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent w="100%" h="100%">
         <ModalHeader>
           <Text
             fontWeight="semibold"

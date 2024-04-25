@@ -12,7 +12,7 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
-import { useCallback, useEffect, useState } from 'react';
+import { useRef, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next'; // Import useTranslation
 import { FaTrash } from 'react-icons/fa';
 
@@ -26,8 +26,34 @@ interface NoteTabProps {
 const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
   const [notes, setNotes] = useState<Note[]>([]);
   const [newNote, setNewNote] = useState('');
+  const [resumeUrl, setResumeUrl] = useState('');
   const toast = useToast();
   const { t } = useTranslation(); // Use the useTranslation hook
+
+  //
+  const pdfIframeRef = useRef<HTMLIFrameElement>(null);
+
+  const enterFullscreen = () => {
+    const elem = pdfIframeRef.current;
+    if (elem && elem.requestFullscreen) {
+      elem.requestFullscreen();
+    }
+  };
+
+  const exitFullscreen = () => {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  };
+
+  const handleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      enterFullscreen();
+    } else {
+      exitFullscreen();
+    }
+  };
+  //
 
   const fetchNotes = useCallback(() => {
     fetch(
@@ -78,6 +104,26 @@ const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
   useEffect(() => {
     fetchNotes();
   }, [task, fetchNotes]);
+
+  useEffect(() => {
+    if (task.candidate_resume) {
+      fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/user/positionapps/8769e3bd-3e7f-4762-a788-4e5357bba72e/download_resume`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        }
+      )
+        .then((response) => response.blob())
+        .then((blob) => {
+          const blobUrl = window.URL.createObjectURL(blob);
+          setResumeUrl(blobUrl);
+        })
+        .catch((error) => debug(`Error fetching resume: ${error}`));
+    }
+  }, [task]);
 
   const addNote = () => {
     const tempNote: Note = {
@@ -145,13 +191,34 @@ const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
       })
       .catch((error) => debug(`Download error: ${error}`)); // Log any errors that occur during the download process
   };
+
   return (
     <TabPanel>
-      <Flex mb={5}>
+      <Flex mb={5} direction="column">
         {task.candidate_resume ? (
-          <Button colorScheme="blue" onClick={downloadResume}>
-            {t('common:download-resume')}
-          </Button>
+          <>
+            <Box mb={4} height="500px" overflow="scroll">
+              <iframe
+                src={resumeUrl}
+                ref={pdfIframeRef}
+                // srcDoc={`${resumeUrl}`}
+                scrolling="no"
+                frameBorder="0"
+                width="100%"
+                height="100%"
+                allow="autoplay"
+                title="Resume"
+              />
+            </Box>
+            <Flex gap="12px">
+              <Button colorScheme="blue" onClick={downloadResume} maxW={200}>
+                {t('common:download-resume')}
+              </Button>
+              <Button type="button" onClick={handleFullscreen}>
+                {t('common:full-screen')}
+              </Button>
+            </Flex>
+          </>
         ) : (
           <Text>{t('common:no-resume')}</Text>
         )}

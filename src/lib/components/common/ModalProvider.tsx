@@ -108,14 +108,14 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
               mr={3}
               onClick={hideModal}
             >
-              Cancel
+              {footerProps?.cancelButtonProps?.content}
             </Button>
             <Button
               {...footerProps?.confirmButtonProps}
               type="button"
               onClick={onConfirmState}
             >
-              {footerProps?.cancelButtonProps?.content}
+              {footerProps?.confirmButtonProps?.content}
             </Button>
           </ModalFooter>
         </ModalContent>

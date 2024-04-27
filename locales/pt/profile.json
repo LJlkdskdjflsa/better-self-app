@@ -1,11 +1,1 @@
-{
-  "about-company": "Sobre a empresa",
-  "basic-information": "Informações básicas",
-  "company-address": "Endereço",
-  "company-name": "Nome",
-  "company-phone-number": "Telefone",
-  "company-profile": "Perfil da empresa",
-  "company-website": "Website",
-  "number-of-employees": "Número de funcionários",
-  "update-button": "Atualizar"
-}
+{"about-company":"Sobre","basic-information":"Informação básica","company-address":"Endereço","company-name":"Nome","company-phone-number":"Telefone","company-profile":"perfil de companhia","company-website":"Local na rede Internet","number-of-employees":"Número de empregados","update-button":"Atualizar"}

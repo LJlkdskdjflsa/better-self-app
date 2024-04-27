@@ -13,7 +13,6 @@ function useColumnDrop(
     accept: ItemType.APPLICANT,
     drop: (dragItem) => {
       // console.log('dragItem');
-      // console.log(dragItem);
       if (!dragItem || dragItem.from === column) {
         return;
       }

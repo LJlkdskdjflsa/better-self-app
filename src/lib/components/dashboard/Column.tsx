@@ -29,6 +29,7 @@ import type { LegacyRef } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useHRModal } from '~/lib/components/common/ModalProvider';
 import { baseModalStyles } from '~/lib/styles/modal';
 
 import ApplicantCard from './ApplicantCard';
@@ -46,9 +47,36 @@ function Column({ column }: { column: ColumnType }) {
     swapTasks,
     // updateTask,
   } = useColumnApplicants(column);
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
-  const { dropRef, isOver } = useColumnDrop(column.value, dropTaskFrom);
+  const { showModal, hideModal } = useHRModal();
+
+  const handleDragAction = (fromColumn: string, id: number) => {
+    const actionToPerform = () => {
+      dropTaskFrom(fromColumn, id).then(() => {
+        hideModal();
+      });
+    };
+
+    // Display the modal
+    showModal(
+      null,
+      () => {
+        actionToPerform();
+      },
+      {
+        headerContent: (
+          <ModalHeader>{t('confirm-to-change-state')}</ModalHeader>
+        ),
+        footerProps: {
+          confirmButtonProps: { colorScheme: 'blue', content: t('confirm') },
+          cancelButtonProps: { content: t('cancel') },
+        },
+      }
+    );
+  };
+
+  const { dropRef, isOver } = useColumnDrop(column.value, handleDragAction); // dropTaskFrom
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [applicant, setApplicant] = useState({
     name: '',

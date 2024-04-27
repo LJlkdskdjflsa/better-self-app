@@ -1,17 +1,1 @@
-{
-  "apply-to-position": "Candidatar-se à vaga",
-  "company": "Empresa",
-  "contract": "Contrato",
-  "created-date": "Data de criação",
-  "department": "Departamento",
-  "full-time": "Integral",
-  "job-position": "Cargo",
-  "job-restore": "Restaurar vaga",
-  "job-type": "Tipo de emprego",
-  "part-time": "Parcial",
-  "position-introduction": "Descrição da vaga",
-  "position-list": "Lista de vagas",
-  "position-list-empty": "Não há vagas disponíveis",
-  "position-requirement": "Requisitos da vaga",
-  "update-position": "Atualizar vaga"
-}
+{"apply-to-position":"Candidatar-se à posição","company":"Empresa","contract":"contrato","created-date":"Data de criação","department":"Departamento","full-time":"tempo total","job-position":"Posição","job-restore":"Restaurar","job-type":"Tipo de emprego","part-time":"tempo parcial","position-introduction":"Introdução de posição","position-list":"Lista de cargos","position-list-empty":"Não há cargo","position-requirement":"Requisito de posição","update-position":"Atualizar posição"}

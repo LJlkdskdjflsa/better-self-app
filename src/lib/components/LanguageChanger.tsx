@@ -4,8 +4,9 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 
 import i18nConfig from '../../../i18nConfig';
+import { isTaiwanPlatform } from '~/utils/isTaiwanPlatform';
 
-export default function LanguageChanger() {
+function LanguageChanger() {
   const { i18n } = useTranslation();
   const currentLocale = i18n.language;
   const router = useRouter();
@@ -42,7 +43,7 @@ export default function LanguageChanger() {
   return (
     <select onChange={handleChange} value={currentLocale}>
       <option value="en">English</option>
-      <option value="zh">繁體中文</option>
+      {/* <option value="zh">繁體中文</option> */}
       <option value="fr">French</option>
       <option value="nl">Dutch</option>
       <option value="ja">日本語 (Japanese)</option>
@@ -50,3 +51,5 @@ export default function LanguageChanger() {
     </select>
   );
 }
+
+export default isTaiwanPlatform() ? () => null : LanguageChanger;

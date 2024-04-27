@@ -2,38 +2,18 @@
 
 import {} from '@chakra-ui/icons';
 import { Grid, GridItem } from '@chakra-ui/react';
-import type { Resource } from 'i18next';
-import { useEffect, useState } from 'react';
 
-import initTranslations from '~/i18n';
 import ChatComponent from '~/lib/components/ChatComponent';
 import ApplicantTrackingPanel from '~/lib/components/dashboard/ApplicantTrackingPanel';
 import { useAuth } from '~/lib/components/hooks/useAuth';
 import { useUserProfile } from '~/lib/components/hooks/useUserProfile';
 
-const i18nNamespaces = ['dashboard', 'common', 'position'];
-
-export default function DashboardPage({
-  params: { locale },
-}: {
-  params: { locale: string };
-}) {
+export default function DashboardPage() {
   useAuth('/');
 
-  const [i18nResources, setI18nResources] = useState<Resource | null>(null);
   const { profile: userProfile, isLoading } = useUserProfile();
 
-  // i18n
-  useEffect(() => {
-    const loadResources = async () => {
-      const { resources } = await initTranslations(locale, i18nNamespaces);
-      setI18nResources(resources);
-    };
-
-    loadResources();
-  }, [locale]);
-
-  if (isLoading || !i18nResources) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 

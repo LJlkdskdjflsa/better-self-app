@@ -43,3 +43,11 @@ References:
 - https://nextjs.org/docs/testing#playwright
   - https://nextjs.org/docs/testing#running-your-playwright-tests
 
+
+## Design branch
+
+We use `design/{design_name}` branch to create layout of the design for the app.
+Only design branch can use the commit without check of Git pre-commit hook.
+```bash
+git commit -m "Your commit message" --no-verify
+```

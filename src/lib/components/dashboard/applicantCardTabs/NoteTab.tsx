@@ -12,7 +12,7 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
-import { useRef, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next'; // Import useTranslation
 import { FaTrash } from 'react-icons/fa';
 
@@ -108,7 +108,7 @@ const NoteTab: React.FC<NoteTabProps> = ({ task }) => {
   useEffect(() => {
     if (task.candidate_resume) {
       fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/user/positionapps/8769e3bd-3e7f-4762-a788-4e5357bba72e/download_resume`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/user/positionapps/${task.uuid}/download_resume`,
         {
           method: 'GET',
           headers: {

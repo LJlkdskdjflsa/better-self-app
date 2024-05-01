@@ -25,6 +25,7 @@ import _ from 'lodash';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useHRModal } from '../common/ModalProvider';
 import { baseModalStyles } from '~/lib/styles/modal';
 
 import NoteTab from './applicantCardTabs/NoteTab';
@@ -111,9 +112,30 @@ function ApplicantCard({
     { task, index },
     handleDropHover
   );
+  const { t } = useTranslation('common');
 
+  const { showModal, hideModal } = useHRModal();
   const handleDeleteClick = () => {
-    handleDelete(task.id);
+    const actionToPerform = () => {
+      handleDelete(task.id);
+      hideModal();
+    };
+
+    showModal(
+      null,
+      () => {
+        actionToPerform();
+      },
+      {
+        headerContent: (
+          <ModalHeader>{t('confirm-to-change-state')}</ModalHeader>
+        ),
+        footerProps: {
+          confirmButtonProps: { colorScheme: 'blue', content: t('confirm') },
+          cancelButtonProps: { content: t('cancel') },
+        },
+      }
+    );
   };
 
   function getBadgeColorScheme(score: ApplicantModelNew['ai_resume_score']) {

@@ -52,28 +52,32 @@ function Column({ column }: { column: ColumnType }) {
   const { showModal, hideModal } = useHRModal();
 
   const handleDragAction = (fromColumn: string, id: number) => {
-    const actionToPerform = () => {
-      dropTaskFrom(fromColumn, id).then(() => {
-        hideModal();
-      });
-    };
+    if (fromColumn !== column.value) {
+      const actionToPerform = () => {
+        dropTaskFrom(fromColumn, id).then(() => {
+          hideModal();
+        });
+      };
 
-    // Display the modal
-    showModal(
-      null,
-      () => {
-        actionToPerform();
-      },
-      {
-        headerContent: (
-          <ModalHeader>{t('confirm-to-change-state')}</ModalHeader>
-        ),
-        footerProps: {
-          confirmButtonProps: { colorScheme: 'blue', content: t('confirm') },
-          cancelButtonProps: { content: t('cancel') },
+      // Display the modal
+      showModal(
+        null,
+        () => {
+          actionToPerform();
         },
-      }
-    );
+        {
+          headerContent: (
+            <ModalHeader>{t('confirm-to-change-state')}</ModalHeader>
+          ),
+          footerProps: {
+            confirmButtonProps: { colorScheme: 'blue', content: t('confirm') },
+            cancelButtonProps: { content: t('cancel') },
+          },
+        }
+      );
+    } else {
+      dropTaskFrom(fromColumn, id);
+    }
   };
 
   const { dropRef, isOver } = useColumnDrop(column.value, handleDragAction); // dropTaskFrom

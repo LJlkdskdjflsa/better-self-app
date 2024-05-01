@@ -13,9 +13,9 @@ function useColumnDrop(
     accept: ItemType.APPLICANT,
     drop: (dragItem) => {
       // console.log('dragItem');
-      if (!dragItem || dragItem.from === column) {
-        return;
-      }
+      // if (!dragItem || dragItem.from === column) {
+      //   return;
+      // }
 
       handleDrop(dragItem.from, dragItem.id);
     },

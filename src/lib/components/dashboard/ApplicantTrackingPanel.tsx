@@ -1,4 +1,4 @@
-import { Box, Center, SimpleGrid, Spinner } from '@chakra-ui/react'; // Import Spinner and Center for loading indicator
+import { Box, Center, Flex, Spinner } from '@chakra-ui/react'; // Import Spinner and Center for loading indicator
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
@@ -61,17 +61,11 @@ const ApplicantTrackingPanel = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <Box px={4} h="90%" w="100%">
-        <SimpleGrid
-          columns={{ base: 1, md: 5 }}
-          spacing={{ base: 16, md: 5 }}
-          // templateColumns="repeat(5, 1fr)"
-          w="100%"
-          h="100%"
-        >
+        <Flex overflowX="auto" whiteSpace="nowrap" gap="4">
           {columnType.map((type) => (
             <Column key={type.id} column={type} />
           ))}
-        </SimpleGrid>
+        </Flex>
       </Box>
     </DndProvider>
   );

@@ -17,7 +17,7 @@ const PositionTab: React.FC<PositionTabProps> = ({ task }) => {
 
   const readableDate = transferUtcTimestampToLocalDatetime(task.apply_date);
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>{t('loading')}</div>;
   }
 
   const showApplicationNote = userProfile?.company.can_use_application_note;

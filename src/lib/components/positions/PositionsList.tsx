@@ -92,8 +92,8 @@ const PositionsList: React.FC<PositionsListProps> = ({ isDeleted }) => {
   //   }
   // }, [positions?.length, totalPages]);
 
-  if (isLoading || isFetching) return <Text>{t('loading')}</Text>;
-  if (isError) return <Text>{t('error-loading-positions')}</Text>;
+  if (isLoading || isFetching) return <Text>{t('common:loading')}</Text>;
+  if (isError) return <Text>{t('position:error-loading-positions')}</Text>;
 
   return (
     <Box bg="white" p={10} mt={10} boxShadow="xl" borderRadius="lg" w="60%">
@@ -151,7 +151,7 @@ const PositionsList: React.FC<PositionsListProps> = ({ isDeleted }) => {
               />
             ))
           ) : (
-            <Text>{t('position-list-empty')}</Text>
+            <Text>{t('position:position-list-empty')}</Text>
           )}
         </Box>
       </Box>

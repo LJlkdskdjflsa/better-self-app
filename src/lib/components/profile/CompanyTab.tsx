@@ -35,7 +35,7 @@ const CompanyTab: React.FC = () => {
   }, []);
 
   if (Object.keys(company).length === 0) {
-    return <div>Loading...</div>;
+    return <div>{t('common:loading')}</div>;
   }
 
   // Handler for form input changes

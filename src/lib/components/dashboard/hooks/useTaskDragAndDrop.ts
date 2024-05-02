@@ -32,7 +32,11 @@ export function useTaskDragAndDrop<T extends HTMLElement>(
     void,
     { isDragging: boolean }
   >({
-    item: { from: task.column, id: task.id, index },
+    item: {
+      from: task?.application_status.value, // task.column <- did not register with correct value,
+      id: task.id,
+      index,
+    },
     type: ItemType.APPLICANT,
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),

@@ -1,10 +1,7 @@
 'use client';
 
 import { Container } from '@chakra-ui/react';
-import type { Resource } from 'i18next';
 import { useEffect, useState } from 'react';
-
-import initTranslations from '~/i18n';
 
 type AnalysisResult = {
   strengths: string;
@@ -17,22 +14,11 @@ function JobListingPage({
 }: {
   params: { locale: string };
 }) {
-  const [i18nResources, setI18nResources] = useState<Resource | null>(null);
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(
     null
   );
 
   useEffect(() => {
-    const loadResources = async () => {
-      const { resources } = await initTranslations(locale, [
-        'common',
-        'position',
-      ]);
-      setI18nResources(resources);
-    };
-
-    loadResources();
-
     // 模擬從後端獲取的履歷分析結果
     const mockAnalysisResult = {
       strengths: '良好的組織能力和團隊合作精神。',
@@ -42,10 +28,6 @@ function JobListingPage({
 
     setAnalysisResult(mockAnalysisResult);
   }, [locale]);
-
-  if (!i18nResources) {
-    return <div>Loading localization...</div>;
-  }
 
   // 展示分析結果
   return (

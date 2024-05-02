@@ -2,6 +2,7 @@
 
 import {} from '@chakra-ui/icons';
 import { Grid, GridItem } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 
 import ChatComponent from '~/lib/components/ChatComponent';
 import ApplicantTrackingPanel from '~/lib/components/dashboard/ApplicantTrackingPanel';
@@ -12,9 +13,10 @@ export default function DashboardPage() {
   useAuth('/');
 
   const { profile: userProfile, isLoading } = useUserProfile();
+  const { t } = useTranslation('common');
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>{t('loading')}</div>;
   }
 
   const showChatComponent = userProfile?.can_use_chat_with_ai || false;

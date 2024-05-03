@@ -116,7 +116,13 @@ function Column({ column }: { column: ColumnType }) {
   }, [positions]);
 
   return (
-    <Box overflowY="hidden" py={3} borderRadius="20px">
+    <Box
+      overflowY="hidden"
+      py={3}
+      borderRadius="20px"
+      width="223px" // tmp solution for fix column width
+      flex="0 0 auto" // prevent card to shrink or expand
+    >
       <Heading fontSize="md" mb={4} letterSpacing="wide">
         <Badge
           px={2}
@@ -148,6 +154,7 @@ function Column({ column }: { column: ColumnType }) {
             rounded="lg"
             overflow="auto"
             opacity={isOver ? 0.85 : 1}
+            whiteSpace="normal" // prevent text from wrapping
           >
             <Stack spacing={4}>{ColumnTasks}</Stack>
             <Modal isOpen={isOpen} onClose={onClose} {...baseModalStyles.modal}>

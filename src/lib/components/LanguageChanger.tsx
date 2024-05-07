@@ -48,6 +48,7 @@ function LanguageChanger() {
       <option value="nl">Dutch</option>
       <option value="ja">日本語 (Japanese)</option>
       <option value="pt">Portuguese</option>
+      <option value="ko">한국어 (Korean)</option>
     </select>
   );
 }

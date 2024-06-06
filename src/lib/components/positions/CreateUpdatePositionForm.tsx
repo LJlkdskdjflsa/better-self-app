@@ -76,6 +76,7 @@ export default function CreateUpdatePositionForm({
   const onSubmit: SubmitHandler<IFormValues> = async (values) => {
     try {
       if (position) {
+        // 如果有傳遞 position 對象，則發送 PATCH 請求來更新該職位
         await axios.patch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/positions/company`,
           {

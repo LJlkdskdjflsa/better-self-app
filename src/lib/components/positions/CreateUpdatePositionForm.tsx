@@ -148,7 +148,7 @@ export default function CreateUpdatePositionForm({
             <FormControl>
               <Input
                 id="job_title"
-                placeholder="職稱"
+                placeholder={t('common:position')}
                 {...register('job_title', {
                   required: 'Required',
                 })}

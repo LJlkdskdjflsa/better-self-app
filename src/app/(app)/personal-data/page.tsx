@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import { useToken } from '~/lib/components/hooks/useToken';
-import ChatWidget from '~/lib/components/personal-data/ChatWidget';
 
 const PersonalDataPage = () => {
   const router = useRouter();
@@ -33,14 +32,14 @@ const PersonalDataPage = () => {
           api_key="sk-MVTcTJ_hO53vVRFvQZYaI95UfDNvTZai5FBW24KBqSc"
         >
         </langflow-chat> */}
-        <ChatWidget
+        {/* <ChatWidget
           windowTitle="Chat with me"
           flowId="25a54ee8-6fd4-4014-8fb2-2ef51e5a2d0f"
           chatInputs='{"input":"what do I do yesterday"}'
           chatInputField="input"
           hostUrl="https://langflow-railway-production-d101.up.railway.app"
           apiKey="sk-MVTcTJ_hO53vVRFvQZYaI95UfDNvTZai5FBW24KBqSc"
-        />
+        /> */}
         <Box>
           Want to be better together.? Join our !!!
           <Link href="https://line.me/ti/g/uSNjiBPvW_" color="teal.500">

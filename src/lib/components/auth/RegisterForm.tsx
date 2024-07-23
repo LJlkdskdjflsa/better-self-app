@@ -29,6 +29,7 @@ export default function RegisterForm() {
         status: 'error',
         duration: 5000,
         isClosable: true,
+        position: 'top',
       });
       return;
     }
@@ -57,6 +58,7 @@ export default function RegisterForm() {
         status: 'success',
         duration: 5000,
         isClosable: true,
+        position: 'top',
       });
 
       router.push('/login');
@@ -67,6 +69,7 @@ export default function RegisterForm() {
         status: 'error',
         duration: 9000,
         isClosable: true,
+        position: 'top',
       });
     }
   };

@@ -117,6 +117,7 @@ export default function NewRecordForm() {
         status: 'error',
         duration: 5000,
         isClosable: true,
+        position: 'top',
       });
       return; // Stop the function if there's no token
     }
@@ -151,6 +152,7 @@ export default function NewRecordForm() {
           status: 'success',
           duration: 5000,
           isClosable: true,
+          position: 'top',
         });
 
         setFormData({
@@ -171,6 +173,7 @@ export default function NewRecordForm() {
         status: 'error',
         duration: 5000,
         isClosable: true,
+        position: 'top',
       });
     }
   };
@@ -184,6 +187,7 @@ export default function NewRecordForm() {
         status: 'error',
         duration: 5000,
         isClosable: true,
+        position: 'top',
       });
       return;
     }
@@ -200,6 +204,7 @@ export default function NewRecordForm() {
           status: 'error',
           duration: 5000,
           isClosable: true,
+          position: 'top',
         });
       }
     } else {
@@ -210,6 +215,7 @@ export default function NewRecordForm() {
         status: 'error',
         duration: 5000,
         isClosable: true,
+        position: 'top',
       });
     }
   };

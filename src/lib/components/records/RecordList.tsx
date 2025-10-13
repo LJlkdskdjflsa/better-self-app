@@ -1,5 +1,16 @@
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
-import { Box, Text, Flex, Button, Link, Spacer } from '@chakra-ui/react';
+import {
+  Box,
+  Text,
+  Flex,
+  Button,
+  Link,
+  Spacer,
+  Wrap,
+  WrapItem,
+  Tag,
+  TagLabel,
+} from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 
 import { deleteRecord, fetchRecords } from '~/lib/services/api/record';
@@ -34,59 +45,86 @@ export default function RecordList() {
 
   return (
     <Flex direction="column" alignItems="center">
-      {records.map((currentRecord) => (
-        <Box
-          key={currentRecord.id}
-          p={4}
-          shadow="md"
-          borderWidth="1px"
-          width="90%" // Set the width to 90% of the screen
-          my={2} // Add margin for vertical spacing between cards
-        >
-          <Flex justifyContent="space-between" alignItems="center">
-            <Flex direction="column">
-              <Text fontWeight="bold" isTruncated>
-                {currentRecord.title}
+      {records.map((currentRecord) => {
+        // T058: Handle truncation - show first 3 tags + "and X more"
+        const visibleTags = currentRecord.tags?.slice(0, 3) || [];
+        const remainingCount =
+          (currentRecord.tags?.length || 0) - visibleTags.length;
+
+        return (
+          <Box
+            key={currentRecord.id}
+            p={4}
+            shadow="md"
+            borderWidth="1px"
+            width="90%" // Set the width to 90% of the screen
+            my={2} // Add margin for vertical spacing between cards
+          >
+            <Flex justifyContent="space-between" alignItems="center">
+              <Flex direction="column" flex="1" mr={4}>
+                <Text fontWeight="bold" isTruncated>
+                  {currentRecord.title}
+                </Text>
+                <Text fontSize="sm">
+                  Ended at:{' '}
+                  {transferUtcTimestampToLocalTime(currentRecord.end_time)}
+                </Text>
+
+                {/* T056: Display tags */}
+                {currentRecord.tags && currentRecord.tags.length > 0 && (
+                  <Wrap mt={2} spacing={1}>
+                    {visibleTags.map((tag) => (
+                      <WrapItem key={tag.id}>
+                        <Tag size="sm" colorScheme="blue" borderRadius="full">
+                          <TagLabel>{tag.name}</TagLabel>
+                        </Tag>
+                      </WrapItem>
+                    ))}
+                    {remainingCount > 0 && (
+                      <WrapItem>
+                        <Tag size="sm" colorScheme="gray" borderRadius="full">
+                          <TagLabel>+{remainingCount} more</TagLabel>
+                        </Tag>
+                      </WrapItem>
+                    )}
+                  </Wrap>
+                )}
+              </Flex>
+              <Spacer />
+              <Text>
+                {formatTimeRange(
+                  currentRecord.start_time,
+                  currentRecord.end_time
+                )}
               </Text>
-              <Text fontSize="sm">
-                Ended at:{' '}
-                {transferUtcTimestampToLocalTime(currentRecord.end_time)}
-              </Text>
-            </Flex>
-            <Spacer />
-            <Text>
-              {formatTimeRange(
-                currentRecord.start_time,
-                currentRecord.end_time
-              )}
-            </Text>
-            <Link href={`/record/${currentRecord.id}`}>
+              <Link href={`/record/${currentRecord.id}`}>
+                <Button
+                  as="a"
+                  variant="ghost"
+                  colorScheme="blue"
+                  mr={2}
+                  aria-label="Update record"
+                >
+                  <EditIcon />
+                </Button>
+              </Link>
               <Button
-                as="a"
                 variant="ghost"
-                colorScheme="blue"
-                mr={2}
-                aria-label="Update record"
+                colorScheme="red"
+                onClick={() => {
+                  deleteRecord(currentRecord.id);
+                  setRecords(
+                    records.filter((record) => record.id !== currentRecord.id)
+                  );
+                }}
+                aria-label="Delete record"
               >
-                <EditIcon />
+                <DeleteIcon />
               </Button>
-            </Link>
-            <Button
-              variant="ghost"
-              colorScheme="red"
-              onClick={() => {
-                deleteRecord(currentRecord.id);
-                setRecords(
-                  records.filter((record) => record.id !== currentRecord.id)
-                );
-              }}
-              aria-label="Delete record"
-            >
-              <DeleteIcon />
-            </Button>
-          </Flex>
-        </Box>
-      ))}
+            </Flex>
+          </Box>
+        );
+      })}
 
       {/* Pagination Controls */}
       <Flex justifyContent="space-between" width="full" p={4}>

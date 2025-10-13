@@ -1,3 +1,4 @@
+import { SearchIcon } from '@chakra-ui/icons';
 import {
   Box,
   Checkbox,
@@ -6,7 +7,6 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  Stack,
   Text,
   VStack,
   Wrap,
@@ -15,7 +15,6 @@ import {
   TagLabel,
   TagCloseButton,
 } from '@chakra-ui/react';
-import { SearchIcon } from '@chakra-ui/icons';
 import { useState, useMemo } from 'react';
 
 import type { Tag } from '~/lib/types/tag';

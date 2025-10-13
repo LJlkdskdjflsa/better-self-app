@@ -16,12 +16,12 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState, useCallback } from 'react';
 
-import { useToken } from '../hooks/useToken';
 import { TagSelector } from '../common/TagSelector';
+import { useToken } from '../hooks/useToken';
+import { createRecord } from '~/lib/services/api/record';
+import { fetchTags } from '~/lib/services/api/tags';
 import type { CreateRecordTemplateRequest } from '~/lib/types/recordTemplate';
 import type { Tag } from '~/lib/types/tag';
-import { fetchTags } from '~/lib/services/api/tags';
-import { createRecord } from '~/lib/services/api/record';
 import {
   fetchLastEndTime,
   transferLocalTimeToUtcTimestamp,
@@ -61,8 +61,8 @@ export default function NewRecordForm() {
       setTagsLoading(true);
       const tags = await fetchTags();
       setAvailableTags(tags);
-    } catch (error) {
-      console.error('Failed to load tags:', error);
+    } catch {
+      // Failed to load tags - user will see empty tag selector
     } finally {
       setTagsLoading(false);
     }
@@ -180,7 +180,7 @@ export default function NewRecordForm() {
         note: '',
         tag_ids: [],
       });
-    } catch (error) {
+    } catch {
       toast({
         title: 'Error',
         description: 'An error occurred while submitting the form.',

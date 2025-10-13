@@ -11,12 +11,17 @@ import {
   Radio,
   useToast,
   Text,
+  Wrap,
+  WrapItem,
+  Tag,
+  TagLabel,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { useToken } from '../hooks/useToken';
 import { fetchRecordById } from '~/lib/services/api/record';
+import type { Tag as TagType } from '~/lib/types/tag';
 import { formatDateTimeLocal } from '~/utils/timeUtils';
 
 interface FormData {
@@ -37,6 +42,7 @@ export default function UpdateRecordForm({ recordId }: { recordId: string }) {
     point: 0,
     note: '',
   });
+  const [recordTags, setRecordTags] = useState<TagType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [token] = useToken();
   const toast = useToast();
@@ -53,6 +59,8 @@ export default function UpdateRecordForm({ recordId }: { recordId: string }) {
         point: data.point,
         note: data.note,
       });
+      // T057: Load tags
+      setRecordTags(data.tags || []);
       setIsLoading(false);
     };
 
@@ -231,6 +239,23 @@ export default function UpdateRecordForm({ recordId }: { recordId: string }) {
                 onChange={handleChange}
               />
             </FormControl>
+
+            {/* T057: Display tags (read-only for now) */}
+            {recordTags.length > 0 && (
+              <FormControl>
+                <FormLabel>Tags</FormLabel>
+                <Wrap spacing={2}>
+                  {recordTags.map((tag) => (
+                    <WrapItem key={tag.id}>
+                      <Tag size="md" colorScheme="blue" borderRadius="full">
+                        <TagLabel>{tag.name}</TagLabel>
+                      </Tag>
+                    </WrapItem>
+                  ))}
+                </Wrap>
+              </FormControl>
+            )}
+
             <Button colorScheme="blue" type="submit">
               Update
             </Button>

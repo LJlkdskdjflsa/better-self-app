@@ -1,4 +1,11 @@
-import type { FetchRecordsResponse, Record } from '../../types/recordTypes';
+import type {
+  FetchRecordsResponse,
+  Record,
+  RecordCreateRequest,
+  RecordUpdateRequest,
+} from '../../types/recordTypes';
+
+import { makeRequest } from './api';
 
 export async function fetchRecords(
   page: number,
@@ -63,6 +70,36 @@ export async function fetchRecordById(recordId: string): Promise<Record> {
   } catch (error) {
     return Promise.reject(error);
   }
+}
+
+/**
+ * Creates a new record with optional tag associations.
+ * @param data - The record data including tag_ids
+ * @returns The created record
+ */
+export async function createRecord(data: RecordCreateRequest): Promise<Record> {
+  return makeRequest<Record, RecordCreateRequest>(
+    `${process.env.NEXT_PUBLIC_API_URL}/records`,
+    'POST',
+    data
+  );
+}
+
+/**
+ * Updates an existing record including tag associations.
+ * @param recordId - The ID of the record to update
+ * @param data - The updated record data including tag_ids
+ * @returns The updated record
+ */
+export async function updateRecord(
+  recordId: string,
+  data: RecordUpdateRequest
+): Promise<Record> {
+  return makeRequest<Record, RecordUpdateRequest>(
+    `${process.env.NEXT_PUBLIC_API_URL}/records/${recordId}`,
+    'PUT',
+    data
+  );
 }
 
 export async function deleteRecord(

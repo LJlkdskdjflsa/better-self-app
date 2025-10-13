@@ -14,10 +14,14 @@ import {
   Flex,
   Spacer,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 import { useToken } from '../hooks/useToken';
+import { TagSelector } from '../common/TagSelector';
 import type { CreateRecordTemplateRequest } from '~/lib/types/recordTemplate';
+import type { Tag } from '~/lib/types/tag';
+import { fetchTags } from '~/lib/services/api/tags';
+import { createRecord } from '~/lib/services/api/record';
 import {
   fetchLastEndTime,
   transferLocalTimeToUtcTimestamp,
@@ -31,11 +35,14 @@ interface FormData {
   focus: number;
   point: number;
   note: string;
+  tag_ids: string[];
 }
 
 export default function NewRecordForm() {
   const toast = useToast();
   const [token] = useToken();
+  const [availableTags, setAvailableTags] = useState<Tag[]>([]);
+  const [tagsLoading, setTagsLoading] = useState(false);
 
   // Set initial form data
   const [formData, setFormData] = useState<FormData>({
@@ -45,7 +52,25 @@ export default function NewRecordForm() {
     focus: 0,
     point: 0,
     note: '',
+    tag_ids: [],
   });
+
+  // Load available tags
+  const loadTags = useCallback(async () => {
+    try {
+      setTagsLoading(true);
+      const tags = await fetchTags();
+      setAvailableTags(tags);
+    } catch (error) {
+      console.error('Failed to load tags:', error);
+    } finally {
+      setTagsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadTags();
+  }, [loadTags]);
 
   useEffect(() => {
     // Check if window is defined (i.e., running on client side)
@@ -62,6 +87,7 @@ export default function NewRecordForm() {
           focus: templateData.focus || 0,
           point: templateData.point || 0,
           note: templateData.note || '',
+          tag_ids: templateData.tag_ids || [],
         });
       }
     }
@@ -129,44 +155,32 @@ export default function NewRecordForm() {
       note: formData.note,
       focus: formData.focus,
       point: formData.point,
+      tag_ids: formData.tag_ids,
     };
 
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/records`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+      await createRecord(payload);
 
-      if (response.status === 201) {
-        // Reset form data to initial values after successful submission
-        toast({
-          title: 'Success',
-          description: 'Record created successfully.',
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
-          position: 'top',
-        });
+      // Reset form data to initial values after successful submission
+      toast({
+        title: 'Success',
+        description: 'Record created successfully.',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: 'top',
+      });
 
-        setFormData({
-          title: '',
-          startTime: '',
-          endTime: '',
-          focus: 0,
-          point: 0,
-          note: '',
-        });
-      } else {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-    } catch {
+      setFormData({
+        title: '',
+        startTime: '',
+        endTime: '',
+        focus: 0,
+        point: 0,
+        note: '',
+        tag_ids: [],
+      });
+    } catch (error) {
       toast({
         title: 'Error',
         description: 'An error occurred while submitting the form.',
@@ -342,6 +356,17 @@ export default function NewRecordForm() {
               />
             </Flex>
           </FormControl>
+
+          {/* Tag Selector */}
+          <TagSelector
+            availableTags={availableTags}
+            selectedTagIds={formData.tag_ids}
+            onChange={(selectedIds) =>
+              setFormData({ ...formData, tag_ids: selectedIds })
+            }
+            isDisabled={tagsLoading}
+          />
+
           <Button colorScheme="blue" type="submit">
             Submit
           </Button>

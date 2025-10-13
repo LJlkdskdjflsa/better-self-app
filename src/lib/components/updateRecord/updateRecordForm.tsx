@@ -128,7 +128,7 @@ export default function UpdateRecordForm({ recordId }: { recordId: string }) {
       }
       // go to records page
       router.push('/records');
-    } catch (error) {
+    } catch {
       toast({
         title: 'Error',
         description: 'An error occurred while update.',

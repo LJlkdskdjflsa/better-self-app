@@ -81,7 +81,7 @@ export const fetchLastEndTime = async (token: string): Promise<string> => {
       return transferUtcTimestampToLocalTime(lastRecord.end_time);
     }
     return ''; // Return empty string or a default value if no record is found
-  } catch (error) {
+  } catch {
     return ''; // Return empty string or a default value in case of an error
   }
 };

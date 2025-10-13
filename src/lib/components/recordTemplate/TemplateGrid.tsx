@@ -93,7 +93,7 @@ export const TemplateGrid = () => {
             note: template.default_note,
           }))
         );
-      } catch (error) {
+      } catch {
         // Handle error
       }
     };
@@ -116,7 +116,7 @@ export const TemplateGrid = () => {
       onClose(); // Close the modal after adding
       // Reset the form fields after successful submission
       setNewTemplateData({ title: '', focus: 0, point: 0, note: '' });
-    } catch (error) {
+    } catch {
       toast({
         title: 'Error',
         description: 'Failed to add the personal template.',

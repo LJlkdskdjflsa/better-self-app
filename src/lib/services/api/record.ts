@@ -84,7 +84,7 @@ export async function deleteRecord(
       throw new Error('Error deleting the record');
     }
     return { success: true };
-  } catch (error) {
+  } catch {
     return { success: false };
   }
 }

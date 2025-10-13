@@ -166,7 +166,7 @@ export default function NewRecordForm() {
       } else {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-    } catch (error) {
+    } catch {
       toast({
         title: 'Error',
         description: 'An error occurred while submitting the form.',

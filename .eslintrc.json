@@ -5,7 +5,10 @@
     "plugin:@next/next/recommended"
   ],
   "rules": {
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "@typescript-eslint/lines-between-class-members": "off",
+    "@typescript-eslint/no-throw-literal": "off",
+    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }]
   },
   "overrides": [
     {

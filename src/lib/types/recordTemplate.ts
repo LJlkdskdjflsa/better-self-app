@@ -1,9 +1,12 @@
+import type { Tag } from './tag';
+
 export interface CreateRecordTemplateRequest {
   id: string | null;
   title: string;
   focus: number;
   point: number;
   note: string | null;
+  tag_ids?: string[];
 }
 
 export interface CreateRecordTemplateRequestNew {
@@ -11,12 +14,15 @@ export interface CreateRecordTemplateRequestNew {
   focus: number;
   point: number;
   note: string | null;
+  tag_ids?: string[];
 }
+
 export interface UpdateRecordTemplateRequest {
   default_title: string;
   default_focus: number;
   default_point: number;
   default_note: string;
+  tag_ids?: string[];
 }
 
 export interface RecordTemplate {
@@ -26,6 +32,7 @@ export interface RecordTemplate {
   default_point: number;
   default_note: string;
   created_at: string;
+  tags: Tag[];
 }
 
 export interface FetchTemplatesResponse {

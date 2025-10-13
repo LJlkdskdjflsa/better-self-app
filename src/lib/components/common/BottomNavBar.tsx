@@ -1,6 +1,6 @@
 import { Flex, IconButton, useColorMode } from '@chakra-ui/react';
 import Link from 'next/link';
-import { FiFileText, FiBarChart, FiPlus, FiUser } from 'react-icons/fi'; // Import FiBarChart
+import { FiFileText, FiBarChart, FiPlus, FiUser, FiTag } from 'react-icons/fi'; // Import FiBarChart
 import { HiOutlineTemplate } from 'react-icons/hi';
 
 const BottomNavBar = () => {
@@ -34,6 +34,9 @@ const BottomNavBar = () => {
         {/* Update the href to your desired link */}
         <IconButton aria-label="Templates" icon={<HiOutlineTemplate />} />{' '}
         {/* Replace FiTemplate with your chosen icon */}
+      </Link>
+      <Link href="/tags" passHref>
+        <IconButton aria-label="Tags" icon={<FiTag />} />
       </Link>
       <Link href="/new-record" passHref>
         <IconButton aria-label="NewRecord" icon={<FiPlus />} />

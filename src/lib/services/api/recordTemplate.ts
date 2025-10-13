@@ -40,11 +40,13 @@ export async function createPersonalTemplate(
 ): Promise<CreateRecordTemplateRequest> {
   try {
     const url = `${process.env.NEXT_PUBLIC_API_URL}/record-templates`;
+    // T070: Include tag_ids in create request
     const body: UpdateRecordTemplateRequest = {
       default_title: templateData.title,
       default_focus: templateData.focus,
       default_point: templateData.point,
       default_note: templateData.note || '',
+      tag_ids: templateData.tag_ids || [],
     };
 
     return await makeRequest<
@@ -68,11 +70,13 @@ export async function updatePersonalTemplate(
 ): Promise<CreateRecordTemplateRequest> {
   try {
     const url = `${process.env.NEXT_PUBLIC_API_URL}/record-templates/${templateId}`;
+    // T071: Include tag_ids in update request
     const body: UpdateRecordTemplateRequest = {
       default_title: updatedTemplate.title,
       default_focus: updatedTemplate.focus,
       default_point: updatedTemplate.point,
       default_note: updatedTemplate.note || '',
+      tag_ids: updatedTemplate.tag_ids || [],
     };
 
     return await makeRequest<

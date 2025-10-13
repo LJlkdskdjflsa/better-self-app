@@ -20,15 +20,18 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
+import { TagSelector } from '../common/TagSelector';
 import FoldableSection from '../newRecord/FoldableSection';
 import {
   createPersonalTemplate,
   deletePersonalTemplate,
   fetchPersonalTemplates,
 } from '~/lib/services/api/recordTemplate';
+import { fetchTags } from '~/lib/services/api/tags';
 import type { CreateRecordTemplateRequest } from '~/lib/types/recordTemplate';
+import type { Tag } from '~/lib/types/tag';
 
 import TemplateButton from './TemplateButton';
 import { UpdateTemplateModal } from './UpdateTemplateModal';
@@ -50,11 +53,15 @@ export const TemplateGrid = () => {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
+  // T072: Add tag state
+  const [availableTags, setAvailableTags] = useState<Tag[]>([]);
+  const [tagsLoading, setTagsLoading] = useState(false);
   const [newTemplateData, setNewTemplateData] = useState({
     title: '',
     focus: 0,
     point: 0,
     note: '',
+    tag_ids: [] as string[],
   });
   const [updatingTemplate, setUpdatingTemplate] =
     useState<CreateRecordTemplateRequest | null>({
@@ -79,6 +86,23 @@ export const TemplateGrid = () => {
     setUpdatingTemplate(template);
     setIsUpdateOpen(true);
   };
+
+  // T073: Load available tags
+  const loadTags = useCallback(async () => {
+    try {
+      setTagsLoading(true);
+      const tags = await fetchTags();
+      setAvailableTags(tags);
+    } catch {
+      // Failed to load tags
+    } finally {
+      setTagsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadTags();
+  }, [loadTags]);
 
   useEffect(() => {
     const loadTemplates = async () => {
@@ -114,8 +138,14 @@ export const TemplateGrid = () => {
       });
 
       onClose(); // Close the modal after adding
-      // Reset the form fields after successful submission
-      setNewTemplateData({ title: '', focus: 0, point: 0, note: '' });
+      // T074: Reset form fields including tag_ids
+      setNewTemplateData({
+        title: '',
+        focus: 0,
+        point: 0,
+        note: '',
+        tag_ids: [],
+      });
     } catch {
       toast({
         title: 'Error',
@@ -239,6 +269,16 @@ export const TemplateGrid = () => {
                 onChange={handleInputChange}
               />
             </FormControl>
+
+            {/* T074: Add TagSelector for template tags */}
+            <TagSelector
+              availableTags={availableTags}
+              selectedTagIds={newTemplateData.tag_ids}
+              onChange={(selectedIds) =>
+                setNewTemplateData({ ...newTemplateData, tag_ids: selectedIds })
+              }
+              isDisabled={tagsLoading}
+            />
           </ModalBody>
 
           <ModalFooter>

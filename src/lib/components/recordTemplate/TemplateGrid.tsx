@@ -130,7 +130,7 @@ export const TemplateGrid = () => {
     };
 
     loadTemplates();
-  }, [updatingTemplate, personalTemplates]);
+  }, []); // Only load once on mount
 
   const handleAddTemplate = async () => {
     try {

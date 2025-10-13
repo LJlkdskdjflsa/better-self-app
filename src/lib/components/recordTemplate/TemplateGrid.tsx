@@ -19,6 +19,10 @@ import {
   Textarea,
   useDisclosure,
   useToast,
+  Wrap,
+  WrapItem,
+  Tag as ChakraTag,
+  TagLabel,
 } from '@chakra-ui/react';
 import { useEffect, useState, useCallback } from 'react';
 
@@ -108,6 +112,7 @@ export const TemplateGrid = () => {
     const loadTemplates = async () => {
       try {
         const response = await fetchPersonalTemplates(1, 20); // Example: page 1, size 20
+        // T077: Include tags when mapping templates
         setPersonalTemplates(
           response.data.map((template) => ({
             id: template.id,
@@ -115,6 +120,8 @@ export const TemplateGrid = () => {
             focus: template.default_focus,
             point: template.default_point,
             note: template.default_note,
+            tags: template.tags || [],
+            tag_ids: template.tags?.map((tag) => tag.id) || [],
           }))
         );
       } catch {
@@ -193,7 +200,25 @@ export const TemplateGrid = () => {
             my={2}
           >
             <Flex justifyContent="space-between" alignItems="center">
-              <TemplateButton template={template} />
+              <Box flex="1">
+                <TemplateButton template={template} />
+                {/* T078: Display tags */}
+                {template.tags && template.tags.length > 0 && (
+                  <Wrap mt={2} spacing={1}>
+                    {template.tags.map((tag) => (
+                      <WrapItem key={tag.id}>
+                        <ChakraTag
+                          size="sm"
+                          colorScheme="blue"
+                          borderRadius="full"
+                        >
+                          <TagLabel>{tag.name}</TagLabel>
+                        </ChakraTag>
+                      </WrapItem>
+                    ))}
+                  </Wrap>
+                )}
+              </Box>
               <Spacer />
               <Button
                 variant="ghost"
@@ -295,6 +320,8 @@ export const TemplateGrid = () => {
         isOpen={isUpdateOpen}
         onClose={() => setIsUpdateOpen(false)}
         template={updatingTemplate as CreateRecordTemplateRequest}
+        availableTags={availableTags}
+        tagsLoading={tagsLoading}
       />
     </>
   );

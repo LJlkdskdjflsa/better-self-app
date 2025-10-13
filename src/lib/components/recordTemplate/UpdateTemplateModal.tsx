@@ -14,19 +14,25 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
+import { TagSelector } from '../common/TagSelector';
 import { updatePersonalTemplate } from '~/lib/services/api/recordTemplate';
 import type { CreateRecordTemplateRequest } from '~/lib/types/recordTemplate';
+import type { Tag } from '~/lib/types/tag';
 
 interface UpdateTemplateModalProps {
   isOpen: boolean;
   onClose: () => void;
   template: CreateRecordTemplateRequest;
+  availableTags: Tag[];
+  tagsLoading: boolean;
 }
 
 export const UpdateTemplateModal: React.FC<UpdateTemplateModalProps> = ({
   isOpen,
   onClose,
   template,
+  availableTags,
+  tagsLoading,
 }) => {
   const [updatedTemplate, setUpdatedTemplate] = useState(template);
   const toast = useToast();
@@ -106,6 +112,16 @@ export const UpdateTemplateModal: React.FC<UpdateTemplateModalProps> = ({
               onChange={handleInputChange}
             />
           </FormControl>
+
+          {/* T075-T076: Add TagSelector for template tags */}
+          <TagSelector
+            availableTags={availableTags}
+            selectedTagIds={updatedTemplate.tag_ids || []}
+            onChange={(selectedIds) =>
+              setUpdatedTemplate({ ...updatedTemplate, tag_ids: selectedIds })
+            }
+            isDisabled={tagsLoading}
+          />
         </ModalBody>
         <ModalFooter>
           <Button onClick={handleUpdateSubmit}>Update</Button>

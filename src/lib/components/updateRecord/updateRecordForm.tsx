@@ -11,16 +11,14 @@ import {
   Radio,
   useToast,
   Text,
-  Wrap,
-  WrapItem,
-  Tag,
-  TagLabel,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import { TagSelector } from '../common/TagSelector';
 import { useToken } from '../hooks/useToken';
-import { fetchRecordById } from '~/lib/services/api/record';
+import { fetchRecordById, updateRecord } from '~/lib/services/api/record';
+import { fetchTags } from '~/lib/services/api/tags';
 import type { Tag as TagType } from '~/lib/types/tag';
 import { formatDateTimeLocal } from '~/utils/timeUtils';
 
@@ -31,6 +29,7 @@ interface FormData {
   focus: number;
   point: number;
   note: string;
+  tag_ids: string[];
 }
 
 export default function UpdateRecordForm({ recordId }: { recordId: string }) {
@@ -41,12 +40,31 @@ export default function UpdateRecordForm({ recordId }: { recordId: string }) {
     focus: 0,
     point: 0,
     note: '',
+    tag_ids: [],
   });
-  const [recordTags, setRecordTags] = useState<TagType[]>([]);
+  const [availableTags, setAvailableTags] = useState<TagType[]>([]);
+  const [tagsLoading, setTagsLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [token] = useToken();
   const toast = useToast();
   const router = useRouter();
+
+  // T059: Load available tags
+  useEffect(() => {
+    const loadTags = async () => {
+      try {
+        setTagsLoading(true);
+        const tags = await fetchTags();
+        setAvailableTags(tags);
+      } catch {
+        // Failed to load tags - user will see empty tag selector
+      } finally {
+        setTagsLoading(false);
+      }
+    };
+
+    loadTags();
+  }, []);
 
   useEffect(() => {
     const loadRecordData = async () => {
@@ -58,9 +76,8 @@ export default function UpdateRecordForm({ recordId }: { recordId: string }) {
         focus: data.focus,
         point: data.point,
         note: data.note,
+        tag_ids: data.tags?.map((tag) => tag.id) || [],
       });
-      // T057: Load tags
-      setRecordTags(data.tags || []);
       setIsLoading(false);
     };
 
@@ -91,6 +108,7 @@ export default function UpdateRecordForm({ recordId }: { recordId: string }) {
       return; // Stop the function if there's no token
     }
 
+    // T060: Include tag_ids in update payload
     const payload = {
       start_time: new Date(formData.startTime).toISOString(),
       end_time: new Date(formData.endTime).toISOString(),
@@ -98,48 +116,26 @@ export default function UpdateRecordForm({ recordId }: { recordId: string }) {
       note: formData.note,
       focus: formData.focus,
       point: formData.point,
+      tag_ids: formData.tag_ids,
     };
 
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/records/${recordId}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+      await updateRecord(recordId, payload);
 
-      if (response.status === 200) {
-        // Reset form data to initial values after successful submission
-        setFormData({
-          title: '',
-          startTime: '',
-          endTime: '',
-          focus: 0,
-          point: 0,
-          note: '',
-        });
+      toast({
+        title: 'Success',
+        description: 'Record updated successfully.',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
 
-        toast({
-          title: 'Success',
-          description: 'Record update successfully.',
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
-        });
-      } else {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      // go to records page
+      // Go to records page
       router.push('/records');
     } catch {
       toast({
         title: 'Error',
-        description: 'An error occurred while update.',
+        description: 'An error occurred while updating.',
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -240,21 +236,15 @@ export default function UpdateRecordForm({ recordId }: { recordId: string }) {
               />
             </FormControl>
 
-            {/* T057: Display tags (read-only for now) */}
-            {recordTags.length > 0 && (
-              <FormControl>
-                <FormLabel>Tags</FormLabel>
-                <Wrap spacing={2}>
-                  {recordTags.map((tag) => (
-                    <WrapItem key={tag.id}>
-                      <Tag size="md" colorScheme="blue" borderRadius="full">
-                        <TagLabel>{tag.name}</TagLabel>
-                      </Tag>
-                    </WrapItem>
-                  ))}
-                </Wrap>
-              </FormControl>
-            )}
+            {/* T059: Tag Selector for editing */}
+            <TagSelector
+              availableTags={availableTags}
+              selectedTagIds={formData.tag_ids}
+              onChange={(selectedIds) =>
+                setFormData({ ...formData, tag_ids: selectedIds })
+              }
+              isDisabled={tagsLoading}
+            />
 
             <Button colorScheme="blue" type="submit">
               Update

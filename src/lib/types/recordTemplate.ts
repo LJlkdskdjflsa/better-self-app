@@ -7,6 +7,7 @@ export interface CreateRecordTemplateRequest {
   point: number;
   note: string | null;
   tag_ids?: string[];
+  tags?: Tag[];
 }
 
 export interface CreateRecordTemplateRequestNew {

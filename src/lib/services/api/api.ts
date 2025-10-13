@@ -14,7 +14,7 @@ export async function makeRequest<T, B>(
   };
 
   // Only add body for methods that support it
-  if (body && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
+  if (body && (method === 'POST' || method === 'PUT')) {
     options.body = JSON.stringify(body);
   }
 

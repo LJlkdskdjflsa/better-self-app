@@ -4,8 +4,11 @@ import type {
   RecordCreateRequest,
   RecordUpdateRequest,
 } from '../../types/recordTypes';
+import type { Record as StatisticsRecord } from '~/types/statistics';
 
 import { makeRequest } from './api';
+
+// Import statistics types for new wrapper function
 
 export async function fetchRecords(
   page: number,
@@ -124,4 +127,30 @@ export async function deleteRecord(
   } catch {
     return { success: false };
   }
+}
+
+/**
+ * Fetch records for statistics with date range filtering
+ * Wrapper around fetchRecords() that adapts to statistics requirements
+ * Implements FR-019 (existing API endpoints)
+ * @param startDate - ISO 8601 date string (YYYY-MM-DD)
+ * @param endDate - ISO 8601 date string (YYYY-MM-DD)
+ * @returns Records with tags populated, for use in statistics aggregation
+ */
+export async function fetchRecordsForStatistics(
+  startDate: string,
+  endDate: string
+): Promise<StatisticsRecord[]> {
+  // Fetch all records in date range with large page size
+  // Per SC-006, max 10,000 records per year is acceptable
+  const response = await fetchRecords(
+    1, // page
+    10000, // size (fetch all records)
+    startDate, // queryStartTime
+    endDate // queryEndTime
+  );
+
+  // The response already has tags populated via backend joins
+  // Cast to StatisticsRecord type (structurally compatible)
+  return response.data as unknown as StatisticsRecord[];
 }

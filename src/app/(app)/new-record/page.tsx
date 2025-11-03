@@ -63,18 +63,20 @@ const Home = () => {
         display={{ base: 'none', md: 'flex' }}
         gap={6}
         w="full"
+        maxW="1400px"
+        mx="auto"
         minHeight="70vh"
-        px={4}
+        px={6}
         py={8}
       >
-        <Box flex={1} minW={0}>
+        <Box flex={1} minW={0} maxW="600px">
           <NewRecordForm
             formData={formData}
             setFormData={setFormData}
             onRecordCreated={handleRecordCreated}
           />
         </Box>
-        <Box flex={1} minW={0} maxH="80vh" overflowY="auto">
+        <Box flex={1} minW={0} maxW="500px" maxH="80vh" overflowY="auto" px={2}>
           <TemplateGrid
             onTemplateSelect={handleTemplateSelect}
             selectedTemplateId={selectedTemplateId}

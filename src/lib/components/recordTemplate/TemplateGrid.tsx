@@ -278,12 +278,13 @@ export const TemplateGrid = ({
 
       <FoldableSection title="Public">
         {publicTemplates.map((template) => (
-          <TemplateButton
-            key={template.title}
-            template={template}
-            onClick={() => handleTemplateClick(template)}
-            isSelected={selectedTemplateId === template.id}
-          />
+          <Box key={template.title} width="90%">
+            <TemplateButton
+              template={template}
+              onClick={() => handleTemplateClick(template)}
+              isSelected={selectedTemplateId === template.id}
+            />
+          </Box>
         ))}
       </FoldableSection>
       <Modal isOpen={isOpen} onClose={onClose}>

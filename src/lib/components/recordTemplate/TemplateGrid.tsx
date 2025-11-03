@@ -24,6 +24,7 @@ import {
   Tag as ChakraTag,
   TagLabel,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState, useCallback } from 'react';
 
 import { TagSelector } from '../common/TagSelector';
@@ -50,11 +51,22 @@ const publicTemplates: CreateRecordTemplateRequest[] = [
   { id: null, title: 'Exercise', focus: 4, point: 4, note: null },
 ];
 
-export const TemplateGrid = () => {
+interface TemplateGridProps {
+  onTemplateSelect?: (template: CreateRecordTemplateRequest) => void;
+  selectedTemplateId?: string | null;
+  hideAddButton?: boolean;
+}
+
+export const TemplateGrid = ({
+  onTemplateSelect,
+  selectedTemplateId,
+  hideAddButton = false,
+}: TemplateGridProps = {}) => {
   const [personalTemplates, setPersonalTemplates] = useState<
     CreateRecordTemplateRequest[]
   >([]);
   const toast = useToast();
+  const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
   // T072: Add tag state
@@ -187,6 +199,17 @@ export const TemplateGrid = () => {
     }
   };
 
+  const handleTemplateClick = (template: CreateRecordTemplateRequest) => {
+    if (onTemplateSelect) {
+      // Selection mode (new behavior for desktop split-view)
+      onTemplateSelect(template);
+    } else {
+      // Navigation mode (current behavior for mobile/templates page)
+      localStorage.setItem('template', JSON.stringify(template));
+      router.push('/new-record');
+    }
+  };
+
   return (
     <>
       <FoldableSection title="Personal">
@@ -201,7 +224,11 @@ export const TemplateGrid = () => {
           >
             <Flex justifyContent="space-between" alignItems="center">
               <Box flex="1">
-                <TemplateButton template={template} />
+                <TemplateButton
+                  template={template}
+                  onClick={() => handleTemplateClick(template)}
+                  isSelected={selectedTemplateId === template.id}
+                />
                 {/* T078: Display tags */}
                 {template.tags && template.tags.length > 0 && (
                   <Wrap mt={2} spacing={1}>
@@ -240,16 +267,23 @@ export const TemplateGrid = () => {
             </Flex>
           </Box>
         ))}
-        <Flex justifyContent="center" mt={4}>
-          <Button colorScheme="blue" onClick={onOpen}>
-            Add Personal Template
-          </Button>
-        </Flex>
+        {!hideAddButton && (
+          <Flex justifyContent="center" mt={4}>
+            <Button colorScheme="blue" onClick={onOpen}>
+              Add Personal Template
+            </Button>
+          </Flex>
+        )}
       </FoldableSection>
 
       <FoldableSection title="Public">
         {publicTemplates.map((template) => (
-          <TemplateButton key={template.title} template={template} />
+          <TemplateButton
+            key={template.title}
+            template={template}
+            onClick={() => handleTemplateClick(template)}
+            isSelected={selectedTemplateId === template.id}
+          />
         ))}
       </FoldableSection>
       <Modal isOpen={isOpen} onClose={onClose}>

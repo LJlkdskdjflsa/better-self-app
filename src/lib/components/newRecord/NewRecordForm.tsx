@@ -38,14 +38,24 @@ interface FormData {
   tag_ids: string[];
 }
 
-export default function NewRecordForm() {
+interface NewRecordFormProps {
+  formData?: FormData;
+  setFormData?: (data: FormData | ((prev: FormData) => FormData)) => void;
+  onRecordCreated?: () => void;
+}
+
+export default function NewRecordForm({
+  formData: controlledFormData,
+  setFormData: controlledSetFormData,
+  onRecordCreated,
+}: NewRecordFormProps = {}) {
   const toast = useToast();
   const [token] = useToken();
   const [availableTags, setAvailableTags] = useState<Tag[]>([]);
   const [tagsLoading, setTagsLoading] = useState(false);
 
-  // Set initial form data
-  const [formData, setFormData] = useState<FormData>({
+  // Internal form data state (for uncontrolled mode)
+  const [internalFormData, setInternalFormData] = useState<FormData>({
     title: '',
     startTime: '',
     endTime: '',
@@ -54,6 +64,10 @@ export default function NewRecordForm() {
     note: '',
     tag_ids: [],
   });
+
+  // Use controlled state if provided, otherwise use internal state
+  const formData = controlledFormData ?? internalFormData;
+  const setFormData = controlledSetFormData ?? setInternalFormData;
 
   // Load available tags
   const loadTags = useCallback(async () => {
@@ -72,15 +86,15 @@ export default function NewRecordForm() {
     loadTags();
   }, [loadTags]);
 
+  // Load template from localStorage only if NOT in controlled mode
   useEffect(() => {
-    // Check if window is defined (i.e., running on client side)
-    if (typeof window !== 'undefined') {
+    if (!controlledFormData && typeof window !== 'undefined') {
       const templateData: CreateRecordTemplateRequest = JSON.parse(
         localStorage.getItem('template') || '{}'
       );
       // Update form data with template if available
       if (templateData?.title) {
-        setFormData({
+        setInternalFormData({
           title: templateData.title,
           startTime: '',
           endTime: '',
@@ -91,7 +105,7 @@ export default function NewRecordForm() {
         });
       }
     }
-  }, []);
+  }, [controlledFormData]);
 
   // Function to clear title
   const clearTitle = () => {
@@ -171,15 +185,26 @@ export default function NewRecordForm() {
         position: 'top',
       });
 
-      setFormData({
-        title: '',
-        startTime: '',
-        endTime: '',
-        focus: 0,
-        point: 0,
-        note: '',
-        tag_ids: [],
-      });
+      // Clear localStorage template
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('template');
+      }
+
+      // Reset form only if NOT in controlled mode
+      if (!controlledFormData) {
+        setInternalFormData({
+          title: '',
+          startTime: '',
+          endTime: '',
+          focus: 0,
+          point: 0,
+          note: '',
+          tag_ids: [],
+        });
+      }
+
+      // Call the callback if provided (for controlled mode)
+      onRecordCreated?.();
     } catch {
       toast({
         title: 'Error',

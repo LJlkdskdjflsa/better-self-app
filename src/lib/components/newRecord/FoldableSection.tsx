@@ -26,7 +26,11 @@ const FoldableSection = ({ title, children }: FoldableSectionProps) => {
         />
         {title}
       </Heading>
-      {isOpen && <VStack spacing={4}>{children}</VStack>}
+      {isOpen && (
+        <VStack spacing={4} alignItems="stretch" w="full">
+          {children}
+        </VStack>
+      )}
     </Box>
   );
 };

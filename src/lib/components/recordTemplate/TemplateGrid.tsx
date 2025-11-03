@@ -219,7 +219,9 @@ export const TemplateGrid = ({
             p={4}
             shadow="md"
             borderWidth="1px"
-            width="90%"
+            width="100%"
+            maxW="400px"
+            mx="auto"
             my={2}
           >
             <Flex justifyContent="space-between" alignItems="center">
@@ -278,7 +280,7 @@ export const TemplateGrid = ({
 
       <FoldableSection title="Public">
         {publicTemplates.map((template) => (
-          <Box key={template.title} width="90%">
+          <Box key={template.title} width="100%" maxW="400px" mx="auto">
             <TemplateButton
               template={template}
               onClick={() => handleTemplateClick(template)}

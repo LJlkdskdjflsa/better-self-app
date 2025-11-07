@@ -258,6 +258,37 @@ export default function NewRecordForm({
       });
     }
   };
+
+  // Function to set end time to start time + 1 hour
+  const setEndTimeOneHourAfterStart = () => {
+    if (!formData.startTime) {
+      toast({
+        title: 'Error',
+        description: 'Please set a start time first.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      });
+      return;
+    }
+
+    // Parse the start time (format: "HH:MM")
+    const [hours, minutes] = formData.startTime.split(':').map(Number);
+
+    // Add 1 hour
+    let newHours = hours + 1;
+
+    // Handle 24-hour rollover
+    if (newHours >= 24) {
+      newHours -= 24;
+    }
+
+    // Format back to HH:MM
+    const endTime = `${String(newHours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+
+    setFormData({ ...formData, endTime });
+  };
   return (
     <Container maxW="container.md">
       <Heading as="h1" mb={4}>
@@ -324,6 +355,9 @@ export default function NewRecordForm({
                 ml={2} // Margin left for spacing
               >
                 Now
+              </Button>
+              <Button onClick={setEndTimeOneHourAfterStart} ml={2}>
+                1hr
               </Button>
             </Flex>
           </FormControl>

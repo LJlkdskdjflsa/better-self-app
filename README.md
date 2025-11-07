@@ -38,6 +38,36 @@ check file structure
 tree -I 'node_modules|public'
 ```
 
+## Responsive Desktop Layout
+
+The app now features a responsive desktop layout:
+
+- **Mobile/Tablet**: Single-column layout optimized for smaller screens
+- **Desktop (md breakpoint and above)**: Wide split-view layout on the new-record page
+  - Left side: Record creation form
+  - Right side: Template grid for quick access
+
+The layout automatically adapts based on screen size using Chakra UI responsive props.
+
+## Testing the App
+
+### Creating a Test Account
+
+1. Ensure the backend API is running on port 8005
+2. Navigate to `http://localhost:3000/register` (or 3001 if port 3000 is in use)
+3. Create a test account:
+   - Email: `test@example.com`
+   - Username: `testuser`
+   - Password: `testpass123`
+
+### Viewing the Responsive Layout
+
+1. Open the app in your browser
+2. Navigate to `/new-record` after logging in
+3. Resize your browser window to see the responsive behavior:
+   - **Desktop (>768px)**: Split-view with form on left, templates on right
+   - **Mobile (<768px)**: Single column with form only
+
 ## How to Run e2e Test (in local machine)
 
 1. Build production with `pnpm build`, then run the production build using `pnpm start`.

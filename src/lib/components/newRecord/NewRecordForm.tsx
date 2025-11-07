@@ -290,7 +290,7 @@ export default function NewRecordForm({
     setFormData({ ...formData, endTime });
   };
   return (
-    <Container maxW="container.md">
+    <Container maxW={{ base: 'container.md', md: '100%' }}>
       <Heading as="h1" mb={4}>
         Better Self
       </Heading>
